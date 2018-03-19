@@ -1,0 +1,1 @@
+INSERT INTO `customer` (`email`, `name`, `phone_number`, `address`, `gender`, `dob`, `credit_card`, `frequent_shopper`) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
