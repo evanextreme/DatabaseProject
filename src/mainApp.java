@@ -1,9 +1,14 @@
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -18,15 +23,15 @@ public class mainApp extends Application {
         this.primaryStage.setTitle("AddressApp");
 
         initRootLayout();
-
-       // showTotalOverview();
+        //showTotalOverview();
     }
 
     private BorderPane loadController() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/RootLayout.fxml"));
             loader.setController(new mainApp());
             BorderPane root = loader.load();
+
             return root;
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,9 +46,19 @@ public class mainApp extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(mainApp.class.getResource("RootLayout.fxml"));
+            loader.setLocation(mainApp.class.getResource("layout/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
+            ButtonBar topBar = (ButtonBar) rootLayout.getTop();
+            
+            Button totalButton = new Button("Total");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
 
+            topBar.getButtons().addAll(totalButton);
+            rootLayout.setTop(topBar);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
@@ -60,7 +75,7 @@ public class mainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(mainApp.class.getResource("TotalLayout.fxml"));
+            loader.setLocation(mainApp.class.getResource("layout/TotalLayout.fxml"));
             AnchorPane totalOverview = (AnchorPane) loader.load();
             // Set person overview into the center of root layout.
             rootLayout.setCenter(totalOverview);
