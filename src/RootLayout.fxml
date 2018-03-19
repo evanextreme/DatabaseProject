@@ -7,16 +7,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainApp">
    <top>
       <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-          <Button mnemonicParsing="false" text="Register" />
-            <Button layoutX="540.0" layoutY="17.0" mnemonicParsing="false" text="Catalogue" />
-            <Button mnemonicParsing="false" text="Discounts" />
+            <Button mnemonicParsing="false" onMouseClicked="#showTotalOverview" text="Total" />
             <Button mnemonicParsing="false" text="Return" />
-            <Button mnemonicParsing="false" text="Total" />
+            <Button mnemonicParsing="false" text="Discounts" />
+            <Button layoutX="540.0" layoutY="17.0" mnemonicParsing="false" text="Catalogue" />
+          <Button mnemonicParsing="false" text="Register" />
             <Label alignment="CENTER" text="Label">
                <font>
                   <Font size="20.0" />
