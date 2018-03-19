@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class MainView extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -18,7 +18,7 @@ public class Main extends Application {
 
         initRootLayout();
 
-        showPersonOverview();
+        showTotalOverview();
     }
 
     /**
@@ -27,8 +27,8 @@ public class Main extends Application {
     public void initRootLayout() {
         try {
             // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader(".");
-            loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainView.class.getResource("RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -41,13 +41,13 @@ public class Main extends Application {
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Shows the total overview inside the root layout.
      */
-    public void showPersonOverview() {
+    public void showTotalOverview() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TotalView.fxml"));
+            loader.setLocation(MainView.class.getResource("TotalView.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
