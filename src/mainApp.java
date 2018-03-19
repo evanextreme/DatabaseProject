@@ -1,15 +1,16 @@
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class MainView extends Application {
+public class mainApp extends Application {
 
-    private Stage primaryStage;
-    private BorderPane rootLayout;
+    @FXML private Stage primaryStage;
+    @FXML private BorderPane rootLayout;
 
     @Override
     public void start(Stage primaryStage) {
@@ -18,7 +19,19 @@ public class MainView extends Application {
 
         initRootLayout();
 
-        showTotalOverview();
+       // showTotalOverview();
+    }
+
+    private BorderPane loadController() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
+            loader.setController(new mainApp());
+            BorderPane root = loader.load();
+            return root;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -28,7 +41,7 @@ public class MainView extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainView.class.getResource("RootLayout.fxml"));
+            loader.setLocation(mainApp.class.getResource("RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -47,11 +60,10 @@ public class MainView extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainView.class.getResource("TotalView.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
-
+            loader.setLocation(mainApp.class.getResource("TotalLayout.fxml"));
+            AnchorPane totalOverview = (AnchorPane) loader.load();
             // Set person overview into the center of root layout.
-            rootLayout.setCenter(personOverview);
+            rootLayout.setCenter(totalOverview);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,6 +76,11 @@ public class MainView extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
+    public BorderPane getRootLayout() {
+        return rootLayout;
+    }
+
 
     public static void main(String[] args) {
         launch(args);
