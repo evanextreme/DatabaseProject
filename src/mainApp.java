@@ -49,7 +49,7 @@ public class mainApp extends Application {
             loader.setLocation(mainApp.class.getResource("layout/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
             ButtonBar topBar = (ButtonBar) rootLayout.getTop();
-            
+
             Button totalButton = new Button("Total");
             totalButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
