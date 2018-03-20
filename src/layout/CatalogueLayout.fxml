@@ -38,9 +38,9 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Name" />
-                              <Label text="Qty" GridPane.columnIndex="1" />
-                              <Label text="Total" GridPane.columnIndex="2" />
+                              <Label text="Items" />
+                              <Label text="Number" GridPane.columnIndex="1" />
+                              <Label text="Price" GridPane.columnIndex="2" />
                            </children>
                            <opaqueInsets>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -54,8 +54,6 @@
                <children>
                   <VBox prefHeight="329.0" prefWidth="230.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Cash" />
-                        <Button mnemonicParsing="false" text="Credit" />
                         <GridPane>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -67,15 +65,15 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Total          =" />
-                              <Label text="Tax             =" GridPane.rowIndex="1" />
-                              <Label text="Subtotal     =" GridPane.rowIndex="2" />
+                              <Label text="Item           =" />
+                              <Label text="Item No.    =" GridPane.rowIndex="1" />
+                              <Label text="Price          =" GridPane.rowIndex="2" />
                               <TextField GridPane.columnIndex="1" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
-                        <Button mnemonicParsing="false" text="Complete" />
+                        <Button mnemonicParsing="false" text="Select" />
                      </children>
                      <padding>
                         <Insets left="30.0" right="30.0" top="20.0" />

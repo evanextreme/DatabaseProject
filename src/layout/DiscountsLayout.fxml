@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -54,28 +53,30 @@
                <children>
                   <VBox prefHeight="329.0" prefWidth="230.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Cash" />
-                        <Button mnemonicParsing="false" text="Credit" />
-                        <GridPane>
+                        <Button mnemonicParsing="false" text="Senior Discount: 10%" />
+                        <Button mnemonicParsing="false" text="Employee Discount: 15%" />
+                        <Button mnemonicParsing="false" text="Teacher Discount: 20%" />
+                        <Button mnemonicParsing="false" text="Millitary Discount: 35%" />
+                        <GridPane prefHeight="75.0" prefWidth="184.0">
                            <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Total          =" />
-                              <Label text="Tax             =" GridPane.rowIndex="1" />
-                              <Label text="Subtotal     =" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" text="30%" />
+                              <Button mnemonicParsing="false" text="35%" GridPane.columnIndex="1" />
+                              <Button mnemonicParsing="false" text="40%" GridPane.columnIndex="2" />
+                              <Button mnemonicParsing="false" text="45%" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" text="50%" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" text="55%" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
-                        <Button mnemonicParsing="false" text="Complete" />
+                        <Button mnemonicParsing="false" text="Enter" />
                      </children>
                      <padding>
                         <Insets left="30.0" right="30.0" top="20.0" />
