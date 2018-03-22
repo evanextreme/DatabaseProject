@@ -11,7 +11,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class rootController extends Application {
+public class RootController extends Application {
 
     @FXML private Stage primaryStage;
     @FXML private BorderPane rootLayout;
@@ -28,7 +28,7 @@ public class rootController extends Application {
     private BorderPane loadController() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/RootLayout.fxml"));
-            loader.setController(new rootController());
+            loader.setController(new RootController());
             BorderPane root = loader.load();
 
             return root;
@@ -45,7 +45,7 @@ public class rootController extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(rootController.class.getResource("layout/RootLayout.fxml"));
+            loader.setLocation(RootController.class.getResource("layout/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
             ButtonBar topBar = (ButtonBar) rootLayout.getTop();
 
@@ -74,7 +74,7 @@ public class rootController extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(rootController.class.getResource("layout/TotalLayout.fxml"));
+            loader.setLocation(RootController.class.getResource("layout/TotalLayout.fxml"));
             AnchorPane totalOverview = (AnchorPane) loader.load();
             // Set person overview into the center of root layout.
             rootLayout.setCenter(totalOverview);
