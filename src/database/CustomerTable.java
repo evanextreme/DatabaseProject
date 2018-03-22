@@ -14,9 +14,18 @@ import java.util.ArrayList;
  *
  * @author Theodora Bendlin
  */
-public class CustomerTable extends DatabaseTable {
+public class CustomerTable {
 
     public static final String TABLE_NAME = "customer";
+    public static final String CSV_FILE = "sample_data/customer.csv";
+    public static final String SCHEMA_FILE = "db/customer.sql";
+
+    /**
+     *  Calls database creation method from DatabaseTable class
+     */
+    public static void createTable(Connection connection) {
+        DatabaseTable.createTable(connection, SCHEMA_FILE);
+    }
 
     /**
      * Creates an sql statement to do a bulk add customers
@@ -46,12 +55,12 @@ public class CustomerTable extends DatabaseTable {
         return sb.toString();
     }
 
-    public static void populateTableFromCSV(Connection connection, String fileName) throws SQLException{
+    public static void populateTableFromCSV(Connection connection) throws SQLException{
 
         ArrayList<Customer> customers = new ArrayList<>();
 
         try {
-            ResultSet resultSet = new Csv().read(fileName, null, null);
+            ResultSet resultSet = new Csv().read(CSV_FILE, null, null);
 
             int numColumns = resultSet.getMetaData().getColumnCount();
             while (resultSet.next()) {

@@ -5,9 +5,6 @@ CREATE TABLE `transaction` (
   `discount_id` INT NULL,
   `store_id` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_customer_id_idx` (`customer_id` ASC),
-  INDEX `fk_discount_id_idx` (`discount_id` ASC),
-  INDEX `fk_store_id_idx` (`store_id` ASC),
   CONSTRAINT `fk_customer_id`
     FOREIGN KEY (`customer_id`)
     REFERENCES `customer` (`id`)
@@ -23,3 +20,7 @@ CREATE TABLE `transaction` (
     REFERENCES `store` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+CREATE INDEX `fk_customer_id_idx` OF customer(`customer_id` ASC);
+CREATE INDEX `fk_discount_id_idx` OF discount(`discount_id` ASC);
+CREATE INDEX `fk_store_id_idx` OF store(`store_id` ASC);
