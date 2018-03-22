@@ -22,7 +22,6 @@ public abstract class DatabaseTable {
     public static void createTable(Connection connection, String fileName) {
         try {
             String createStatement = FileUtils.scanSqlFile(fileName);
-            createStatement = createStatement.replaceAll("`", "");
             Statement statement = connection.createStatement();
             statement.execute(createStatement);
         } catch (SQLException ex) {
