@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainApp">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RootController">
    <children>
       <SplitPane dividerPositions="0.5" layoutX="3.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
          <items>
@@ -81,8 +81,6 @@
                <children>
                   <VBox prefHeight="329.0" prefWidth="230.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Cash" />
-                        <Button mnemonicParsing="false" text="Credit" />
                         <GridPane>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
