@@ -8,11 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class mainApp extends Application {
+public class RootController extends Application {
 
     @FXML private Stage primaryStage;
     @FXML private BorderPane rootLayout;
@@ -29,7 +28,7 @@ public class mainApp extends Application {
     private BorderPane loadController() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/RootLayout.fxml"));
-            loader.setController(new mainApp());
+            loader.setController(new RootController());
             BorderPane root = loader.load();
 
             return root;
@@ -46,7 +45,7 @@ public class mainApp extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(mainApp.class.getResource("layout/RootLayout.fxml"));
+            loader.setLocation(RootController.class.getResource("layout/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
             ButtonBar topBar = (ButtonBar) rootLayout.getTop();
 
@@ -57,7 +56,39 @@ public class mainApp extends Application {
                 }
             });
 
-            topBar.getButtons().addAll(totalButton);
+            Button catalogueButton = new Button("Catalogue");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
+
+            Button discountsButton = new Button("Discounts");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
+            Button loginButton = new Button("Login");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
+            Button registerButton = new Button("Register");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
+            Button returnButton = new Button("Return");
+            totalButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    showTotalOverview();
+                }
+            });
+
+            topBar.getButtons().addAll(totalButton, catalogueButton, discountsButton, loginButton, registerButton, returnButton);
             rootLayout.setTop(topBar);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
@@ -75,7 +106,7 @@ public class mainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(mainApp.class.getResource("layout/TotalLayout.fxml"));
+            loader.setLocation(RootController.class.getResource("layout/TotalLayout.fxml"));
             AnchorPane totalOverview = (AnchorPane) loader.load();
             // Set person overview into the center of root layout.
             rootLayout.setCenter(totalOverview);
@@ -83,6 +114,22 @@ public class mainApp extends Application {
             e.printStackTrace();
         }
     }
+    /**
+     * Shows the total overview inside the root layout.
+     */
+    public void showReturnOverview() {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(RootController.class.getResource("layout/ReturnLayout.fxml"));
+            AnchorPane returnOverview = (AnchorPane) loader.load();
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(returnOverview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Returns the main stage.
