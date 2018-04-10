@@ -6,6 +6,8 @@
     <!--   <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -81,16 +83,16 @@
                 <div class="container">
                     <h4>Discounts</h4>
                     <div class="row">
-                        <div class="col s12"><button class="btn waves-effect waves-light green center" type="submit" name="submit" value="10" action="/add_discount"><i class="material-icons left">attach_money</i>Senior Discount 10%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="15" action="/add_discount"><i class="material-icons left">attach_money</i>Employee Discount 15%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="20" action="/add_discount"><i class="material-icons left">attach_money</i>Teacher Discount 20%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="25" action="/add_discount"><i class="material-icons left">attach_money</i>Military Discount 25%</button></div><br><br>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="30" action="/add_discount"><i class="material-icons left">attach_money</i>30%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="35" action="/add_discount"><i class="material-icons left">attach_money</i>35%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="40" action="/add_discount"><i class="material-icons left">attach_money</i>40%</button></div><br>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="45" action="/add_discount"><i class="material-icons left">attach_money</i>45%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="50" action="/add_discount"><i class="material-icons left">attach_money</i>50%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green" type="submit" name="submit" value="55" action="/add_discount"><i class="material-icons left">attach_money</i>55%</button></div>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="10" action="/add_discount"><i class="material-icons left">attach_money</i>Senior Discount 10%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="15" action="/add_discount"><i class="material-icons left">attach_money</i>Employee Discount 15%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="20" action="/add_discount"><i class="material-icons left">attach_money</i>Teacher Discount 20%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="25" action="/add_discount"><i class="material-icons left">attach_money</i>Military Discount 25%</button></div><br><br>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="30" action="/add_discount"><i class="material-icons left">attach_money</i>30%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="35" action="/add_discount"><i class="material-icons left">attach_money</i>35%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="40" action="/add_discount"><i class="material-icons left">attach_money</i>40%</button></div><br>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="45" action="/add_discount"><i class="material-icons left">attach_money</i>45%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="50" action="/add_discount"><i class="material-icons left">attach_money</i>50%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="55" action="/add_discount"><i class="material-icons left">attach_money</i>55%</button></div>
                     </div>
                 </div>
             </div>
@@ -102,39 +104,62 @@
 
         <h1>CHECKOUT</h1>
         <a class="waves-effect waves-light btn modal-trigger" href="#catalogue">Catalogue</a>
-        <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a>
+        <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a> =
+        <div class="input-field col s6">
+            <input name="add_item_field" type="text" class="validate"></input>
+            <button class="btn waves-effect waves-light" id="memes" name="add_item_button">
+                <i class="material-icons">add</i>
+            </button>
+        </div>
         <form id="checkout">
-        <ul class="list-group">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tr th:each="cart : ${cart}">
-                    <li class="list-group-item">
+            <ul class="list-group">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <div id="checkout-list">
+                    <tr th:each="cart : ${cart}">
+                        <li class="list-group-item">
 
-                        <tbody>
-                            <tr>
-                                <td th:text="${cart.id}"></td>
-                                <td th:text="${cart.name}"></td>
-                                <td th:text="${cart.designer}"></td>
-                                <td><a class="btn-floating grey waves-red"><i class="material-icons">delete_forever</i></a></td>
-                            </tr>
-                        </tbody>
-            </table>
-            </li>
-            </tr>
-        </ul>
-        <button class="btn-large waves-effect waves-light red" type="submit" name="checkout" action="/total"><i class="material-icons left">attach_money</i>Checkout</button>
+                            <tbody>
+                                <tr>
+                                    <td th:text="${cart.id}"></td>
+                                    <td th:text="${cart.name}"></td>
+                                    <td th:text="${cart.designer}"></td>
+                                    <td><a class="btn-floating grey waves-red"><i class="material-icons">delete_forever</i></a></td>
+                                </tr>
+                            </tbody>
+                        </div>
+                </table>
+                </li>
+                </tr>
+            </ul>
+            <button class="btn-large waves-effect waves-light red" type="submit" name="checkout" action="/total"><i class="material-icons left">attach_money</i>Checkout</button>
 
-    </form>
+        </form>
 
     </div>
 </body>
 <footer>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("button[name='add_item_button']").click(function () {
+            alert($("input[name='add_item_field']").val());
+            var newItem = `
+            <text="beep"/>
+
+            `
+            $("checkout-list").append(newItem);     // Append new elements
+        });
+
+    });
+
+
+    </script>
 
 </footer>
 
