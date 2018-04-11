@@ -2,6 +2,8 @@ package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * 	Model for the Customer table
  */
@@ -24,7 +26,9 @@ public class Customer {
 
 	private int id;
 
-	private String name;
+	private String first;
+
+	private String last;
 
 	private String email;
 
@@ -35,7 +39,7 @@ public class Customer {
 	private String gender;
 
 	//TODO: Not use datetime? Java sql date?
-	private DateTime dob;
+	private Date dob;
 
 	private String creditCard;
 
@@ -44,9 +48,9 @@ public class Customer {
 	/**
 	 * Gets the age of the customer
      */
-	public int getAge() {
-		return DateTime.now().getYearOfCentury() - dob.getYearOfCentury();
-	}
+	//public int getAge() {
+	//	return DateTime.now().getYearOfCentury() - dob.getYearOfCentury();
+	//}
 
 	// Getter and setter methods for private fields
 
@@ -58,12 +62,20 @@ public class Customer {
 		this.id = id;
 	}
 
-	public String getName(){
-		return name;
+	public String getFirstName(){
+		return first;
 	}
 
-	public void setName(String name){
-		this.name = name;
+	public void setFirstName(String first){
+		this.first = first;
+	}
+
+	public String getLastName(){
+		return last;
+	}
+
+	public void setLastName(String last){
+		this.last = last;
 	}
 
 	public String getEmail(){
@@ -98,11 +110,11 @@ public class Customer {
 		this.gender = gender;
 	}
 
-	public DateTime getDOB(){
+	public Date getDOB(){
 		return dob;
 	}
 
-	public void setDOB(DateTime dob){
+	public void setDOB(Date dob){
 		this.dob = dob;
 	}
 

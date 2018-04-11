@@ -22,6 +22,8 @@ public class Product {
 
     private String department;
 
+    private Vendor vendor;
+
     // Getter and setters for private fields
 
 
@@ -80,4 +82,13 @@ public class Product {
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
 }
