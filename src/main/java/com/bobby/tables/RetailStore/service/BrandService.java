@@ -12,8 +12,5 @@ import java.util.Optional;
 
 @Service
 public class BrandService {
-	
-	@Autowired
-	private BrandDAO brandDAO;
 
 }
