@@ -2,6 +2,8 @@ package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * Model class for Shipment table
  */
@@ -19,11 +21,11 @@ public class Shipment {
 
     private int quantityOfItem;
 
-    private int productId;
+    private Product product;
 
-    private int storeId;
+    private Store store;
 
-    private int vendorId;
+    private Vendor vendor;
 
     // Getter and setters for private fields
 
@@ -60,27 +62,27 @@ public class Shipment {
         this.quantityOfItem = quantityOfItem;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public int getStoreId() {
-        return storeId;
+    public Store getStore() {
+        return store;
     }
 
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
-    public int getVendorId() {
-        return vendorId;
+    public Vendor getVendor() {
+        return vendor;
     }
 
-    public void setVendorId(int vendorId) {
-        this.vendorId = vendorId;
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 }

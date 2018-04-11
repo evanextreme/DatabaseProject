@@ -2,14 +2,20 @@ package com.bobby.tables.RetailStore;
 
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 
+import com.bobby.tables.RetailStore.models.Customer;
+import com.bobby.tables.RetailStore.repository.BrandDAO;
+import com.bobby.tables.RetailStore.repository.CustomerDAO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.Statement;
+import java.sql.Date;
 
 @SpringBootApplication
 //@EnableWebMvc
 public class RetailStoreApplication {
+
+
 
 	public static void main(String[] args) {
 		DatabaseConnection connection = new DatabaseConnection();
@@ -49,6 +55,23 @@ public class RetailStoreApplication {
 			System.exit(0);
 		}
 
+		//test, pls don't delete so i can keep testing thanks
+		/*CustomerDAO b = new CustomerDAO(connection);
+		Customer c = new Customer();
+		c.setId(1);
+		c.setFirstName("hi");
+		c.setLastName("hi");
+		c.setEmail("higmail.com");
+		c.setPhoneNumber("5851234567");
+		c.setAddress("hi");
+		c.setGender("male");
+		c.setDOB(new Date(System.currentTimeMillis()));
+		c.setCreditCard("1234567");
+		//c.isFrequentShopper(true);
+		System.out.println(" yayay " + b.addCustomer(c));*/
+
 		SpringApplication.run(RetailStoreApplication.class, args);
+
+		connection.closeConnection();
 	}
 }

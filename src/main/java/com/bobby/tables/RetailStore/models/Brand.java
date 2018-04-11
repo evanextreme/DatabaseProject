@@ -1,9 +1,5 @@
 package com.bobby.tables.RetailStore.models;
 
-import com.bobby.tables.RetailStore.repository.BrandDAO;
-
-import java.util.*;
-import java.sql.*;
 /**
  * Model for the Brand table
  */

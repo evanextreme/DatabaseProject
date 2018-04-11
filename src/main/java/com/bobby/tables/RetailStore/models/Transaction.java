@@ -53,9 +53,7 @@ public class Transaction {
 		this.store = store;
 	}
 
-	public List<Discount> getDiscounts(){
-		return discounts;
-	}
+	public List<Discount> getDiscounts(){ return discounts; }
 
 	public void setDiscounts(List<Discount> discount){
 		this.discounts = discount;
