@@ -15,6 +15,11 @@ public class Discount {
 		this.id = id;
 		this.percentage = percentage;
 	}
+
+	/** Alternate constructor with fields */
+	public Discount(int percentage) {
+		this.percentage = percentage;
+	}
 	
 	// Private fields
 

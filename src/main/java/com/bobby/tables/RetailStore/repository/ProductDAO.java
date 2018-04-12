@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class ProductDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     /**
      *  Returns a list of Products from a given ResultSet from the db

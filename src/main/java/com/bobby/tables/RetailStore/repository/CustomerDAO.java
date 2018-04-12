@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 
 import com.bobby.tables.RetailStore.models.*;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 public class CustomerDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     /**
      * Extrapolates a list of Customers from the result set

@@ -15,6 +15,23 @@ public class ProductType {
         this.parentTypeId = parentTypeId;
     }
 
+    /** Alternate constructor with fields */
+    public ProductType(String type, int parentTypeId) {
+        this.type = type;
+        this.parentTypeId = parentTypeId;
+    }
+
+    /** Alternate constructor with fields */
+    public ProductType(String type) {
+        this.type = type;
+    }
+
+    /** Alternate constructor with fields */
+    public ProductType(int id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
     // Private fields
 
     private int id;

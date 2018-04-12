@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.Discount;
 import com.bobby.tables.RetailStore.models.Store;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class DiscountDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     public static List<Discount> fromResultSet(ResultSet rs) {
         List<Discount> discounts = new ArrayList<>();

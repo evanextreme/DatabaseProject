@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.ProductType;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class ProductTypeDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     /**
      * Returns a list of ProductTypes from a result set
@@ -54,7 +55,7 @@ public class ProductTypeDAO {
     /**
      * Get all ProductTypes from the db
      */
-    public static List<ProductType> getAllProductType(){
+    public static List<ProductType> getAllProductTypes(){
         String all = "SELECT * FROM product_type;";
         List<ProductType> types = new ArrayList<>();
         try{
@@ -71,9 +72,9 @@ public class ProductTypeDAO {
      * Updates the ProductType
      */
     public static void updateProductType(ProductType prodType){
-        String update = "UPDATE product_type SET type = " + prodType.getType() +
-                        ", parent_type_id = " + prodType.getParentTypeId() +
-                        " WHERE productType.id = " + prodType.getId() + ";";
+        String update = "UPDATE product_type SET name = '" + prodType.getType() +
+                        "', parent_id = " + prodType.getParentTypeId() +
+                        " WHERE id = " + prodType.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
@@ -86,7 +87,7 @@ public class ProductTypeDAO {
      * Add a ProductType to the db
      */
     public static void addProductType(ProductType prodType){
-        String add = "INSERT INTO product_type (type, parent_type_id) VALUES ('" + prodType.getType() +
+        String add = "INSERT INTO product_type (name, parent_id) VALUES ('" + prodType.getType() +
                                             "'," + prodType.getParentTypeId() + ");";
         try{
             Statement state = connection.getConnection().createStatement();
