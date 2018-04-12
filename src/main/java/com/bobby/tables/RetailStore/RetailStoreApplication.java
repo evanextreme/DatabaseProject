@@ -9,9 +9,7 @@ import com.bobby.tables.RetailStore.repository.*;
 import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.thymeleaf.util.DateUtils;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,8 +41,6 @@ public class RetailStoreApplication {
 		testAllDbDAOs();
 
 		SpringApplication.run(RetailStoreApplication.class, args);
-
-		connection.closeConnection();
 	}
 
 	/**

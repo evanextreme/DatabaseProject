@@ -1,5 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Model for the Brand table
  */
@@ -32,27 +34,29 @@ public class Brand {
 	private String designer;
 	
 	// Getters and setters for private fields
-
+	@JsonView(Brand.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(Brand.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(Brand.class)
 	public String getName(){
 		return name;
 	}
-
+	@JsonView(Brand.class)
 	public void setName(String name){
 		this.name = name;
 	}
 
+	@JsonView(Brand.class)
 	public String getDesigner(){
 		return designer;
 	}
-
+	@JsonView(Brand.class)
 	public void setDesigner(String designer){
 		this.designer = designer;
 	}

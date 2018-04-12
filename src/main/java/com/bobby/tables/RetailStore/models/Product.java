@@ -1,5 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Model class for Product table
  */
@@ -27,7 +29,6 @@ public class Product {
     /** Alternate constructor with fields */
     public Product(String name, Brand brand, Vendor vendor, ProductType productType, Store store,
                    double regularPrice, double salePrice, String size, int quantityInStore, String department) {
-        this.id = id;
         this.name = name;
         this.regularPrice = regularPrice;
         this.salePrice = salePrice;
@@ -42,9 +43,9 @@ public class Product {
 
     // Private fields
 
-    private int id;
+    public int id;
 
-    private String name;
+    public String name;
 
     private double regularPrice;
 
@@ -66,91 +67,101 @@ public class Product {
     private Brand brand;
 
     // Getter and setters for private fields
-
+    @JsonView(Product.class)
     public int getId() {
         return id;
     }
-
+    @JsonView(Product.class)
     public void setId(int id) {
         this.id = id;
     }
 
+    @JsonView(Product.class)
     public String getName() {
         return name;
     }
-
+    @JsonView(Product.class)
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonView(Product.class)
     public double getRegularPrice() {
         return regularPrice;
     }
-
+    @JsonView(Product.class)
     public void setRegularPrice(double regularPrice) {
         this.regularPrice = regularPrice;
     }
 
+    @JsonView(Product.class)
     public int getQuantityInStore() {
         return quantityInStore;
     }
-
+    @JsonView(Product.class)
     public void setQuantityInStore(int quantityInStore) {
         this.quantityInStore = quantityInStore;
     }
 
+    @JsonView(Product.class)
     public String getDepartment() {
         return department;
     }
-
+    @JsonView(Product.class)
     public void setDepartment(String department) {
         this.department = department;
     }
 
+    @JsonView(Product.class)
     public String getSize() {
         return size;
     }
-
+    @JsonView(Product.class)
     public void setSize(String size) {
         this.size = size;
     }
 
+    @JsonView(Product.class)
     public double getSalePrice() {
         return salePrice;
     }
-
+    @JsonView(Product.class)
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 
+    @JsonView(Product.class)
     public Vendor getVendor() {
         return vendor;
     }
-
+    @JsonView(Product.class)
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
+    @JsonView(Product.class)
     public Store getStore() {
         return store;
     }
-
+    @JsonView(Product.class)
     public void setStore(Store store) {
         this.store = store;
     }
 
+    @JsonView(Product.class)
     public Brand getBrand() {
         return brand;
     }
-
+    @JsonView(Product.class)
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
+    @JsonView(Product.class)
     public ProductType getProductType() {
         return productType;
     }
-
+    @JsonView(Product.class)
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
