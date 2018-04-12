@@ -11,39 +11,65 @@ import java.util.Date;
 
 public class CustomerDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public CustomerDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<Customer> getAllCustomers(){
+    public static List<Customer> fromResultSet(ResultSet rs) throws SQLException {
+        List<Customer> custs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                Customer c = new Customer();
+                c.setId(rs.getInt(1));
+                c.setFirstName(rs.getNString(2));
+                c.setLastName(rs.getNString(3));
+                c.setEmail(rs.getNString(4));
+                c.setPhoneNumber(rs.getNString(5));
+                c.setAddress(rs.getNString(6));
+                c.setGender(rs.getNString(7));
+                c.setDOB(rs.getDate(8));
+                c.setCreditCard(rs.getNString(9));
+                c.setFrequentShopper(rs.getBoolean(10));
+                custs.add(c);
+            }
+        }
+        catch (SQLException ex) {
+        ex.printStackTrace();
+        }
+        return custs;
+    }
+
+    public static Customer getCustById(int id){
+        String cust = "SELECT * FROM customer WHERE customer.id = " + id + ";";
+        Customer c = new Customer();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            state.execute(cust);
+            ResultSet newCust = state.executeQuery(cust);
+            c = fromResultSet(newCust).get(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    public static List<Customer> getAllCustomers(){
         String all = "SELECT * FROM customer;";
-        ArrayList<Customer> custs = new ArrayList<>();
+        List<Customer> custs = new ArrayList<>();
         try{
             Statement state = conn.getConnection().createStatement();
             ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Customer c = new Customer();
-                c.setId(list.getInt(1));
-                c.setFirstName(list.getNString(2));
-                c.setLastName(list.getNString(3));
-                c.setEmail(list.getNString(4));
-                c.setPhoneNumber(list.getNString(5));
-                c.setAddress(list.getNString(6));
-                c.setGender(list.getNString(7));
-                c.setDOB((Date)list.getObject(8));
-                c.setCreditCard(list.getNString(9));
-                c.setFrequentShopper(list.getBoolean(10));
-                custs.add(c);
-            }
+            custs = fromResultSet(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return custs;
     }
 
-    public String addCustomer(Customer cust){
+    public static String addCustomer(Customer cust){
         String add = "INSERT INTO customer (first_name, last_name, email, phone_number, address, gender, dob, " +
                 "credit_card, frequent_shopper) VALUES ('" + cust.getFirstName() + "', '" + cust.getLastName() +
                 "', '" + cust.getEmail() + "', '" + cust.getPhoneNumber() + "', '" + cust.getAddress() + "', '" +
@@ -58,7 +84,7 @@ public class CustomerDAO {
         return "it worked";
     }
 
-    public void updateCustomer(Customer cust){
+    public static void updateCustomer(Customer cust){
         String update = "Select * FROM customer WHERE customer.id = " + cust.getId() + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -68,26 +94,14 @@ public class CustomerDAO {
         }
     }
 
-    //reciept
-    public ArrayList<Transaction> viewCustomerTrans(Customer cust){
+    //receipt
+    public static List<Transaction> viewCustomerTrans(Customer cust){
         String s = "SELECT * FROM transaction WHERE customer.id = " + cust.getId() + ";";
-        ArrayList<Transaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = conn.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                Transaction t = new Transaction();
-                t.setId(list.getInt(1));
-                t.setCustomer((Customer) list.getObject(2));
-                t.setStore((Store) list.getObject(3));
-                if(list.getObject(4) != null)
-                    t.setDiscount((Discount) list.getObject(4));
-                t.setDate((DateTime) list.getObject(5));
-                t.setQuantityOfItem(list.getInt(6));
-                t.setTotal(list.getDouble(7));
-                t.setProduct((Product) list.getObject(8));
-                transactions.add(t);
-            }
+            transactions = TransactionDAO.fromResultSet(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,10 +113,10 @@ public class CustomerDAO {
      * commits the changes to the data base. Expects a list of
      * Transaction items with all fields already initialized
      */
-    public void purchaseItemsForCustomer(List<Transaction> cart) {
+    public static void purchaseItemsForCustomer(List<Transaction> cart) {
         TransactionDAO transactionDAO = new TransactionDAO(conn);
         for (Transaction item : cart) {
-            transactionDAO.addTransaction(item);
+            TransactionDAO.addTransaction(item);
 
             String updateProducts = "UPDATE product SET quantity = quantity - " + item.getQuantityOfItem() +
                    " WHERE store_id = " + item.getStore().getId() + " and product_id = " + item.getProduct().getId()
@@ -122,10 +136,10 @@ public class CustomerDAO {
      * Returns customer items. Expects a map of transaction_id, quantityToReturn
      * pairs
      */
-    public void returnItemsFromCustomer(Map<Integer, Integer> returnReceipt) {
+    public static void returnItemsFromCustomer(Map<Integer, Integer> returnReceipt) {
         TransactionDAO transactionDAO = new TransactionDAO(conn);
         for (Integer key : returnReceipt.keySet()) {
-            Transaction transaction = transactionDAO.getTransactionWithId(key);
+            Transaction transaction = transactionDAO.getTransactionById(key);
             if (transaction == null) {
                 //TODO: Handle this better?
                 return;

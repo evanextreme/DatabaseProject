@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class VendorDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     /**
      * Default constructor. Needs to pass in the database connection
@@ -32,7 +32,7 @@ public class VendorDAO {
     /**
      * Get all vendors listed in the database
      */
-    public List<Vendor> getAllVendors() {
+    public static List<Vendor> getAllVendors() {
         List<Vendor> vendors = new ArrayList<>();
         String getStatement = "SELECT * FROM vendor;";
 
@@ -58,7 +58,7 @@ public class VendorDAO {
      * Updates the vendor entry in the db with the vendor
      * id to have the corresponding name and email fields
      */
-    public void updateVendor(Vendor vend){
+    public static void updateVendor(Vendor vend){
         String update = "UPDATE vendor SET name = " + vend.getId() + ", email = " + vend.getEmail() +
                 " WHERE id = " + vend.getId() + ";";
         try{
@@ -72,7 +72,7 @@ public class VendorDAO {
     /**
      * Inserts a vendor into the db
      */
-    public void addVendor(Vendor vend){
+    public static void addVendor(Vendor vend){
         String add = "INSERT INTO vendor (name, email) VALUES ('" + vend.getName() + "', '" + vend.getEmail() + "');";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -85,13 +85,13 @@ public class VendorDAO {
     /**
      * Views all shipments associated with a vendor (unordered)
      */
-    public List<Shipment> viewVendorShipments(Vendor vend){
+    public static List<Shipment> viewVendorShipments(Vendor vend){
         String s = "SELECT * FROM shipment WHERE vendor_id = " + vend.getId() + ";";
         List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = conn.getConnection().createStatement();
             ResultSet result = state.executeQuery(s);
-            shipments = Shipment.fromResultSet(result);
+            shipments = ShipmentDAO.fromResultSet(result);
         } catch (SQLException e) {
             e.printStackTrace();
         }

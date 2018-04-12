@@ -25,6 +25,8 @@ public class Transaction {
 	// Navigation Property for application
 	private Store store;
 
+	private int discountId;
+
 	private Discount discount;
 
 	private DateTime date;
@@ -79,6 +81,14 @@ public class Transaction {
 
 	public void setStoreId(int storeId) {
 		this.storeId = storeId;
+	}
+
+	public int getDiscountId() {
+		return discountId;
+	}
+
+	public void setDiscountId(int discountId) {
+		this.discountId = discountId;
 	}
 
 	public Discount getDiscount(){ return discount; }

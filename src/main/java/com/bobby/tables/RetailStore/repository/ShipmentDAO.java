@@ -13,13 +13,40 @@ import java.util.List;
 
 public class ShipmentDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public ShipmentDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<Shipment> getAllShipments(){
+    // Serializes a ResultSet to a List<Shipment>
+    public static List<Shipment> fromResultSet(ResultSet resultSet) {
+        List<Shipment> shipments = new ArrayList<>();
+
+        try {
+            while (resultSet.next()) {
+                Shipment shipment = new Shipment();
+                shipment.setId(resultSet.getInt(1));
+                shipment.setPlacedDate(new DateTime(resultSet.getTimestamp(2)));
+
+                if (resultSet.getTimestamp(3) != null) {
+                    shipment.setReceivedDate(new DateTime(resultSet.getTimestamp(3)));
+                }
+
+                shipment.setStoreId(resultSet.getInt(4));
+                shipment.setVendorId(resultSet.getInt(5));
+                shipment.setProductId(resultSet.getInt(6));
+                shipment.setQuantityOfItem(resultSet.getInt(7));
+
+                shipments.add(shipment);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return shipments;
+    }
+
+    public static List<Shipment> getAllShipments(){
         String all = "SELECT * FROM shipment;";
         ArrayList<Shipment> ships = new ArrayList<>();
         try{
@@ -42,7 +69,7 @@ public class ShipmentDAO {
         return ships;
     }
 
-    public void updateShipment(Shipment ship){
+    public static void updateShipment(Shipment ship){
         String update = "Select * FROM shipment WHERE shipment.id = " + ship.getId() + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -52,7 +79,7 @@ public class ShipmentDAO {
         }
     }
 
-    public void addShipment(Shipment ship){
+    public static void addShipment(Shipment ship){
         String add = "INSERT INTO shipment (placed_date, recieved_date, quantity, product, store, vendor) VALUES ('" +
                 ship.getPlacedDate() + "', '" + ship.getReceivedDate() + "', '" + ship.getQuantityOfItem() + "', '" +
                 ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
