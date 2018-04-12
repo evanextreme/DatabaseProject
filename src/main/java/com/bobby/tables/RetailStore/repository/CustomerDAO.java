@@ -102,7 +102,7 @@ public class CustomerDAO {
                 "address = '" + cust.getAddress() + "', " +
                 "gender = '" + cust.getGender() + "', " +
                 "credit_card = '" + cust.getCreditCard() + "', " +
-                "dob = " + cust.getDOB() + ", " +
+                "dob = '" + cust.getDOB() + "', " +
                 "frequent_shopper = " + cust.isFrequentShopper() +
                 " WHERE id = " + cust.getId() + ";";
         try{
@@ -138,7 +138,7 @@ public class CustomerDAO {
         for (Transaction item : cart) {
             TransactionDAO.addTransaction(item);
             String updateProducts = "UPDATE product SET quantity = quantity - " + item.getQuantityOfItem() +
-                   " WHERE store_id = " + item.getStore().getId() + " and product_id = " + item.getProduct().getId()
+                   " WHERE store_id = " + item.getStore().getId() + " and id = " + item.getProduct().getId()
                     + ";";
             try {
                 Statement statement = connection.getConnection().createStatement();

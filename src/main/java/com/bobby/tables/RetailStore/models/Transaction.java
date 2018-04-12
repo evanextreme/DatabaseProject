@@ -17,8 +17,6 @@ public class Transaction {
 
 	private Store store;
 
-	private int discountId;
-
 	private Discount discount;
 
 	private DateTime date;
@@ -53,14 +51,6 @@ public class Transaction {
 
 	public void setStore(Store store){
 		this.store = store;
-	}
-
-	public int getDiscountId() {
-		return discountId;
-	}
-
-	public void setDiscountId(int discountId) {
-		this.discountId = discountId;
 	}
 
 	public Discount getDiscount(){ return discount; }

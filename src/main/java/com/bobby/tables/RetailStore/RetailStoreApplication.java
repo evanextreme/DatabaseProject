@@ -13,7 +13,10 @@ import org.thymeleaf.util.DateUtils;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 //@EnableWebMvc
@@ -338,7 +341,7 @@ public class RetailStoreApplication {
 			System.out.printf("%d: %s\n", c.getId(), c.getEmail());
 		}
 
-		/*System.out.println("Updating customer and getting it");
+		System.out.println("Updating customer and getting it");
 		Customer updatedCustomer = new Customer();
 		updatedCustomer.setId(customers.size());
 		updatedCustomer.setFirstName("Theodora");
@@ -350,19 +353,61 @@ public class RetailStoreApplication {
 		updatedCustomer.setDOB(new Date(System.currentTimeMillis()));
 		updatedCustomer.setCreditCard("123456773920489573");
 		updatedCustomer.setFrequentShopper(true);
-		CustomerDAO.updateCustomer(updatedCustomer);*/
+		CustomerDAO.updateCustomer(updatedCustomer);
 
 		customer = CustomerDAO.getCustomerById(customers.size());
 		System.out.printf("%d: %s\n", customer.getId(), customer.getEmail());
 
 		customer = CustomerDAO.getCustomerById(5);
-		/*List<Transaction> customerTransactions = CustomerDAO.viewCustomerTransactions(customer);
+		List<Transaction> customerTransactions = CustomerDAO.viewCustomerTransactions(customer);
 		for (Transaction transaction : customerTransactions) {
-			System.out.printf("%d:\n Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
+			System.out.printf("%d: Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
 					transaction.getId(), transaction.getTotal(), transaction.getProduct().getId(),
 					transaction.getStore().getId(), transaction.getCustomer().getId(),
 					transaction.getQuantityOfItem());
-		}*/
+		}
+
+		customer = CustomerDAO.getCustomerById(customers.size());
+
+		Transaction transaction1 = new Transaction();
+		transaction1.setQuantityOfItem(1);
+		transaction1.setTotal(9.99);
+		transaction1.setDate(DateTime.now());
+		transaction1.setStore(store);
+		transaction1.setCustomer(customer);
+		transaction1.setProduct(product);
+
+		Transaction transaction2 = new Transaction();
+		transaction2.setQuantityOfItem(2);
+		transaction2.setTotal(19.98);
+		transaction2.setDate(DateTime.now());
+		transaction2.setStore(store);
+		transaction2.setCustomer(customer);
+		transaction2.setProduct(product);
+
+		List<Transaction> cart = new ArrayList<>();
+		cart.add(transaction1);
+		cart.add(transaction2);
+
+		CustomerDAO.purchaseItemsForCustomer(cart);
+		List<Transaction> customerTransaction = CustomerDAO.viewCustomerTransactions(customer);
+		for (Transaction transaction : customerTransaction) {
+			System.out.printf("%d: Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
+					transaction.getId(), transaction.getTotal(), transaction.getProduct().getId(),
+					transaction.getStore().getId(), transaction.getCustomer().getId(),
+					transaction.getQuantityOfItem());
+		}
+
+		Map<Integer, Integer> receipt = new HashMap<>();
+		receipt.put(customerTransaction.get(0).getId(), 1);
+		CustomerDAO.returnItemsFromCustomer(receipt);
+		product = ProductDAO.getProductById(product.getId());
+		System.out.printf("%d: Name = %s, Regular Price/Sale Price: %.2f/%.2f, Size = %s, Department = %s," +
+						"Quantity = %d, BrandId = %d, VendorId = %d, StoreId = %d, Type = %d\n",
+				product.getId(), product.getName(), product.getRegularPrice(), product.getSalePrice(),
+				product.getSize(), product.getDepartment(), product.getQuantityInStore(),
+				product.getBrand().getId(), product.getVendor().getId(), product.getBrand().getId(),
+				product.getProductType().getId());
 
 		// Testing TRANSACTION
 
