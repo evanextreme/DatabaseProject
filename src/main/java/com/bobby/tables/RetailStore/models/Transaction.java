@@ -13,17 +13,29 @@ public class Transaction {
 
 	private int id;
 
+	// Foreign key reference for db
+	private int customerId;
+
+	// Navigation Property for application
 	private Customer customer;
 
+	// Foreign key reference for db
+	private int storeId;
+
+	// Navigation Property for application
 	private Store store;
 
-	private List<Discount> discounts;
+	private Discount discount;
 
 	private DateTime date;
 
 	private int quantityOfItem;
 
+	// Foreign key reference for db
 	private int productId;
+
+	// Navigation Property for application
+	private Product product;
 
 	private double total;
 	
@@ -45,6 +57,14 @@ public class Transaction {
 		this.customer = customer;
 	}
 
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
 	public Store getStore(){
 		return store;
 	}
@@ -53,10 +73,18 @@ public class Transaction {
 		this.store = store;
 	}
 
-	public List<Discount> getDiscounts(){ return discounts; }
+	public int getStoreId() {
+		return storeId;
+	}
 
-	public void setDiscounts(List<Discount> discount){
-		this.discounts = discount;
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+
+	public Discount getDiscount(){ return discount; }
+
+	public void setDiscount(Discount discount){
+		this.discount = discount;
 	}
 
 	public DateTime getDate(){
@@ -81,6 +109,14 @@ public class Transaction {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public int getProductId() {

@@ -2,10 +2,7 @@ package com.bobby.tables.RetailStore.repository;
 
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 
-import com.bobby.tables.RetailStore.models.Customer;
-import com.bobby.tables.RetailStore.models.Discount;
-import com.bobby.tables.RetailStore.models.Store;
-import com.bobby.tables.RetailStore.models.Transaction;
+import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
 
 import java.sql.*;
@@ -57,17 +54,71 @@ public class CustomerDAO {
                 t.setCustomer((Customer) list.getObject(2));
                 t.setStore((Store) list.getObject(3));
                 if(list.getObject(4) != null)
-                    t.setDiscounts((List<Discount>) list.getObject(4));
+                    t.setDiscount((Discount) list.getObject(4));
                 t.setDate((DateTime) list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setTotal(list.getDouble(7));
-                t.setProductId(list.getInt(8));
+                t.setProduct((Product) list.getObject(8));
                 transactions.add(t);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return transactions;
+    }
+
+    /**
+     * Iterates through the customer's transactions and
+     * commits the changes to the data base. Expects a list of
+     * Transaction items with all fields already initialized
+     */
+    public void purchaseItemsForCustomer(List<Transaction> cart) {
+        TransactionDAO transactionDAO = new TransactionDAO(conn);
+        for (Transaction item : cart) {
+            transactionDAO.addTransaction(item);
+
+            String updateProducts = "UPDATE product SET quantity = quantity - " + item.getQuantityOfItem() +
+                   " WHERE store_id = " + item.getStore().getId() + " and product_id = " + item.getProduct().getId()
+                    + ";";
+
+            try {
+                Statement statement = conn.getConnection().createStatement();
+                statement.executeUpdate(updateProducts);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Returns customer items. Expects a map of transaction_id, quantityToReturn
+     * pairs
+     */
+    public void returnItemsFromCustomer(Map<Integer, Integer> returnReceipt) {
+        TransactionDAO transactionDAO = new TransactionDAO(conn);
+        for (Integer key : returnReceipt.keySet()) {
+            Transaction transaction = transactionDAO.getTransactionWithId(key);
+            if (transaction == null) {
+                //TODO: Handle this better?
+                return;
+            }
+
+            String updateTransaction = "UPDATE transaction SET quantity = quantity - " + returnReceipt.get(key) +
+                    " WHERE id = " + key + ";";
+
+            String updateProduct = "UPDATE product SET quantity = quantity + " + returnReceipt.get(key)
+                    + " WHERE id = " + transaction.getProduct().getId()
+                    + " and store_id = " + transaction.getStore().getId();
+
+            try {
+                Statement statement = conn.getConnection().createStatement();
+                statement.executeUpdate(updateTransaction);
+                statement.executeUpdate(updateProduct);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

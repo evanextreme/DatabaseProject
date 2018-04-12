@@ -3,6 +3,7 @@ package com.bobby.tables.RetailStore.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Handles connecting to a database
@@ -30,6 +31,45 @@ public class DatabaseConnection {
         } catch (SQLException | ClassNotFoundException e) {
             //TODO: You should handle this better
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates the actual database from the schema defined in
+     * db\DDL.sql
+     */
+    public void createDbAndTables() {
+        try {
+            String createStatement = "RUNSCRIPT FROM \'db\\DDL.sql\'";
+            Statement statement = connection.createStatement();
+            statement.execute(createStatement);
+        } catch (Exception ex) {
+            System.err.println("Error: Could not run db\\DDL.sql. Exiting...");
+            ex.printStackTrace();
+            closeConnection();
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Initializes the database with the sample data script for each table
+     * as defined in db\DML
+     */
+    public void initializeDbAndTables() {
+        String filenamePrefix = "db\\DML\\";
+        String[] DMLFilenames = new String[] {"brand.sql", "discount.sql", "product_type.sql", "customer.sql", "store.sql",
+                "vendor.sql", "product.sql", "shipment.sql", "transaction.sql",};
+        try {
+            for (int index = 0; index < DMLFilenames.length; index++) {
+                String createStatement = "RUNSCRIPT FROM \'" + filenamePrefix + DMLFilenames[index] + "\'";
+                Statement statement = connection.createStatement();
+                statement.execute(createStatement);
+            }
+        } catch (Exception ex) {
+            System.err.println("Error: Could not run DML script");
+            ex.printStackTrace();
+            closeConnection();
+            System.exit(0);
         }
     }
 

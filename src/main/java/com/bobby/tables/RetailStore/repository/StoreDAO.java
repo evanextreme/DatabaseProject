@@ -51,11 +51,11 @@ public class StoreDAO {
                 t.setCustomer((Customer) list.getObject(2));
                 t.setStore((Store) list.getObject(3));
                 if(list.getObject(4) != null)
-                    t.setDiscounts((List<Discount>) list.getObject(4));
+                    t.setDiscount((Discount) list.getObject(4));
                 t.setDate((DateTime) list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setTotal(list.getDouble(7));
-                t.setProductId(list.getInt(8));
+                t.setProduct((Product) list.getObject(8));
                 transactions.add(t);
             }
         } catch (SQLException e) {
