@@ -73,10 +73,18 @@ public class TransactionDAO {
      * Adds a transaction to the database
      */
     public static void addTransaction(Transaction trans){
-        String add = "INSERT INTO transaction (customer_id, store_id, discount_id, date, quantity, product_id, total) VALUES ('" +
-                trans.getCustomer().getId() + "', '" + trans.getStore().getId() + "', '" + trans.getDiscount().getId() + "', '" +
-                trans.getDate() + "', '" + trans.getQuantityOfItem() + "', '" + trans.getProduct().getId() + "', '" +
-                trans.getTotal() + "');";
+        String add;
+        if (trans.getDiscount() == null) {
+            add = "INSERT INTO transaction (customer_id, store_id, date, quantity, product_id, total) VALUES (" +
+                    trans.getCustomer().getId() + ", " + trans.getStore().getId() + ", '" +
+                    trans.getDate() + "', " + trans.getQuantityOfItem() + ", " + trans.getProduct().getId() + ", " +
+                    trans.getTotal() + ");";
+        } else {
+            add = "INSERT INTO transaction (customer_id, store_id, discount_id, date, quantity, product_id, total) VALUES ('" +
+                    trans.getCustomer().getId() + "', '" + trans.getStore().getId() + "', '" + trans.getDiscount().getId() + "', '" +
+                    trans.getDate() + "', '" + trans.getQuantityOfItem() + "', '" + trans.getProduct().getId() + "', '" +
+                    trans.getTotal() + "');";
+        }
         try{
             Statement state = connection.getConnection().createStatement();
             state.execute(add);
