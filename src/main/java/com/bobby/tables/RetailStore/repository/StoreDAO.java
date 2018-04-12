@@ -12,22 +12,20 @@ import java.util.List;
 
 public class StoreDAO {
 
-    public static DatabaseConnection conn;
+    public static DatabaseConnection connection = new DatabaseConnection();
 
-    public StoreDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
-
-    public static List<Store> fromResultSet(ResultSet rs) {
+    /**
+     *  Returns a list of Stores from a given ResultSet from the db
+     */
+    public static List<Store> fromResultSet(ResultSet resultSet) {
         List<Store> stores = new ArrayList<>();
         try {
-            while (rs.next()) {
-                Store s = new Store();
-                s.setId(rs.getInt(1));
-                s.setPhoneNumber(rs.getNString(2));
-                s.setAddress(rs.getNString(3));
-                s.setEmail(rs.getNString(4));
-                stores.add(s);
+            while (resultSet.next()) {
+                stores.add(new Store(
+                        resultSet.getInt(1),
+                        resultSet.getNString(2),
+                        resultSet.getNString(3),
+                        resultSet.getNString(4)));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -35,25 +33,31 @@ public class StoreDAO {
         return stores;
     }
 
+    /**
+     * Gets a store from the db with the specified id
+     */
     public static Store getStoreById(int id){
-        String store = "SELECT * FROM store WHERE store.id = " + id + ";";
-        Store s = new Store();
+        String getStore = "SELECT * FROM store WHERE store.id = " + id + ";";
+        Store store = new Store();
         try{
-            Statement state = conn.getConnection().createStatement();
-            state.execute(store);
-            ResultSet newStore = state.executeQuery(store);
-            s = fromResultSet(newStore).get(0);
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(getStore);
+            store = fromResultSet(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return s;
+        return store;
     }
 
+    /**
+     * Get all stores from the db
+     * @return
+     */
     public static List<Store> getAllStores(){
         String all = "SELECT * FROM store;";
         List<Store> stores = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(all);
             stores = fromResultSet(list);
         } catch (SQLException e) {
@@ -62,21 +66,30 @@ public class StoreDAO {
         return stores;
     }
 
+    /**
+     * Updates the corresponding store in the db with the info in this store
+     */
     public static void updateStore(Store store){
-        String update = "Select * FROM store WHERE store.id = " + store.getId() + ";";
+        String update = "UPDATE store SET phone_number = " + store.getPhoneNumber() +
+                            ", address = " + store.getAddress() +
+                            ", email = " + store.getEmail() +
+                             " WHERE id = " + store.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Adds the store to the db
+     */
     public static void addStore(Store store){
         String add = "INSERT INTO store (phone_number, address, email) VALUES ('" + store.getPhoneNumber() + "', '" +
                 store.getAddress() + "', '" + store.getEmail() + "');";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,7 +100,7 @@ public class StoreDAO {
         String s = "SELECT * FROM transaction WHERE store.id = " + store.getId() + ";";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
             while(list.next()){
                 Transaction t = new Transaction();
@@ -112,7 +125,7 @@ public class StoreDAO {
         String s = "SELECT * FROM shipment WHERE store.id = " + store.getId() + ";";
         ArrayList<Shipment> shipments = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
             while(list.next()){
                 Shipment ship = new Shipment();
@@ -135,7 +148,7 @@ public class StoreDAO {
         String all = "SELECT * FROM store WHERE id !=" + store.getId() + ";";
         ArrayList<Store> stores = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(all);
             while(list.next()){
                 Store s = new Store();

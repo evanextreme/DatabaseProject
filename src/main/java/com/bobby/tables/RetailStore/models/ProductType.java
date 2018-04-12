@@ -5,6 +5,16 @@ package com.bobby.tables.RetailStore.models;
  */
 public class ProductType {
 
+    /** Default constructor */
+    public ProductType() {}
+
+    /** Alternate constructor with fields */
+    public ProductType(int id, String type, int parentTypeId) {
+        this.id = id;
+        this.type = type;
+        this.parentTypeId = parentTypeId;
+    }
+
     // Private fields
 
     private int id;

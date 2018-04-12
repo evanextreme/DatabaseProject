@@ -1,5 +1,9 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.bobby.tables.RetailStore.database.DatabaseConnection;
+import com.bobby.tables.RetailStore.repository.ProductDAO;
+import com.bobby.tables.RetailStore.repository.TransactionDAO;
+import com.bobby.tables.RetailStore.repository.VendorDAO;
 import org.joda.time.DateTime;
 
 import java.sql.ResultSet;
@@ -13,6 +17,51 @@ import java.util.List;
  */
 public class Shipment {
 
+    /** Default constructor */
+    public Shipment() {}
+
+    /** Alternate constructor with fields */
+    public Shipment(DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+        this.placedDate = placedDate;
+        this.quantityOfItem = quantityOfItem;
+        this.product = product;
+        this.store = store;
+        this.vendor = vendor;
+    }
+
+    /** Alternate constructor with fields */
+    public Shipment(int id, DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+        this.id = id;
+        this.placedDate = placedDate;
+        this.quantityOfItem = quantityOfItem;
+        this.product = product;
+        this.store = store;
+        this.vendor = vendor;
+    }
+
+    /** Alternate constructor with fields */
+    public Shipment(DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor,
+                        Product product, int quantityOfItem) {
+        this.placedDate = placedDate;
+        this.receivedDate = receivedDate;
+        this.quantityOfItem = quantityOfItem;
+        this.product = product;
+        this.store = store;
+        this.vendor = vendor;
+    }
+
+    /** Alternate constructor with fields */
+    public Shipment(int id, DateTime placedDate, DateTime receivedDate,
+                    Store store, Vendor vendor, Product product, int quantityOfItem) {
+        this.id = id;
+        this.placedDate = placedDate;
+        this.receivedDate = receivedDate;
+        this.quantityOfItem = quantityOfItem;
+        this.product = product;
+        this.store = store;
+        this.vendor = vendor;
+    }
+
     // Private fields
 
     private int id;
@@ -25,22 +74,10 @@ public class Shipment {
 
     private int quantityOfItem;
 
-    // Foreign key reference for db
-    private int productId;
-
-    // Navigation property for application
     private Product product;
 
-    // Foreign key reference for db
-    private int storeId;
-
-    // Navigation property for application
     private Store store;
 
-    // Foreign key reference for db
-    private int vendorId;
-
-    // Navigation property for application
     private Vendor vendor;
 
     // Getter and setters for private fields
@@ -99,29 +136,5 @@ public class Shipment {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public int getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
-    }
-
-    public int getVendorId() {
-        return vendorId;
-    }
-
-    public void setVendorId(int vendorId) {
-        this.vendorId = vendorId;
     }
 }

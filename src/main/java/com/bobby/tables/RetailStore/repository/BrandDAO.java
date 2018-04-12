@@ -6,28 +6,21 @@ import com.bobby.tables.RetailStore.models.Brand;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Class containing all necessary functions for interacting with
+ * the Vendor table
+ */
 public class BrandDAO {
 
-    public static DatabaseConnection conn;
+    private static DatabaseConnection connection = new DatabaseConnection();
 
-    public BrandDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
-
-
-
-    public static List<Brand> getAllBrands(){
-        String s = "SELECT * FROM brand;";
+    public static List<Brand> fromResultSet(ResultSet resultSet) {
         ArrayList<Brand> brands = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                Brand b = new Brand();
-                b.setId(list.getInt(1));
-                b.setName(list.getNString(2));
-                b.setDesigner(list.getNString(3));
-                brands.add(b);
+            while(resultSet.next()){
+                brands.add(new Brand(resultSet.getInt(1),
+                                     resultSet.getNString(2),
+                                     resultSet.getString(3)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,76 +28,59 @@ public class BrandDAO {
         return brands;
     }
 
-    public static ArrayList<Integer> getAllids(){
-        String idList = "SELECT id FROM brand;";
-        ArrayList<Integer> ids = new ArrayList<>();
+    /**
+     * Get brand from the db with this id
+     */
+    public static Brand getBrandById(int id){
+        String getStatement = "SELECT * FROM brand WHERE id = " + id + ";";
+        Brand brand = null;
         try{
-            Statement state = conn.getConnection().createStatement(); //make a statement
-            ResultSet list = state.executeQuery(idList); //statement used to execute query
-            //loop through result set, add to list
-            while(list.next()){
-                ids.add(list.getInt(1));
-            }
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(getStatement);
+            brand = fromResultSet(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return ids;
+        return brand;
     }
 
-    public static ArrayList<String> getNames(){
-        String nameList = "SELECT name FROM brand;";
-        ArrayList<String> names = new ArrayList<>();
+    /**
+     * Get all brands from the db
+     */
+    public static List<Brand> getAllBrands(){
+        String s = "SELECT * FROM brand;";
+        List<Brand> brands = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(nameList);
-            while(list.next()){
-                names.add(list.getNString(1));
-            }
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(s);
+            brands = fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return names;
+        return brands;
     }
 
-    public static ArrayList<String> getDesigners(){
-        String designerList = "SELECT designer FROM brand;";
-        ArrayList<String> designers = new ArrayList<>();
-        try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(designerList);
-            while(list.next()){
-                designers.add(list.getNString(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return designers;
-    }
-
-    public static void deleteCol(String col){
-        String delete = "ALTER TABLE brand DROP COLUMN " + col + ";";
-        try{
-            Statement state = conn.getConnection().createStatement();
-            state.execute(delete);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Updates the brand's name and designer
+     */
     public static void updateBrand(Brand bran){
-        String update = "Select * FROM brand WHERE brand.id = " + bran.getId() + ";";
+        String update = "UPDATE brand SET name = " + bran.getName() + ", designer = " + bran.getDesigner() +
+                " WHERE brand.id = " + bran.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Inserts the brand into the Brand Table
+     */
     public static void addBrand(Brand bran){
         String add = "INSERT INTO brand (name, designer) VALUES ('" + bran.getName() + "', '" + bran.getDesigner() + "');";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();

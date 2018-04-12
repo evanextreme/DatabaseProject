@@ -4,6 +4,24 @@ package com.bobby.tables.RetailStore.models;
  * Model for the store table
  */
 public class Store {
+
+	/** Default constructor */
+	public Store() {}
+
+	/** Alternate constructor with fields */
+	public Store(int id, String phoneNumber, String address, String email) {
+		this.id = id;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.email = email;
+	}
+
+	/** Alternate constructor with fields */
+	public Store(String phoneNumber, String address, String email) {
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.email = email;
+	}
 	
 	// Private fields
 

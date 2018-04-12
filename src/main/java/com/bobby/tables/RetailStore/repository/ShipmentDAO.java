@@ -8,35 +8,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+/**
+ * Class containing all necessary functions for interacting with
+ * the Shipment table
+ */
 public class ShipmentDAO {
 
-    public static DatabaseConnection conn;
-
-    public ShipmentDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
+    private static DatabaseConnection connection = new DatabaseConnection();
 
     // Serializes a ResultSet to a List<Shipment>
     public static List<Shipment> fromResultSet(ResultSet resultSet) {
-        List<Shipment> shipments = new ArrayList<>();
 
+        List<Shipment> shipments = new ArrayList<>();
         try {
             while (resultSet.next()) {
-                Shipment shipment = new Shipment();
-                shipment.setId(resultSet.getInt(1));
-                shipment.setPlacedDate(new DateTime(resultSet.getTimestamp(2)));
+                Shipment shipment = new Shipment(
+                        resultSet.getInt(1),
+                        new DateTime(resultSet.getTimestamp(2)),
+                        StoreDAO.getStoreById(resultSet.getInt(4)),
+                        VendorDAO.getVendorById(resultSet.getInt(5)),
+                        ProductDAO.getProductById(resultSet.getInt(6)),
+                        resultSet.getInt(7));
 
                 if (resultSet.getTimestamp(3) != null) {
                     shipment.setReceivedDate(new DateTime(resultSet.getTimestamp(3)));
                 }
-
-                shipment.setStoreId(resultSet.getInt(4));
-                shipment.setVendorId(resultSet.getInt(5));
-                shipment.setProductId(resultSet.getInt(6));
-                shipment.setQuantityOfItem(resultSet.getInt(7));
 
                 shipments.add(shipment);
             }
@@ -46,45 +44,85 @@ public class ShipmentDAO {
         return shipments;
     }
 
-    public static List<Shipment> getAllShipments(){
-        String all = "SELECT * FROM shipment;";
-        ArrayList<Shipment> ships = new ArrayList<>();
+    /**
+     * Gets the Shipment record from the db with this id
+     */
+    public static Shipment getShipmentById(int id) {
+        Shipment shipment = null;
+        String getStatement = "SELECT * FROM shipment WHERE id = " + id +";";
         try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Shipment s = new Shipment();
-                s.setId(list.getInt(1));
-                s.setPlacedDate((DateTime)list.getObject(2));
-                s.setReceivedDate((DateTime)list.getObject(3));
-                s.setQuantityOfItem(list.getInt(4));
-                s.setProduct((Product)list.getObject(5));
-                s.setStore((Store)list.getObject(6));
-                s.setVendor((Vendor)list.getObject(7));
-                ships.add(s);
-            }
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(getStatement);
+            shipment = fromResultSet(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return ships;
+        return shipment;
     }
 
-    public static void updateShipment(Shipment ship){
-        String update = "Select * FROM shipment WHERE shipment.id = " + ship.getId() + ";";
+    /**
+     * Retrieve all Shipment records from the db
+     * @return
+     */
+    public static List<Shipment> getAllShipments(){
+        String all = "SELECT * FROM shipment;";
+        ArrayList<Shipment> shipments = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(all);
+            fromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shipments;
+    }
+
+    /**
+     * Updates the corresponding shipment record in the db
+     */
+    public static void updateShipment(Shipment ship){
+        String update = null;
+        if (ship.getReceivedDate() != null) {
+            update = "UPDATE shipment SET placed_date = '" + ship.getPlacedDate().toString() +
+                    "', received_date = '" + ship.getReceivedDate().toString() +
+                    "', store_id = " + ship.getStore().getId() +
+                    ", vendor_id = " + ship.getVendor().getId() +
+                    ", product_id = " + ship.getProduct().getId() +
+                    ", quantity = " + ship.getQuantityOfItem() +
+                    " WHERE shipment.id = " + ship.getId() + ";";
+        } else {
+            update = "UPDATE shipment SET placed_date = " + ship.getPlacedDate() +
+                    ", received_date = null" +
+                    ", store_id = " + ship.getStore().getId() +
+                    ", vendor_id = " + ship.getVendor().getId() +
+                    ", product_id = " + ship.getProduct().getId() +
+                    ", quantity = " + ship.getQuantityOfItem() +
+                    " WHERE shipment.id = " + ship.getId() + ";";
+        }
+        try{
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Adds the shipment to the db
+     */
     public static void addShipment(Shipment ship){
-        String add = "INSERT INTO shipment (placed_date, recieved_date, quantity, product, store, vendor) VALUES ('" +
-                ship.getPlacedDate() + "', '" + ship.getReceivedDate() + "', '" + ship.getQuantityOfItem() + "', '" +
-                ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
+        String add = null;
+        if (ship.getReceivedDate() != null) {
+            add = "INSERT INTO shipment (placed_date, received_date, quantity, product, store, vendor) VALUES ('" +
+                    ship.getPlacedDate() + "', null, '" + ship.getQuantityOfItem() + "', '" +
+                    ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
+        } else {
+            add = "INSERT INTO shipment (placed_date, received_date, quantity, product, store, vendor) VALUES ('" +
+                    ship.getPlacedDate() + "', '" + ship.getReceivedDate() + "', '" + ship.getQuantityOfItem() + "', '" +
+                    ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
+        }
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
