@@ -2,8 +2,6 @@ package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
 
-import java.util.List;
-
 /**
  * Model for the Transaction table
  */

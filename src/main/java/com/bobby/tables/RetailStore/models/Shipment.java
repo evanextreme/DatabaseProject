@@ -1,16 +1,6 @@
 package com.bobby.tables.RetailStore.models;
 
-import com.bobby.tables.RetailStore.database.DatabaseConnection;
-import com.bobby.tables.RetailStore.repository.ProductDAO;
-import com.bobby.tables.RetailStore.repository.TransactionDAO;
-import com.bobby.tables.RetailStore.repository.VendorDAO;
 import org.joda.time.DateTime;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Model class for Shipment table
