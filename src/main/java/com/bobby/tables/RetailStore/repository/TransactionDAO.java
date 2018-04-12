@@ -20,14 +20,14 @@ public class TransactionDAO {
                 Transaction t = new Transaction();
                 t.setId(rs.getInt(1));
                 t.setCustomer(CustomerDAO.getCustomerById(rs.getInt(2)));
-                t.setStore(StoreDAO.getStoreById(rs.getInt(3)));
+                t.setDate(new DateTime(rs.getTimestamp(3)));
                 if (rs.getInt(4) != 0) {
                     t.setDiscount(DiscountDAO.getDiscountById((rs.getInt(4))));
                 }
-                t.setDate(new DateTime(rs.getTimestamp(5)));
+                t.setStore(StoreDAO.getStoreById(rs.getInt(5)));
                 t.setQuantityOfItem(rs.getInt(6));
                 t.setProduct(ProductDAO.getProductById(rs.getInt(7)));
-                t.setTotal(rs.getInt(8));
+                t.setTotal(rs.getDouble(8));
                 trans.add(t);
             }
         } catch (SQLException ex) {

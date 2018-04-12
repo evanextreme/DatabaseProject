@@ -26,10 +26,10 @@ public class CustomerDAO {
                 c.setFirstName(rs.getString(2));
                 c.setLastName(rs.getString(3));
                 c.setEmail(rs.getString(4));
-                c.setPhoneNumber(rs.getString(5));
-                c.setAddress(rs.getString(6));
+                c.setAddress(rs.getString(5));
+                c.setDOB(rs.getDate(6));
                 c.setGender(rs.getString(7));
-                c.setDOB(rs.getDate(8));
+                c.setPhoneNumber(rs.getString(8));
                 c.setCreditCard(rs.getString(9));
                 c.setFrequentShopper(rs.getBoolean(10));
                 custs.add(c);
@@ -103,7 +103,7 @@ public class CustomerDAO {
                 "gender = '" + cust.getGender() + "', " +
                 "credit_card = '" + cust.getCreditCard() + "', " +
                 "dob = " + cust.getDOB() + ", " +
-                "frequent_shopper = " + cust.isFrequentShopper() + ", " +
+                "frequent_shopper = " + cust.isFrequentShopper() +
                 " WHERE id = " + cust.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
@@ -116,7 +116,7 @@ public class CustomerDAO {
     /**
      * Gets all transactions for a customer ordered by the timestamp
      */
-    public static List<Transaction> viewCustomerTrans(Customer cust){
+    public static List<Transaction> viewCustomerTransactions(Customer cust){
         String s = "SELECT * FROM transaction WHERE id = " + cust.getId() + " ORDER BY date;";
         List<Transaction> transactions = new ArrayList<>();
         try{
