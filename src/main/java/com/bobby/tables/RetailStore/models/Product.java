@@ -24,6 +24,22 @@ public class Product {
         this.productType = productType;
     }
 
+    /** Alternate constructor with fields */
+    public Product(String name, Brand brand, Vendor vendor, ProductType productType, Store store,
+                   double regularPrice, double salePrice, String size, int quantityInStore, String department) {
+        this.id = id;
+        this.name = name;
+        this.regularPrice = regularPrice;
+        this.salePrice = salePrice;
+        this.size = size;
+        this.quantityInStore = quantityInStore;
+        this.department = department;
+        this.vendor = vendor;
+        this.store = store;
+        this.brand = brand;
+        this.productType = productType;
+    }
+
     // Private fields
 
     private int id;

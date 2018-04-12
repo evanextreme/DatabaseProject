@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.Product;
 import com.bobby.tables.RetailStore.models.Shipment;
@@ -20,14 +21,14 @@ import java.util.List;
  */
 public class VendorDAO {
 
-    private static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     /**
      * Get Vendor with specified Id
      */
     public static Vendor getVendorById(int id) {
         Vendor vendor = null;
-        String getStatement = "SELECT * FROM vendor WHILE id = " + id + ";";
+        String getStatement = "SELECT * FROM vendor WHERE id = " + id + ";";
 
         try {
             Statement statement = connection.getConnection().createStatement();
@@ -43,7 +44,7 @@ public class VendorDAO {
     /**
      * Get all vendors listed in the database
      */
-    public List<Vendor> getAllVendors() {
+    public static List<Vendor> getAllVendors() {
         List<Vendor> vendors = new ArrayList<>();
         String getStatement = "SELECT * FROM vendor;";
 
@@ -63,8 +64,8 @@ public class VendorDAO {
      * id to have the corresponding name and email fields
      */
     public static void updateVendor(Vendor vend){
-        String update = "UPDATE vendor SET name = " + vend.getId() + ", email = " + vend.getEmail() +
-                " WHERE id = " + vend.getId() + ";";
+        String update = "UPDATE vendor SET name = '" + vend.getName() + "', email = '" + vend.getEmail() +
+                "' WHERE id = " + vend.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
@@ -95,6 +96,23 @@ public class VendorDAO {
         try{
             Statement state = connection.getConnection().createStatement();
             ResultSet result = state.executeQuery(s);
+            shipments = ShipmentDAO.fromResultSet(result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shipments;
+    }
+
+    /**
+     * Get all pending shipments for a vendor, ordered by the date that they were placed
+     */
+    public static List<Shipment> viewPendingVendorShipments(Vendor vendor) {
+        String getShipments = "SELECT * FROM shipment WHERE vendor_id = " + vendor.getId() + " and" +
+                " received_date is null ORDER BY placed_date";
+        List<Shipment> shipments = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet result = state.executeQuery(getShipments);
             shipments = ShipmentDAO.fromResultSet(result);
         } catch (SQLException e) {
             e.printStackTrace();

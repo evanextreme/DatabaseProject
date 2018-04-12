@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.Brand;
 
@@ -12,7 +13,7 @@ import java.util.*;
  */
 public class BrandDAO {
 
-    private static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     public static List<Brand> fromResultSet(ResultSet resultSet) {
         ArrayList<Brand> brands = new ArrayList<>();
@@ -64,8 +65,8 @@ public class BrandDAO {
      * Updates the brand's name and designer
      */
     public static void updateBrand(Brand bran){
-        String update = "UPDATE brand SET name = " + bran.getName() + ", designer = " + bran.getDesigner() +
-                " WHERE brand.id = " + bran.getId() + ";";
+        String update = "UPDATE brand SET name = '" + bran.getName() + "', designer = '" + bran.getDesigner() +
+                "' WHERE brand.id = " + bran.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);

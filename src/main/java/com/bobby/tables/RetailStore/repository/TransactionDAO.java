@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class TransactionDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     // Serializes a ResultSet to a List<Transaction>
     public static List<Transaction> fromResultSet (ResultSet rs) {

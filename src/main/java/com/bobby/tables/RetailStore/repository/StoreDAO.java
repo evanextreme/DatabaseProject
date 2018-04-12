@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.repository;
 
+import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class StoreDAO {
 
-    public static DatabaseConnection connection = new DatabaseConnection();
+    private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
     /**
      *  Returns a list of Stores from a given ResultSet from the db
@@ -70,10 +71,10 @@ public class StoreDAO {
      * Updates the corresponding store in the db with the info in this store
      */
     public static void updateStore(Store store){
-        String update = "UPDATE store SET phone_number = " + store.getPhoneNumber() +
-                            ", address = " + store.getAddress() +
-                            ", email = " + store.getEmail() +
-                             " WHERE id = " + store.getId() + ";";
+        String update = "UPDATE store SET phone_number = '" + store.getPhoneNumber() +
+                            "', address = '" + store.getAddress() +
+                            "', email = '" + store.getEmail() +
+                             "' WHERE id = " + store.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
@@ -99,8 +100,8 @@ public class StoreDAO {
     /**
      * View all the transactions for a store
      */
-    public static List<Transaction> viewStoreTrans(Store store){
-        String s = "SELECT * FROM transaction WHERE store.id = " + store.getId() + ";";
+    public static List<Transaction> viewStoreTransactions(Store store){
+        String s = "SELECT * FROM transaction WHERE id = " + store.getId() + ";";
         List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
@@ -116,7 +117,7 @@ public class StoreDAO {
      * View all shipments for a store
      */
     public static List<Shipment> viewStoreShipments(Store store){
-        String s = "SELECT * FROM shipment WHERE store.id = " + store.getId() + ";";
+        String s = "SELECT * FROM shipment WHERE id = " + store.getId() + ";";
         List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
