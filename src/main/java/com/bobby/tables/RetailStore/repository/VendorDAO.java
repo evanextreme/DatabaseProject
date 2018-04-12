@@ -4,6 +4,7 @@ import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.Product;
 import com.bobby.tables.RetailStore.models.Shipment;
 import com.bobby.tables.RetailStore.models.Store;
+import com.bobby.tables.RetailStore.models.ProductType;
 import com.bobby.tables.RetailStore.models.Vendor;
 import org.joda.time.DateTime;
 
@@ -96,8 +97,4 @@ public class VendorDAO {
         }
         return shipments;
     }
-
-
-
-
 }

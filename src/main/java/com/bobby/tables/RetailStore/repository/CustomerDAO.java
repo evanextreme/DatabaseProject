@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class CustomerDAO {
 
@@ -14,6 +15,32 @@ public class CustomerDAO {
 
     public CustomerDAO(DatabaseConnection connection){
         this.conn = connection;
+    }
+
+    public List<Customer> getAllCustomers(){
+        String all = "SELECT * FROM customer;";
+        ArrayList<Customer> custs = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Customer c = new Customer();
+                c.setId(list.getInt(1));
+                c.setFirstName(list.getNString(2));
+                c.setLastName(list.getNString(3));
+                c.setEmail(list.getNString(4));
+                c.setPhoneNumber(list.getNString(5));
+                c.setAddress(list.getNString(6));
+                c.setGender(list.getNString(7));
+                c.setDOB((Date)list.getObject(8));
+                c.setCreditCard(list.getNString(9));
+                c.setFrequentShopper(list.getBoolean(10));
+                custs.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custs;
     }
 
     public String addCustomer(Customer cust){
