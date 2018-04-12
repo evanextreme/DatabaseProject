@@ -4,6 +4,17 @@ package com.bobby.tables.RetailStore.models;
  * Model for the Discount Table
  */
 public class Discount {
+
+	/**
+	 * Default public constructor
+	 */
+	public Discount() {}
+
+	/** Alternate constructor with fields */
+	public Discount(int id, int percentage) {
+		this.id = id;
+		this.percentage = percentage;
+	}
 	
 	// Private fields
 

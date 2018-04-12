@@ -11,56 +11,58 @@ import java.util.Date;
 
 public class CustomerDAO {
 
-    public static DatabaseConnection conn;
+    public static DatabaseConnection connection = new DatabaseConnection();
 
-    public CustomerDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
-
-    public static List<Customer> fromResultSet(ResultSet rs) throws SQLException {
+    /**
+     * Extrapolates a list of Customers from the result set
+     */
+    public static List<Customer> fromResultSet(ResultSet rs) {
         List<Customer> custs = new ArrayList<>();
         try {
             while (rs.next()) {
                 Customer c = new Customer();
                 c.setId(rs.getInt(1));
-                c.setFirstName(rs.getNString(2));
-                c.setLastName(rs.getNString(3));
-                c.setEmail(rs.getNString(4));
-                c.setPhoneNumber(rs.getNString(5));
-                c.setAddress(rs.getNString(6));
-                c.setGender(rs.getNString(7));
+                c.setFirstName(rs.getString(2));
+                c.setLastName(rs.getString(3));
+                c.setEmail(rs.getString(4));
+                c.setPhoneNumber(rs.getString(5));
+                c.setAddress(rs.getString(6));
+                c.setGender(rs.getString(7));
                 c.setDOB(rs.getDate(8));
-                c.setCreditCard(rs.getNString(9));
+                c.setCreditCard(rs.getString(9));
                 c.setFrequentShopper(rs.getBoolean(10));
                 custs.add(c);
             }
-        }
-        catch (SQLException ex) {
-        ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return custs;
     }
 
-    public static Customer getCustById(int id){
-        String cust = "SELECT * FROM customer WHERE customer.id = " + id + ";";
-        Customer c = new Customer();
+    /**
+     *  Retrieves the customer with the specified id from the database
+     */
+    public static Customer getCustomerById(int id){
+        String cust = "SELECT * FROM customer WHERE id = " + id + ";";
+        Customer customer = new Customer();
         try{
-            Statement state = conn.getConnection().createStatement();
-            state.execute(cust);
+            Statement state = connection.getConnection().createStatement();
             ResultSet newCust = state.executeQuery(cust);
-            c = fromResultSet(newCust).get(0);
-
+            customer = fromResultSet(newCust).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return c;
+        return customer;
     }
 
+    /**
+     * Retrieves all customers from the db
+     */
     public static List<Customer> getAllCustomers(){
         String all = "SELECT * FROM customer;";
         List<Customer> custs = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(all);
             custs = fromResultSet(list);
         } catch (SQLException e) {
@@ -69,6 +71,9 @@ public class CustomerDAO {
         return custs;
     }
 
+    /**
+     * Adds the customer to the db
+     */
     public static String addCustomer(Customer cust){
         String add = "INSERT INTO customer (first_name, last_name, email, phone_number, address, gender, dob, " +
                 "credit_card, frequent_shopper) VALUES ('" + cust.getFirstName() + "', '" + cust.getLastName() +
@@ -76,7 +81,7 @@ public class CustomerDAO {
                 cust.getGender() + "', '" + cust.getDOB() + "', '" + cust.getCreditCard() + "', '" +
                 cust.isFrequentShopper() + "');";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,22 +89,37 @@ public class CustomerDAO {
         return "it worked";
     }
 
+    /**
+     * Updates customer info in the db
+     */
     public static void updateCustomer(Customer cust){
-        String update = "Select * FROM customer WHERE customer.id = " + cust.getId() + ";";
+        String update = "UPDATE customer SET " +
+                "first_name = '" + cust.getFirstName() + "', " +
+                "last_name = '" + cust.getLastName() + "', " +
+                "email = '" + cust.getEmail() + "', " +
+                "phone_number = '" + cust.getPhoneNumber() + "', " +
+                "address = '" + cust.getAddress() + "', " +
+                "gender = '" + cust.getGender() + "', " +
+                "credit_card = '" + cust.getCreditCard() + "', " +
+                "dob = " + cust.getDOB() + ", " +
+                "frequent_shopper = " + cust.isFrequentShopper() + ", " +
+                " WHERE id = " + cust.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    //receipt
+    /**
+     * Gets all transactions for a customer ordered by the timestamp
+     */
     public static List<Transaction> viewCustomerTrans(Customer cust){
-        String s = "SELECT * FROM transaction WHERE customer.id = " + cust.getId() + ";";
+        String s = "SELECT * FROM transaction WHERE id = " + cust.getId() + " ORDER BY date;";
         List<Transaction> transactions = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
             transactions = TransactionDAO.fromResultSet(list);
         } catch (SQLException e) {
@@ -114,16 +134,13 @@ public class CustomerDAO {
      * Transaction items with all fields already initialized
      */
     public static void purchaseItemsForCustomer(List<Transaction> cart) {
-        TransactionDAO transactionDAO = new TransactionDAO(conn);
         for (Transaction item : cart) {
             TransactionDAO.addTransaction(item);
-
             String updateProducts = "UPDATE product SET quantity = quantity - " + item.getQuantityOfItem() +
                    " WHERE store_id = " + item.getStore().getId() + " and product_id = " + item.getProduct().getId()
                     + ";";
-
             try {
-                Statement statement = conn.getConnection().createStatement();
+                Statement statement = connection.getConnection().createStatement();
                 statement.executeUpdate(updateProducts);
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -137,9 +154,8 @@ public class CustomerDAO {
      * pairs
      */
     public static void returnItemsFromCustomer(Map<Integer, Integer> returnReceipt) {
-        TransactionDAO transactionDAO = new TransactionDAO(conn);
         for (Integer key : returnReceipt.keySet()) {
-            Transaction transaction = transactionDAO.getTransactionById(key);
+            Transaction transaction = TransactionDAO.getTransactionById(key);
             if (transaction == null) {
                 //TODO: Handle this better?
                 return;
@@ -153,7 +169,7 @@ public class CustomerDAO {
                     + " and store_id = " + transaction.getStore().getId();
 
             try {
-                Statement statement = conn.getConnection().createStatement();
+                Statement statement = connection.getConnection().createStatement();
                 statement.executeUpdate(updateTransaction);
                 statement.executeUpdate(updateProduct);
             } catch (SQLException ex) {
