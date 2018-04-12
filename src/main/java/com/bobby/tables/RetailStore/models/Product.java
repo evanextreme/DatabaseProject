@@ -22,10 +22,13 @@ public class Product {
 
     private String department;
 
+    // Foreign key reference for db
+    private int vendorId;
+
+    // Navigation property for application
     private Vendor vendor;
 
     // Getter and setters for private fields
-
 
     public int getId() {
         return id;
@@ -83,6 +86,14 @@ public class Product {
         this.salePrice = salePrice;
     }
 
+    public int getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(int vendorId) {
+        this.vendorId = vendorId;
+    }
+
     public Vendor getVendor() {
         return vendor;
     }
@@ -90,5 +101,4 @@ public class Product {
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
-
 }
