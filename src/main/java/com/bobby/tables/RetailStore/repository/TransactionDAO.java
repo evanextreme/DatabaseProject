@@ -27,7 +27,7 @@ public class TransactionDAO {
                 t.setId(list.getInt(1));
                 t.setCustomer((Customer)list.getObject(2));
                 t.setStore((Store)list.getObject(3));
-                t.setDiscounts((Discount)list.getObject(4));
+                t.setDiscount((Discount)list.getObject(4));
                 t.setDate((DateTime)list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setProductId(list.getInt(7));
