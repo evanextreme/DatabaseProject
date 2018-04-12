@@ -8,13 +8,15 @@ import java.util.*;
 
 public class BrandDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public BrandDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<Brand> getAllBrands(){
+
+
+    public static List<Brand> getAllBrands(){
         String s = "SELECT * FROM brand;";
         ArrayList<Brand> brands = new ArrayList<>();
         try{
@@ -33,7 +35,7 @@ public class BrandDAO {
         return brands;
     }
 
-    public ArrayList<Integer> getAllids(){
+    public static ArrayList<Integer> getAllids(){
         String idList = "SELECT id FROM brand;";
         ArrayList<Integer> ids = new ArrayList<>();
         try{
@@ -49,7 +51,7 @@ public class BrandDAO {
         return ids;
     }
 
-    public ArrayList<String> getNames(){
+    public static ArrayList<String> getNames(){
         String nameList = "SELECT name FROM brand;";
         ArrayList<String> names = new ArrayList<>();
         try{
@@ -64,7 +66,7 @@ public class BrandDAO {
         return names;
     }
 
-    public ArrayList<String> getDesigners(){
+    public static ArrayList<String> getDesigners(){
         String designerList = "SELECT designer FROM brand;";
         ArrayList<String> designers = new ArrayList<>();
         try{
@@ -79,7 +81,7 @@ public class BrandDAO {
         return designers;
     }
 
-    public void deleteCol(String col){
+    public static void deleteCol(String col){
         String delete = "ALTER TABLE brand DROP COLUMN " + col + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -89,7 +91,7 @@ public class BrandDAO {
         }
     }
 
-    public void updateBrand(Brand bran){
+    public static void updateBrand(Brand bran){
         String update = "Select * FROM brand WHERE brand.id = " + bran.getId() + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -99,7 +101,7 @@ public class BrandDAO {
         }
     }
 
-    public void addBrand(Brand bran){
+    public static void addBrand(Brand bran){
         String add = "INSERT INTO brand (name, designer) VALUES ('" + bran.getName() + "', '" + bran.getDesigner() + "');";
         try{
             Statement state = conn.getConnection().createStatement();

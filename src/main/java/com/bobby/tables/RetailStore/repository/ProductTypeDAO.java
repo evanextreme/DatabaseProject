@@ -12,13 +12,13 @@ import java.util.List;
 
 public class ProductTypeDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public ProductTypeDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<ProductType> getAllProductType(){
+    public static List<ProductType> getAllProductType(){
         String all = "SELECT * FROM product_type;";
         ArrayList<ProductType> types = new ArrayList<>();
         try{
@@ -36,7 +36,7 @@ public class ProductTypeDAO {
         return types;
     }
 
-    public void updateProductType(ProductType prodType){
+    public static void updateProductType(ProductType prodType){
         String update = "Select * FROM product_type WHERE productType.id = " + prodType.getId() + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -46,7 +46,7 @@ public class ProductTypeDAO {
         }
     }
 
-    public void addProductType(ProductType prodType){
+    public static void addProductType(ProductType prodType){
         String add = "INSERT INTO product_type (type) VALUES ('" + prodType.getType() + "');";
         try{
             Statement state = conn.getConnection().createStatement();

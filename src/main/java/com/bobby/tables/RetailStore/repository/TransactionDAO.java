@@ -10,37 +10,50 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public TransactionDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<Transaction> getAllTransactions(){
+    // Serializes a ResultSet to a List<Transaction>
+    public static List<Transaction> fromResultSet (ResultSet rs) {
+        List<Transaction> trans = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                Transaction t = new Transaction();
+                t.setId(rs.getInt(1));
+                t.setCustomer(CustomerDAO.getCustById(rs.getInt(2)));
+                t.setStore(StoreDAO.getStoreById(rs.getInt(3)));
+                if (rs.getInt(4) != 0) {
+                    t.setDiscount(DiscountDAO.getDiscountById((rs.getInt(4))));
+                }
+                t.setDate(new DateTime(rs.getTimestamp(5)));
+                t.setQuantityOfItem(rs.getInt(6));
+                t.setProduct(ProductDAO.getProductById(rs.getInt(7)));
+                t.setTotal(rs.getInt(8));
+                trans.add(t);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return trans;
+    }
+
+    public static List<Transaction> getAllTransactions(){
         String all = "SELECT * FROM transaction;";
-        ArrayList<Transaction> trans = new ArrayList<>();
+        List<Transaction> trans = new ArrayList<>();
         try{
             Statement state = conn.getConnection().createStatement();
             ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Transaction t = new Transaction();
-                t.setId(list.getInt(1));
-                t.setCustomer((Customer)list.getObject(2));
-                t.setStore((Store)list.getObject(3));
-                t.setDiscount((Discount)list.getObject(4));
-                t.setDate((DateTime)list.getObject(5));
-                t.setQuantityOfItem(list.getInt(6));
-                t.setProductId(list.getInt(7));
-                t.setTotal(list.getInt(8));
-                trans.add(t);
-            }
+            trans = fromResultSet(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return trans;
     }
 
-    public void addTransaction(Transaction trans){
+    public static void addTransaction(Transaction trans){
         String add = "INSERT INTO transaction (customer, store, discount, date, quantity, product, total) VALUES ('" +
                 trans.getCustomer() + "', '" + trans.getStore() + "', '" + trans.getDiscount().getId() + "', '" +
                 trans.getDate() + "', '" + trans.getQuantityOfItem() + "', '" + trans.getProduct().getId() + "', '" +
@@ -53,29 +66,17 @@ public class TransactionDAO {
         }
     }
 
-    public Transaction getTransactionWithId(int id){
+    public static Transaction getTransactionById(int id){
         String getTransaction = "SELECT * FROM transaction WHERE transaction.id = " + id + ";";
         Transaction transaction = new Transaction();
         try{
             Statement statement = conn.getConnection().createStatement();
             statement.execute(getTransaction);
             ResultSet list = statement.executeQuery(getTransaction);
-
-            while(list.next()){
-                transaction.setId(list.getInt(1));
-                transaction.setCustomer((Customer) list.getObject(2));
-                transaction.setStore((Store) list.getObject(3));
-                if(list.getObject(4) != null)
-                    transaction.setDiscount((Discount) list.getObject(4));
-                transaction.setDate((DateTime) list.getObject(5));
-                transaction.setQuantityOfItem(list.getInt(6));
-                transaction.setTotal(list.getDouble(7));
-                transaction.setProduct((Product) list.getObject(8));
-            }
+            transaction = fromResultSet(list).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return transaction;
     }
 

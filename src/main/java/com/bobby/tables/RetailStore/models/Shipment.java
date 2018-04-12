@@ -43,33 +43,6 @@ public class Shipment {
     // Navigation property for application
     private Vendor vendor;
 
-    // Serializes a ResultSet to a List<Shipment>
-    public static List<Shipment> fromResultSet(ResultSet resultSet) {
-        List<Shipment> shipments = new ArrayList<>();
-
-        try {
-            while (resultSet.next()) {
-                Shipment shipment = new Shipment();
-                shipment.setId(resultSet.getInt(1));
-                shipment.setPlacedDate(new DateTime(resultSet.getTimestamp(2)));
-
-                if (resultSet.getTimestamp(3) != null) {
-                    shipment.setReceivedDate(new DateTime(resultSet.getTimestamp(3)));
-                }
-
-                shipment.setStoreId(resultSet.getInt(4));
-                shipment.setVendorId(resultSet.getInt(5));
-                shipment.setProductId(resultSet.getInt(6));
-                shipment.setQuantityOfItem(resultSet.getInt(7));
-
-                shipments.add(shipment);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return shipments;
-    }
-
     // Getter and setters for private fields
 
     public int getId() {

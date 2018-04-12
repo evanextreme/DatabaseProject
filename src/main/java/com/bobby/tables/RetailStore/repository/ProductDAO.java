@@ -12,13 +12,13 @@ import java.util.List;
 
 public class ProductDAO {
 
-    DatabaseConnection conn;
+    public static DatabaseConnection conn;
 
     public ProductDAO(DatabaseConnection connection){
         this.conn = connection;
     }
 
-    public List<Product> getAllProducts(){
+    public static List<Product> getAllProducts(){
         String all = "SELECT * FROM product;";
         ArrayList<Product> prods = new ArrayList<>();
         try{
@@ -42,7 +42,7 @@ public class ProductDAO {
         return prods;
     }
 
-    public void addProduct(Product prod){
+    public static void addProduct(Product prod){
         String add = "INSERT INTO product (name, regular_price, sales_price, size, quantity, department, vendor) " +
                 "VALUES ('" + prod.getName() + "', '" + prod.getRegularPrice() + "', '" + prod.getSalePrice() + "', '"
                 + prod.getSize() + "', '" + prod.getQuantityInStore() + "', '" + prod.getDepartment() + "', '" +
@@ -55,7 +55,7 @@ public class ProductDAO {
         }
     }
 
-    public void updateProduct(Product prod){
+    public static void updateProduct(Product prod){
         String update = "Select * FROM product WHERE product.id = " + prod.getId() + ";";
         try{
             Statement state = conn.getConnection().createStatement();
@@ -65,7 +65,7 @@ public class ProductDAO {
         }
     }
 
-    public ArrayList<Transaction> viewProductTrans(Product prod){
+    public static ArrayList<Transaction> viewProductTrans(Product prod){
         String s = "SELECT * FROM transaction WHERE product.id = " + prod.getId() + ";";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try{
@@ -91,7 +91,7 @@ public class ProductDAO {
 
     }
 
-    public ArrayList<String> viewProductShipments(Product prod){
+    public static ArrayList<String> viewProductShipments(Product prod){
         String s = "SELECT * FROM shipment WHERE product.id = " + prod.getId() + ";";
         ArrayList<String> shipments = new ArrayList<>();
         try{
