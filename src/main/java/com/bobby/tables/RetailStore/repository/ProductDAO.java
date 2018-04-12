@@ -18,6 +18,30 @@ public class ProductDAO {
         this.conn = connection;
     }
 
+    public List<Product> getAllProducts(){
+        String all = "SELECT * FROM product;";
+        ArrayList<Product> prods = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Product p = new Product();
+                p.setId(list.getInt(1));
+                p.setName(list.getNString(2));
+                p.setRegularPrice(list.getDouble(3));
+                p.setSalePrice(list.getDouble(4));
+                p.setSize(list.getNString(5));
+                p.setQuantityInStore(list.getInt(6));
+                p.setDepartment(list.getNString(7));
+                p.setVendor((Vendor) list.getObject(8));
+                prods.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prods;
+    }
+
     public void addProduct(Product prod){
         String add = "INSERT INTO product (name, regular_price, sales_price, size, quantity, department, vendor) " +
                 "VALUES ('" + prod.getName() + "', '" + prod.getRegularPrice() + "', '" + prod.getSalePrice() + "', '"
@@ -53,7 +77,7 @@ public class ProductDAO {
                 t.setCustomer((Customer) list.getObject(2));
                 t.setStore((Store) list.getObject(3));
                 if(list.getObject(4) != null)
-                    t.setDiscounts((List<Discount>) list.getObject(4));
+                    t.setDiscounts((Discount) list.getObject(4));
                 t.setDate((DateTime) list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setTotal(list.getDouble(7));

@@ -18,6 +18,28 @@ public class StoreDAO {
         this.conn = connection;
     }
 
+    //@Query("FROM Brand myBrand WHERE cat.id = 1")
+
+    public List<Store> getAllStores(){
+        String all = "SELECT * FROM store;";
+        ArrayList<Store> stores = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Store s = new Store();
+                s.setId(list.getInt(1));
+                s.setPhoneNumber(list.getNString(2));
+                s.setAddress(list.getNString(3));
+                s.setEmail(list.getNString(4));
+                stores.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stores;
+    }
+
     public void updateStore(Store store){
         String update = "Select * FROM store WHERE store.id = " + store.getId() + ";";
         try{
@@ -51,7 +73,7 @@ public class StoreDAO {
                 t.setCustomer((Customer) list.getObject(2));
                 t.setStore((Store) list.getObject(3));
                 if(list.getObject(4) != null)
-                    t.setDiscounts((List<Discount>) list.getObject(4));
+                    t.setDiscounts((Discount)list.getObject(4));
                 t.setDate((DateTime) list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setTotal(list.getDouble(7));
@@ -85,5 +107,25 @@ public class StoreDAO {
             e.printStackTrace();
         }
         return shipments;
+    }
+
+    public List<Store> getOtherStores(Store store){
+        String all = "SELECT * FROM store WHERE id !=" + store.getId() + ";";
+        ArrayList<Store> stores = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Store s = new Store();
+                s.setId(list.getInt(1));
+                s.setPhoneNumber(list.getNString(2));
+                s.setAddress(list.getNString(3));
+                s.setEmail(list.getNString(4));
+                stores.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stores;
     }
 }

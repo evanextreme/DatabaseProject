@@ -4,6 +4,8 @@ import com.bobby.tables.RetailStore.database.DatabaseConnection;
 import com.bobby.tables.RetailStore.models.Discount;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiscountDAO {
 
@@ -11,6 +13,24 @@ public class DiscountDAO {
 
     public DiscountDAO(DatabaseConnection connection){
         this.conn = connection;
+    }
+
+    public List<Discount> getAllDiscounts(){
+        String all = "SELECT * FROM discount;";
+        ArrayList<Discount> discounts = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Discount d = new Discount();
+                d.setId(list.getInt(1));
+                d.setPercentage(list.getInt(2));
+                discounts.add(d);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return discounts;
     }
 
     public void addDiscount(Discount disc){
