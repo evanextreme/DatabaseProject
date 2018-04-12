@@ -96,68 +96,48 @@ public class StoreDAO {
         }
     }
 
-    public static ArrayList<Transaction> viewStoreTrans(Store store){
+    /**
+     * View all the transactions for a store
+     */
+    public static List<Transaction> viewStoreTrans(Store store){
         String s = "SELECT * FROM transaction WHERE store.id = " + store.getId() + ";";
-        ArrayList<Transaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
-            ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                Transaction t = new Transaction();
-                t.setId(list.getInt(1));
-                t.setCustomer((Customer) list.getObject(2));
-                t.setStore((Store) list.getObject(3));
-                if(list.getObject(4) != null)
-                    t.setDiscount((Discount) list.getObject(4));
-                t.setDate((DateTime) list.getObject(5));
-                t.setQuantityOfItem(list.getInt(6));
-                t.setTotal(list.getDouble(7));
-                t.setProduct((Product) list.getObject(8));
-                transactions.add(t);
-            }
+            ResultSet resultSet = state.executeQuery(s);
+            transactions = TransactionDAO.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return transactions;
     }
 
-    public static ArrayList<Shipment> viewStoreShipments(Store store){
+    /**
+     * View all shipments for a store
+     */
+    public static List<Shipment> viewStoreShipments(Store store){
         String s = "SELECT * FROM shipment WHERE store.id = " + store.getId() + ";";
-        ArrayList<Shipment> shipments = new ArrayList<>();
+        List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
-            ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                Shipment ship = new Shipment();
-                ship.setId(list.getInt(1));
-                ship.setPlacedDate((DateTime) list.getObject(2));
-                ship.setReceivedDate((DateTime) list.getObject(3));
-                ship.setQuantityOfItem(list.getInt(4));
-                ship.setProduct((Product) list.getObject(5));
-                ship.setStore((Store) list.getObject(6));
-                ship.setVendor((Vendor) list.getObject(7));
-                shipments.add(ship);
-            }
+            ResultSet resultSet = state.executeQuery(s);
+            shipments = ShipmentDAO.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return shipments;
     }
 
+    /**
+     * View all other stores and their information
+     */
     public static List<Store> getOtherStores(Store store){
         String all = "SELECT * FROM store WHERE id !=" + store.getId() + ";";
-        ArrayList<Store> stores = new ArrayList<>();
+        List<Store> stores = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
-            ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Store s = new Store();
-                s.setId(list.getInt(1));
-                s.setPhoneNumber(list.getNString(2));
-                s.setAddress(list.getNString(3));
-                s.setEmail(list.getNString(4));
-                stores.add(s);
-            }
+            ResultSet resultSet = state.executeQuery(all);
+            stores = StoreDAO.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }

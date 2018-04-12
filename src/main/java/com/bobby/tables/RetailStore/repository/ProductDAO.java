@@ -124,25 +124,16 @@ public class ProductDAO {
         }
     }
 
-    public static ArrayList<Transaction> viewProductTrans(Product prod){
+    /**
+     * View all transactions for a product
+     */
+    public static List<Transaction> viewProductTrans(Product prod){
         String s = "SELECT * FROM transaction WHERE product.id = " + prod.getId() + ";";
-        ArrayList<Transaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
-            ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                Transaction t = new Transaction();
-                t.setId(list.getInt(1));
-                t.setCustomer((Customer) list.getObject(2));
-                t.setStore((Store) list.getObject(3));
-                if(list.getObject(4) != null)
-                    t.setDiscount((Discount) list.getObject(4));
-                t.setDate((DateTime) list.getObject(5));
-                t.setQuantityOfItem(list.getInt(6));
-                t.setTotal(list.getDouble(7));
-                t.setProduct((Product) list.getObject(8));
-                transactions.add(t);
-            }
+            ResultSet resultSet = state.executeQuery(s);
+            transactions = TransactionDAO.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,15 +141,16 @@ public class ProductDAO {
 
     }
 
-    public static ArrayList<String> viewProductShipments(Product prod){
+    /**
+     * View all shipments for a product
+     */
+    public static List<Shipment> viewProductShipments(Product prod){
         String s = "SELECT * FROM shipment WHERE product.id = " + prod.getId() + ";";
-        ArrayList<String> shipments = new ArrayList<>();
+        List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
-            ResultSet list = state.executeQuery(s);
-            while(list.next()){
-                shipments.add(list.getNString(1)); //adding id of shipment, should rest of cols be added?
-            }
+            ResultSet resultSet = state.executeQuery(s);
+            shipments = ShipmentDAO.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -13,16 +13,8 @@ public class Transaction {
 
 	private int id;
 
-	// Foreign key reference for db
-	private int customerId;
-
-	// Navigation Property for application
 	private Customer customer;
 
-	// Foreign key reference for db
-	private int storeId;
-
-	// Navigation Property for application
 	private Store store;
 
 	private int discountId;
@@ -33,10 +25,6 @@ public class Transaction {
 
 	private int quantityOfItem;
 
-	// Foreign key reference for db
-	private int productId;
-
-	// Navigation Property for application
 	private Product product;
 
 	private double total;
@@ -59,28 +47,12 @@ public class Transaction {
 		this.customer = customer;
 	}
 
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
 	public Store getStore(){
 		return store;
 	}
 
 	public void setStore(Store store){
 		this.store = store;
-	}
-
-	public int getStoreId() {
-		return storeId;
-	}
-
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
 	}
 
 	public int getDiscountId() {
@@ -129,11 +101,4 @@ public class Transaction {
 		this.product = product;
 	}
 
-	public int getProductId() {
-		return productId;
-	}
-
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
 }

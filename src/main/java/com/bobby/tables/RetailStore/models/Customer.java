@@ -1,28 +1,13 @@
 package com.bobby.tables.RetailStore.models;
 
-import org.joda.time.DateTime;
-
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * 	Model for the Customer table
  */
 public class Customer {
 
-	public enum Gender {
-		MALE, FEMALE;
-
-		@Override
-		public String toString() {
-			if (this.equals(MALE)) {
-				return "Male";
-			} else {
-				return "Female";
-			}
-		}
-	}
-	
-	// Fields for customer data
+	// Private fields
 
 	private int id;
 
@@ -38,21 +23,20 @@ public class Customer {
 
 	private String gender;
 
-	//TODO: Not use datetime? Java sql date?
 	private Date dob;
 
 	private String creditCard;
 
 	private boolean frequentShopper;
 
-	/**
-	 * Gets the age of the customer
-     */
-	//public int getAge() {
-	//	return DateTime.now().getYearOfCentury() - dob.getYearOfCentury();
-	//}
-
 	// Getter and setter methods for private fields
+
+	public String getStringOrNullString(String string) {
+		if (string == null) {
+			return "null";
+		}
+		return string;
+	}
 
 	public int getId(){
 		return id;
@@ -63,7 +47,7 @@ public class Customer {
 	}
 
 	public String getFirstName(){
-		return first;
+		return getStringOrNullString(first);
 	}
 
 	public void setFirstName(String first){
@@ -71,7 +55,7 @@ public class Customer {
 	}
 
 	public String getLastName(){
-		return last;
+		return getStringOrNullString(last);
 	}
 
 	public void setLastName(String last){
@@ -79,7 +63,7 @@ public class Customer {
 	}
 
 	public String getEmail(){
-		return email;
+		return getStringOrNullString(email);
 	}
 
 	public void setEmail(String email){
@@ -87,7 +71,7 @@ public class Customer {
 	}
 
 	public String getPhoneNumber(){
-		return phoneNumber;
+		return getStringOrNullString(phoneNumber);
 	}
 
 	public void setPhoneNumber(String phoneNumber){
@@ -95,7 +79,7 @@ public class Customer {
 	}
 
 	public String getAddress(){
-		return address;
+		return getStringOrNullString(address);
 	}
 
 	public void setAddress(String address){
@@ -103,7 +87,7 @@ public class Customer {
 	}
 
 	public String getGender(){
-		return gender;
+		return getStringOrNullString(gender);
 	}
 
 	public void setGender(String gender){
@@ -119,7 +103,7 @@ public class Customer {
 	}
 
 	public String getCreditCard(){
-		return creditCard;
+		return getStringOrNullString(creditCard);
 	}
 
 	public void setCreditCard(String creditCard){

@@ -14,36 +14,28 @@ import java.util.List;
  */
 public class DiscountDAO {
 
-    public static DatabaseConnection conn;
-
-    /**
-     * Default constructor. Needs to pass in the database connection
-     */
-    public DiscountDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
+    public static DatabaseConnection connection = new DatabaseConnection();
 
     public static List<Discount> fromResultSet(ResultSet rs) {
-        List<Discount> disc = new ArrayList<>();
+        List<Discount> discounts = new ArrayList<>();
         try {
             while (rs.next()) {
-                Discount d = new Discount();
-                d.setId(rs.getInt(1));
-                d.setPercentage(rs.getInt(2));
-                disc.add(d);
+                discounts.add(new Discount(rs.getInt(1), rs.getInt(2)));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return disc;
+        return discounts;
     }
 
+    /**
+     * Get a discount from the db with this id
+     */
     public static Discount getDiscountById(int id){
-        String store = "SELECT * FROM discount WHERE discount.id = " + id + ";";
+        String store = "SELECT * FROM discount WHERE id = " + id + ";";
         Discount d = new Discount();
         try{
-            Statement state = conn.getConnection().createStatement();
-            state.execute(store);
+            Statement state = connection.getConnection().createStatement();
             ResultSet newDisc = state.executeQuery(store);
             d = fromResultSet(newDisc).get(0);
         } catch (SQLException e) {
@@ -52,18 +44,16 @@ public class DiscountDAO {
         return d;
     }
 
+    /**
+     * Retrieves all discounts from the db
+     */
     public static List<Discount> getAllDiscounts(){
         String all = "SELECT * FROM discount;";
-        ArrayList<Discount> discounts = new ArrayList<>();
+        List<Discount> discounts = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Discount d = new Discount();
-                d.setId(list.getInt(1));
-                d.setPercentage(list.getInt(2));
-                discounts.add(d);
-            }
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(all);
+            discounts = fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +67,7 @@ public class DiscountDAO {
     public static void addDiscount(Discount disc){
         String add = "INSERT INTO discount (percentage) VALUES (" + disc.getPercentage() + ");";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,9 +79,9 @@ public class DiscountDAO {
      * id to have the corresponding percentage fields
      */
     public static void updateDiscount(Discount disc){
-        String update = "UPDATE discount SET percentage = " + disc.getPercentage() + " WHERE discount.id = " + disc.getId() + ";";
+        String update = "UPDATE discount SET percentage = " + disc.getPercentage() + " WHERE id = " + disc.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
