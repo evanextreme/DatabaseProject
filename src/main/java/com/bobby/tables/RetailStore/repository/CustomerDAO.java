@@ -2,14 +2,12 @@ package com.bobby.tables.RetailStore.repository;
 
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
 
-import com.bobby.tables.RetailStore.models.Customer;
-import com.bobby.tables.RetailStore.models.Discount;
-import com.bobby.tables.RetailStore.models.Store;
-import com.bobby.tables.RetailStore.models.Transaction;
+import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class CustomerDAO {
 
@@ -17,6 +15,32 @@ public class CustomerDAO {
 
     public CustomerDAO(DatabaseConnection connection){
         this.conn = connection;
+    }
+
+    public List<Customer> getAllCustomers(){
+        String all = "SELECT * FROM customer;";
+        ArrayList<Customer> custs = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(all);
+            while(list.next()){
+                Customer c = new Customer();
+                c.setId(list.getInt(1));
+                c.setFirstName(list.getNString(2));
+                c.setLastName(list.getNString(3));
+                c.setEmail(list.getNString(4));
+                c.setPhoneNumber(list.getNString(5));
+                c.setAddress(list.getNString(6));
+                c.setGender(list.getNString(7));
+                c.setDOB((Date)list.getObject(8));
+                c.setCreditCard(list.getNString(9));
+                c.setFrequentShopper(list.getBoolean(10));
+                custs.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custs;
     }
 
     public String addCustomer(Customer cust){
@@ -57,7 +81,7 @@ public class CustomerDAO {
                 t.setCustomer((Customer) list.getObject(2));
                 t.setStore((Store) list.getObject(3));
                 if(list.getObject(4) != null)
-                    t.setDiscounts((List<Discount>) list.getObject(4));
+                    t.setDiscounts((Discount) list.getObject(4));
                 t.setDate((DateTime) list.getObject(5));
                 t.setQuantityOfItem(list.getInt(6));
                 t.setTotal(list.getDouble(7));

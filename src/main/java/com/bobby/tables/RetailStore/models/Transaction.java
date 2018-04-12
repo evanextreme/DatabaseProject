@@ -17,7 +17,7 @@ public class Transaction {
 
 	private Store store;
 
-	private List<Discount> discounts;
+	private Discount discount;
 
 	private DateTime date;
 
@@ -53,10 +53,10 @@ public class Transaction {
 		this.store = store;
 	}
 
-	public List<Discount> getDiscounts(){ return discounts; }
+	public Discount getDiscounts(){ return discount; }
 
-	public void setDiscounts(List<Discount> discount){
-		this.discounts = discount;
+	public void setDiscounts(Discount discount){
+		this.discount = discount;
 	}
 
 	public DateTime getDate(){

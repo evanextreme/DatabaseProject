@@ -14,7 +14,26 @@ public class BrandDAO {
         this.conn = connection;
     }
 
-    public ArrayList<Integer> getAllIds(){
+    public List<Brand> getAllBrands(){
+        String s = "SELECT * FROM brand;";
+        ArrayList<Brand> brands = new ArrayList<>();
+        try{
+            Statement state = conn.getConnection().createStatement();
+            ResultSet list = state.executeQuery(s);
+            while(list.next()){
+                Brand b = new Brand();
+                b.setId(list.getInt(1));
+                b.setName(list.getNString(2));
+                b.setDesigner(list.getNString(3));
+                brands.add(b);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return brands;
+    }
+
+    public ArrayList<Integer> getAllids(){
         String idList = "SELECT id FROM brand;";
         ArrayList<Integer> ids = new ArrayList<>();
         try{
