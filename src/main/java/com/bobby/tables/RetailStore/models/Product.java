@@ -5,6 +5,25 @@ package com.bobby.tables.RetailStore.models;
  */
 public class Product {
 
+    /** Default constructor */
+    public Product() {}
+
+    /** Alternate constructor with fields */
+    public Product(int id, String name, Brand brand, Vendor vendor, ProductType productType, Store store,
+                   double regularPrice, double salePrice, String size, int quantityInStore, String department) {
+        this.id = id;
+        this.name = name;
+        this.regularPrice = regularPrice;
+        this.salePrice = salePrice;
+        this.size = size;
+        this.quantityInStore = quantityInStore;
+        this.department = department;
+        this.vendor = vendor;
+        this.store = store;
+        this.brand = brand;
+        this.productType = productType;
+    }
+
     // Private fields
 
     private int id;
@@ -22,11 +41,13 @@ public class Product {
 
     private String department;
 
-    // Foreign key reference for db
-    private int vendorId;
-
-    // Navigation property for application
     private Vendor vendor;
+
+    private Store store;
+
+    private ProductType productType;
+
+    private Brand brand;
 
     // Getter and setters for private fields
 
@@ -86,19 +107,35 @@ public class Product {
         this.salePrice = salePrice;
     }
 
-    public int getVendorId() {
-        return vendorId;
-    }
-
-    public void setVendorId(int vendorId) {
-        this.vendorId = vendorId;
-    }
-
     public Vendor getVendor() {
         return vendor;
     }
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

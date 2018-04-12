@@ -5,6 +5,22 @@ package com.bobby.tables.RetailStore.models;
  */
 public class Brand {
 
+	/** Default constructor */
+	public Brand() {}
+
+	/** Alternate constructor with fields */
+	public Brand(int id, String name, String designer) {
+		this.id = id;
+		this.name = name;
+		this.designer = designer;
+	}
+
+	/** Alternate constructor with fields */
+	public Brand(String name, String designer) {
+		this.name = name;
+		this.designer = designer;
+	}
+
 	// Private fields
 
 	// ID associated with the brand

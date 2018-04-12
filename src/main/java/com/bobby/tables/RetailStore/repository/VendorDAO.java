@@ -20,33 +20,37 @@ import java.util.List;
  */
 public class VendorDAO {
 
-    public static DatabaseConnection conn;
+    private static DatabaseConnection connection = new DatabaseConnection();
 
     /**
-     * Default constructor. Needs to pass in the database connection
+     * Get Vendor with specified Id
      */
-    public VendorDAO(DatabaseConnection connection){
-        this.conn = connection;
+    public static Vendor getVendorById(int id) {
+        Vendor vendor = null;
+        String getStatement = "SELECT * FROM vendor WHILE id = " + id + ";";
+
+        try {
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(getStatement);
+            vendor = Vendor.fromResultSet(resultSet).get(0);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vendor;
     }
 
     /**
      * Get all vendors listed in the database
      */
-    public static List<Vendor> getAllVendors() {
+    public List<Vendor> getAllVendors() {
         List<Vendor> vendors = new ArrayList<>();
         String getStatement = "SELECT * FROM vendor;";
 
         try {
-            Statement statement = conn.getConnection().createStatement();
+            Statement statement = connection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(getStatement);
-
-            while (resultSet.next()) {
-                Vendor vendor = new Vendor();
-                vendor.setId(resultSet.getInt(1));
-                vendor.setName(resultSet.getString(2));
-                vendor.setEmail(resultSet.getString(3));
-                vendors.add(vendor);
-            }
+            vendors = Vendor.fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +66,7 @@ public class VendorDAO {
         String update = "UPDATE vendor SET name = " + vend.getId() + ", email = " + vend.getEmail() +
                 " WHERE id = " + vend.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +79,7 @@ public class VendorDAO {
     public static void addVendor(Vendor vend){
         String add = "INSERT INTO vendor (name, email) VALUES ('" + vend.getName() + "', '" + vend.getEmail() + "');";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class VendorDAO {
         String s = "SELECT * FROM shipment WHERE vendor_id = " + vend.getId() + ";";
         List<Shipment> shipments = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet result = state.executeQuery(s);
             shipments = ShipmentDAO.fromResultSet(result);
         } catch (SQLException e) {

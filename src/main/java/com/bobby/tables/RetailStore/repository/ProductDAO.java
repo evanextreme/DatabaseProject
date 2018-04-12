@@ -10,55 +10,114 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class containing all necessary functions for interacting with
+ * the Product table
+ */
 public class ProductDAO {
 
-    public static DatabaseConnection conn;
+    public static DatabaseConnection connection = new DatabaseConnection();
 
-    public ProductDAO(DatabaseConnection connection){
-        this.conn = connection;
-    }
-
-    public static List<Product> getAllProducts(){
-        String all = "SELECT * FROM product;";
-        ArrayList<Product> prods = new ArrayList<>();
+    /**
+     *  Returns a list of Products from a given ResultSet from the db
+     */
+    public static List<Product> fromResultSet(ResultSet resultSet) {
+        List<Product> products = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
-            ResultSet list = state.executeQuery(all);
-            while(list.next()){
-                Product p = new Product();
-                p.setId(list.getInt(1));
-                p.setName(list.getNString(2));
-                p.setRegularPrice(list.getDouble(3));
-                p.setSalePrice(list.getDouble(4));
-                p.setSize(list.getNString(5));
-                p.setQuantityInStore(list.getInt(6));
-                p.setDepartment(list.getNString(7));
-                p.setVendor((Vendor) list.getObject(8));
-                prods.add(p);
+            while(resultSet.next()){
+                products.add(new Product(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        BrandDAO.getBrandById(resultSet.getInt(3)),
+                        VendorDAO.getVendorById(resultSet.getInt(4)),
+                        ProductTypeDAO.getProductTypeById(resultSet.getInt(5)),
+                        StoreDAO.getStoreById(resultSet.getInt(6)),
+                        resultSet.getDouble(3),
+                        resultSet.getDouble(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return prods;
+        return products;
     }
 
-    public static void addProduct(Product prod){
-        String add = "INSERT INTO product (name, regular_price, sales_price, size, quantity, department, vendor) " +
-                "VALUES ('" + prod.getName() + "', '" + prod.getRegularPrice() + "', '" + prod.getSalePrice() + "', '"
-                + prod.getSize() + "', '" + prod.getQuantityInStore() + "', '" + prod.getDepartment() + "', '" +
-                prod.getVendor() + "');";
+    /**
+     * Gets product with specific id
+     */
+    public static Product getProductById(int id) {
+        String getProduct = "SELECT * FROM product WHERE id = " + id + ";";
+        Product product = null;
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(getProduct);
+            product = fromResultSet(resultSet).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
+
+    /**
+     * Get all products from the db
+     */
+    public static List<Product> getAllProducts(){
+        String all = "SELECT * FROM product;";
+        List<Product> products = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet resultSet = state.executeQuery(all);
+            products = fromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    /**
+     * Add a product to the db
+     */
+    public static void addProduct(Product prod){
+        String add = "INSERT INTO product (name, regular_price, sales_price, size, quantity, department, store_id, " +
+                "brand_id, vendor_id, product_type_id) " +
+                "VALUES ('" + prod.getName() +
+                        "', '" + prod.getRegularPrice() +
+                        "', '" + prod.getSalePrice() +
+                        "', '" + prod.getSize() +
+                        "', '" + prod.getQuantityInStore() +
+                        "', '" + prod.getDepartment() +
+                        "', '" + prod.getStore().getId() +
+                        "', '" + prod.getBrand().getId() +
+                        "', '" + prod.getVendor().getId() +
+                        "', '" + prod.getProductType().getId() +"');";
+        try{
+            Statement state = connection.getConnection().createStatement();
             state.execute(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Updates the corresponding product record in the db
+     */
     public static void updateProduct(Product prod){
-        String update = "Select * FROM product WHERE product.id = " + prod.getId() + ";";
+        String update = "UPDATE product SET name =  " + prod.getName() +
+                " regular_price = " + prod.getRegularPrice() +
+                " sale_price = " + prod.getSalePrice() +
+                " regular_price = " + prod.getRegularPrice() +
+                " size = " + prod.getSize() +
+                " quantity = " + prod.getQuantityInStore() +
+                " department = " + prod.getDepartment() +
+                " store_id = " + prod.getStore().getId() +
+                " brand_id = " + prod.getBrand().getId() +
+                " vendor_id = " + prod.getVendor().getId() +
+                " product_type_id = " + prod.getProductType().getId() +
+                 " WHERE product.id = " + prod.getId() + ";";
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,7 +128,7 @@ public class ProductDAO {
         String s = "SELECT * FROM transaction WHERE product.id = " + prod.getId() + ";";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
             while(list.next()){
                 Transaction t = new Transaction();
@@ -95,7 +154,7 @@ public class ProductDAO {
         String s = "SELECT * FROM shipment WHERE product.id = " + prod.getId() + ";";
         ArrayList<String> shipments = new ArrayList<>();
         try{
-            Statement state = conn.getConnection().createStatement();
+            Statement state = connection.getConnection().createStatement();
             ResultSet list = state.executeQuery(s);
             while(list.next()){
                 shipments.add(list.getNString(1)); //adding id of shipment, should rest of cols be added?
