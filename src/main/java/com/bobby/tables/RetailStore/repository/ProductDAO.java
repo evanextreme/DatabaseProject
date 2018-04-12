@@ -81,7 +81,7 @@ public class ProductDAO {
      * Add a product to the db
      */
     public static void addProduct(Product prod){
-        String add = "INSERT INTO product (name, regular_price, sales_price, size, quantity, department, store_id, " +
+        String add = "INSERT INTO product (name, regular_price, sale_price, size, quantity, department, store_id, " +
                 "brand_id, vendor_id, product_type_id) " +
                 "VALUES ('" + prod.getName() +
                         "', '" + prod.getRegularPrice() +
@@ -105,17 +105,16 @@ public class ProductDAO {
      * Updates the corresponding product record in the db
      */
     public static void updateProduct(Product prod){
-        String update = "UPDATE product SET name =  " + prod.getName() +
-                " regular_price = " + prod.getRegularPrice() +
-                " sale_price = " + prod.getSalePrice() +
-                " regular_price = " + prod.getRegularPrice() +
-                " size = " + prod.getSize() +
-                " quantity = " + prod.getQuantityInStore() +
-                " department = " + prod.getDepartment() +
-                " store_id = " + prod.getStore().getId() +
-                " brand_id = " + prod.getBrand().getId() +
-                " vendor_id = " + prod.getVendor().getId() +
-                " product_type_id = " + prod.getProductType().getId() +
+        String update = "UPDATE product SET name =  '" + prod.getName() +
+                "', regular_price = " + prod.getRegularPrice() +
+                ", sale_price = " + prod.getSalePrice() +
+                ", size = '" + prod.getSize() +
+                "', quantity = " + prod.getQuantityInStore() +
+                ", department = '" + prod.getDepartment() +
+                "', store_id = " + prod.getStore().getId() +
+                ", brand_id = " + prod.getBrand().getId() +
+                ", vendor_id = " + prod.getVendor().getId() +
+                ", product_type_id = " + prod.getProductType().getId() +
                  " WHERE product.id = " + prod.getId() + ";";
         try{
             Statement state = connection.getConnection().createStatement();
@@ -129,7 +128,7 @@ public class ProductDAO {
      * View all transactions for a product
      */
     public static List<Transaction> viewProductTrans(Product prod){
-        String s = "SELECT * FROM transaction WHERE product.id = " + prod.getId() + ";";
+        String s = "SELECT * FROM transaction WHERE id = " + prod.getId() + ";";
         List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
@@ -146,7 +145,7 @@ public class ProductDAO {
      * View all shipments for a product
      */
     public static List<Shipment> viewProductShipments(Product prod){
-        String s = "SELECT * FROM shipment WHERE product.id = " + prod.getId() + ";";
+        String s = "SELECT * FROM shipment WHERE id = " + prod.getId() + ";";
         List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();

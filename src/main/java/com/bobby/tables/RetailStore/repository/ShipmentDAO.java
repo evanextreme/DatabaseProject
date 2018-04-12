@@ -54,7 +54,10 @@ public class ShipmentDAO {
         try{
             Statement state = connection.getConnection().createStatement();
             ResultSet resultSet = state.executeQuery(getStatement);
-            shipment = fromResultSet(resultSet).get(0);
+            List<Shipment> shipments = fromResultSet(resultSet);
+            if (!shipments.isEmpty()) {
+                shipment = shipments.get(0);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,11 +70,11 @@ public class ShipmentDAO {
      */
     public static List<Shipment> getAllShipments(){
         String all = "SELECT * FROM shipment;";
-        ArrayList<Shipment> shipments = new ArrayList<>();
+        List<Shipment> shipments = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
             ResultSet resultSet = state.executeQuery(all);
-            fromResultSet(resultSet);
+            shipments = fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,17 +87,16 @@ public class ShipmentDAO {
     public static void updateShipment(Shipment ship){
         String update = null;
         if (ship.getReceivedDate() != null) {
-            update = "UPDATE shipment SET placed_date = '" + ship.getPlacedDate().toString() +
-                    "', received_date = '" + ship.getReceivedDate().toString() +
+            update = "UPDATE shipment SET placed_date = '" + ship.getPlacedDate() +
+                    "', received_date = '" + ship.getReceivedDate() +
                     "', store_id = " + ship.getStore().getId() +
                     ", vendor_id = " + ship.getVendor().getId() +
                     ", product_id = " + ship.getProduct().getId() +
                     ", quantity = " + ship.getQuantityOfItem() +
                     " WHERE shipment.id = " + ship.getId() + ";";
         } else {
-            update = "UPDATE shipment SET placed_date = " + ship.getPlacedDate() +
-                    ", received_date = null" +
-                    ", store_id = " + ship.getStore().getId() +
+            update = "UPDATE shipment SET placed_date = '" + ship.getPlacedDate() +
+                    "', store_id = " + ship.getStore().getId() +
                     ", vendor_id = " + ship.getVendor().getId() +
                     ", product_id = " + ship.getProduct().getId() +
                     ", quantity = " + ship.getQuantityOfItem() +
@@ -113,14 +115,14 @@ public class ShipmentDAO {
      */
     public static void addShipment(Shipment ship){
         String add = null;
-        if (ship.getReceivedDate() != null) {
-            add = "INSERT INTO shipment (placed_date, received_date, quantity, product, store, vendor) VALUES ('" +
-                    ship.getPlacedDate() + "', null, '" + ship.getQuantityOfItem() + "', '" +
-                    ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
+        if (ship.getReceivedDate() == null) {
+            add = "INSERT INTO shipment (placed_date, quantity, product_id, store_id, vendor_id) VALUES ('" +
+                    ship.getPlacedDate() + "', " + ship.getQuantityOfItem() + ", '" +
+                    ship.getProduct().getId() + "', '" + ship.getStore().getId() + "', '" + ship.getVendor().getId() + "');";
         } else {
-            add = "INSERT INTO shipment (placed_date, received_date, quantity, product, store, vendor) VALUES ('" +
+            add = "INSERT INTO shipment (placed_date, received_date, quantity, product_id, store_id, vendor_id) VALUES ('" +
                     ship.getPlacedDate() + "', '" + ship.getReceivedDate() + "', '" + ship.getQuantityOfItem() + "', '" +
-                    ship.getProduct() + "', '" + ship.getStore() + "', '" + ship.getVendor() + "');";
+                    ship.getProduct().getId() + "', '" + ship.getStore().getId() + "', '" + ship.getVendor().getId() + "');";
         }
         try{
             Statement state = connection.getConnection().createStatement();

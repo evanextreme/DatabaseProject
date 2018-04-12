@@ -6,11 +6,13 @@ import com.bobby.tables.RetailStore.models.*;
 import com.bobby.tables.RetailStore.models.Shipment;
 import com.bobby.tables.RetailStore.models.Vendor;
 import com.bobby.tables.RetailStore.repository.*;
+import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.thymeleaf.util.DateUtils;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -37,21 +39,6 @@ public class RetailStoreApplication {
 
 		testAllDbDAOs();
 
-		//test, pls don't delete so i can keep testing thanks
-		/*CustomerDAO b = new CustomerDAO(connection);
-		Customer c = new Customer();
-		c.setId(1);
-		c.setFirstName("hi");
-		c.setLastName("hi");
-		c.setEmail("higmail.com");
-		c.setPhoneNumber("5851234567");
-		c.setAddress("hi");
-		c.setGender("male");
-		c.setDOB(new Date(System.currentTimeMillis()));
-		c.setCreditCard("1234567");
-		//c.isFrequentShopper(true);
-		System.out.println(" yayay " + b.addCustomer(c));*/
-
 		SpringApplication.run(RetailStoreApplication.class, args);
 
 		connection.closeConnection();
@@ -73,7 +60,7 @@ public class RetailStoreApplication {
 	private static void testAllDbDAOs() {
 		// Testing BRAND
 
-		/*System.out.println("EXECUTING TESTS FOR BRAND");
+		System.out.println("EXECUTING TESTS FOR BRAND");
 
 		System.out.println("Inserting a new brand...");
 		BrandDAO.addBrand(new Brand("My Brand", "Theodora Bendlin"));
@@ -93,11 +80,11 @@ public class RetailStoreApplication {
 
 		System.out.println("Getting brand with id = 11...");
 		brand = BrandDAO.getBrandById(11);
-		System.out.printf("%d: name = %s, designer = %s\n", brand.getId(), brand.getName(), brand.getDesigner());*/
+		System.out.printf("%d: name = %s, designer = %s\n", brand.getId(), brand.getName(), brand.getDesigner());
 
 		// Testing VENDOR
 
-		/*System.out.println("EXECUTING TESTS FOR VENDOR");
+		System.out.println("\n\nEXECUTING TESTS FOR VENDOR");
 
 		System.out.println("Inserting a new vendor...");
 		VendorDAO.addVendor(new Vendor("My Vendor", "vendor@vendor.com"));
@@ -134,11 +121,11 @@ public class RetailStoreApplication {
 			System.out.printf("%d: Placed = %s, Received? = %b, Store = %d, Vendor = %d, Product = %d, Quantity = %d\n",
 					shipment.getId(), shipment.getPlacedDate().toString(), shipment.getReceivedDate() != null, shipment.getStore().getId(),
 					shipment.getVendor().getId(), shipment.getProduct().getId(), shipment.getQuantityOfItem() );
-		}*/
+		}
 
 		// Testing DISCOUNT
 
-		/*System.out.println("EXECUTING TESTS FOR DISCOUNT");
+		System.out.println("\n\nEXECUTING TESTS FOR DISCOUNT");
 
 		System.out.println("Inserting a new discount...");
 		DiscountDAO.addDiscount(new Discount(70));
@@ -158,11 +145,11 @@ public class RetailStoreApplication {
 
 		System.out.println("Getting discount with id = 11...");
 		discount = DiscountDAO.getDiscountById(11);
-		System.out.printf("%d: percent off = %d\n", discount.getId(), discount.getPercentage());*/
+		System.out.printf("%d: percent off = %d\n", discount.getId(), discount.getPercentage());
 
 		// Testing STORE
 
-		System.out.println("EXECUTING TESTS FOR STORE");
+		System.out.println("\n\nEXECUTING TESTS FOR STORE");
 
 		System.out.println("Inserting a new store...");
 		StoreDAO.addStore(new Store("8455545656", "26 No Where Avenue Otisville Ny", "email@email.com"));
@@ -189,16 +176,17 @@ public class RetailStoreApplication {
 
 		System.out.println("Getting all transactions for store with id = 2");
 		store = StoreDAO.getStoreById(2);
-		/*List<Transaction> transactions = StoreDAO.viewStoreTransactions(store);
+
+		List<Transaction> transactions = StoreDAO.viewStoreTransactions(store);
 		for (Transaction transaction : transactions) {
 			System.out.printf("%d:\n Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
 									transaction.getId(), transaction.getTotal(), transaction.getProduct().getId(),
 									transaction.getStore().getId(), transaction.getCustomer().getId(),
 									transaction.getQuantityOfItem());
-		}*/
+		}
 
 		System.out.println("Getting all shipments for store with id = 2");
-		List<Shipment> shipments = StoreDAO.viewStoreShipments(store);
+		shipments = StoreDAO.viewStoreShipments(store);
 		for (Shipment shipment : shipments) {
 			System.out.printf("%d: Placed = %s, Received? = %b, Store = %d, Vendor = %d, Product = %d, Quantity = %d\n",
 					shipment.getId(), shipment.getPlacedDate().toString(), shipment.getReceivedDate() != null, shipment.getStore().getId(),
@@ -214,7 +202,7 @@ public class RetailStoreApplication {
 
 		// Testing PRODUCT_TYPE
 
-		/*System.out.println("EXECUTING TESTS FOR PRODUCT TYPE");
+		System.out.println("\n\nEXECUTING TESTS FOR PRODUCT TYPE");
 
 		System.out.println("Inserting a new productType...");
 		ProductTypeDAO.addProductType(new ProductType("Tia Type", 11));
@@ -234,26 +222,149 @@ public class RetailStoreApplication {
 
 		System.out.println("Getting last product type...");
 		type = ProductTypeDAO.getProductTypeById(allProductTypes.size());
-		System.out.printf("%d: type = %s, parent_id = %s\n", type.getId(), type.getType(), type.getParentTypeId());*/
+		System.out.printf("%d: type = %s, parent_id = %s\n", type.getId(), type.getType(), type.getParentTypeId());
 
 		// Testing PRODUCT
 
-		System.out.println("EXECUTING TESTS FOR PRODUCT");
+		System.out.println("\n\nEXECUTING TESTS FOR PRODUCT");
 
-		Brand brand = BrandDAO.getBrandById(5);
-		Vendor vendor = VendorDAO.getVendorById(5);
+		brand = BrandDAO.getBrandById(5);
+		vendor = VendorDAO.getVendorById(5);
 		ProductType productType = ProductTypeDAO.getProductTypeById(1);
+		store = StoreDAO.getStoreById(2);
 
 		System.out.println("Inserting a new Product...");
 		ProductDAO.addProduct(new Product("Tias new product",
 											brand, vendor, productType, store, 5.99, 5.99, "M", 16, "women"));
 
-		System.out.println("Getting 50 Products");
+		System.out.println("Getting 10 Products");
+		List<Product> products = ProductDAO.getAllProducts();
+		for (int index = products.size() - 10; index < products.size(); index++) {
+			Product product = products.get(index);
+			System.out.printf("%d: Name = %s, Regular Price/Sale Price: %.2f/%.2f, Size = %s, Department = %s," +
+					"Quantity = %d, BrandId = %d, VendorId = %d, StoreId = %d, Type = %d\n",
+					product.getId(), product.getName(), product.getRegularPrice(), product.getSalePrice(),
+					product.getSize(), product.getDepartment(), product.getQuantityInStore(),
+					product.getBrand().getId(), product.getVendor().getId(), product.getBrand().getId(),
+					product.getProductType().getId());
+		}
 
-		// Testing TRANSACTION
+		System.out.println("Getting product with id = products.size - 1");
+		Product product = ProductDAO.getProductById(products.size() - 1);
+		System.out.printf("%d: Name = %s, Regular Price/Sale Price: %.2f/%.2f, Size = %s, Department = %s," +
+						"Quantity = %d, BrandId = %d, VendorId = %d, StoreId = %d, Type = %d\n",
+				product.getId(), product.getName(), product.getRegularPrice(), product.getSalePrice(),
+				product.getSize(), product.getDepartment(), product.getQuantityInStore(),
+				product.getBrand().getId(), product.getVendor().getId(), product.getBrand().getId(),
+				product.getProductType().getId());
+
+		System.out.println("Updating My Product");
+		ProductDAO.updateProduct(new Product(products.size(), "THIS IS A NEW PRODUCT",
+				brand, vendor, productType, store, 5.99, 5.99, "M", 16, "women"));
+		product = ProductDAO.getProductById(products.size());
+		System.out.printf("%d: Name = %s, Regular Price/Sale Price: %.2f/%.2f, Size = %s, Department = %s," +
+						"Quantity = %d, BrandId = %d, VendorId = %d, StoreId = %d, Type = %d\n",
+				product.getId(), product.getName(), product.getRegularPrice(), product.getSalePrice(),
+				product.getSize(), product.getDepartment(), product.getQuantityInStore(),
+				product.getBrand().getId(), product.getVendor().getId(), product.getBrand().getId(),
+				product.getProductType().getId());
+
+		product = ProductDAO.getProductById(23);
+
+		System.out.println("Getting transactions for id = 23");
+		List<Transaction> productTransactions = ProductDAO.viewProductTrans(product);
+		for (Transaction transaction : productTransactions) {
+			System.out.printf("%d:\n Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
+					transaction.getId(), transaction.getTotal(), transaction.getProduct().getId(),
+					transaction.getStore().getId(), transaction.getCustomer().getId(),
+					transaction.getQuantityOfItem());
+		}
+
+		System.out.println("Getting shipments for id = 23");
+		List<Shipment> productShipments = ProductDAO.viewProductShipments(product);
+		for (Shipment shipment : productShipments) {
+			System.out.printf("%d: Placed = %s, Received? = %b, Store = %d, Vendor = %d, Product = %d, Quantity = %d\n",
+					shipment.getId(), shipment.getPlacedDate().toString(), shipment.getReceivedDate() != null, shipment.getStore().getId(),
+					shipment.getVendor().getId(), shipment.getProduct().getId(), shipment.getQuantityOfItem() );
+		}
 
 		// Testing SHIPMENT
 
+		vendor = VendorDAO.getVendorById(5);
+		product = ProductDAO.getProductById(3);
+		store = StoreDAO.getStoreById(2);
+
+		System.out.println("\n\nEXECUTING TESTS FOR SHIPMENT");
+		ShipmentDAO.addShipment(new Shipment(DateTime.now(), store, vendor, product, 11));
+
+		System.out.println("Getting All shipments");
+		shipments = ShipmentDAO.getAllShipments();
+		for (Shipment shipment : shipments) {
+			System.out.printf("%d: Placed = %s, Received? = %b, Store = %d, Vendor = %d, Product = %d, Quantity = %d\n",
+					shipment.getId(), shipment.getPlacedDate().toString(), shipment.getReceivedDate() != null, shipment.getStore().getId(),
+					shipment.getVendor().getId(), shipment.getProduct().getId(), shipment.getQuantityOfItem() );
+		}
+
+		System.out.println("Updating My Shipment");
+		ShipmentDAO.updateShipment(new Shipment(shipments.size() - 1, DateTime.now(), store, vendor, product, 11));
+		Shipment shipment = ShipmentDAO.getShipmentById(shipments.size());
+		System.out.printf("%d: Placed = %s, Received? = %b, Store = %d, Vendor = %d, Product = %d, Quantity = %d\n",
+				shipment.getId(), shipment.getPlacedDate().toString(), shipment.getReceivedDate() != null, shipment.getStore().getId(),
+				shipment.getVendor().getId(), shipment.getProduct().getId(), shipment.getQuantityOfItem() );
+
+
 		// Testing CUSTOMER
+
+		System.out.println("\n\nEXECUTING TESTS FOR CUSTOMER");
+
+		System.out.println("Adding new customer to the db");
+		Customer customer = new Customer();
+		customer.setId(1);
+		customer.setFirstName("Tia");
+		customer.setLastName("Bendlin");
+		customer.setEmail("email@email.com");
+		customer.setPhoneNumber("5851234567");
+		customer.setAddress("A Place Where No One Knows");
+		customer.setGender("female");
+		customer.setDOB(new Date(System.currentTimeMillis()));
+		customer.setCreditCard("123456773920489573");
+		customer.setFrequentShopper(true);
+
+		CustomerDAO.addCustomer(customer);
+
+		System.out.println("Getting all customers");
+		List<Customer> customers = CustomerDAO.getAllCustomers();
+		for (Customer c : customers) {
+			System.out.printf("%d: %s\n", c.getId(), c.getEmail());
+		}
+
+		/*System.out.println("Updating customer and getting it");
+		Customer updatedCustomer = new Customer();
+		updatedCustomer.setId(customers.size());
+		updatedCustomer.setFirstName("Theodora");
+		updatedCustomer.setLastName("Bendlin");
+		updatedCustomer.setEmail("email@email.com");
+		updatedCustomer.setPhoneNumber("5851234567");
+		updatedCustomer.setAddress("A Place Where No One Knows");
+		updatedCustomer.setGender("female");
+		updatedCustomer.setDOB(new Date(System.currentTimeMillis()));
+		updatedCustomer.setCreditCard("123456773920489573");
+		updatedCustomer.setFrequentShopper(true);
+		CustomerDAO.updateCustomer(updatedCustomer);*/
+
+		customer = CustomerDAO.getCustomerById(customers.size());
+		System.out.printf("%d: %s\n", customer.getId(), customer.getEmail());
+
+		customer = CustomerDAO.getCustomerById(5);
+		/*List<Transaction> customerTransactions = CustomerDAO.viewCustomerTransactions(customer);
+		for (Transaction transaction : customerTransactions) {
+			System.out.printf("%d:\n Total = %.2f, Product = %d, Store = %d, Customer = %d, Quantity = %d\n",
+					transaction.getId(), transaction.getTotal(), transaction.getProduct().getId(),
+					transaction.getStore().getId(), transaction.getCustomer().getId(),
+					transaction.getQuantityOfItem());
+		}*/
+
+		// Testing TRANSACTION
+
 	}
 }
