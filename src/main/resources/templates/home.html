@@ -56,9 +56,11 @@
                                 <li class="list-group-item">
                                         <form>
                                             <td th:text="${item.id}"></td>
-                                            <td th:input value="${myItem.name}" id="items_name" type="text" class="validate"></td>
-                                            <td th:input value="${myItem.regularPrice}" id="items_price" type="text" class="validate"></td>
-                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${myItem.id}" action="/add_item"><i class="material-icons">add</i></button>
+                                            <td th:text="${item.name}"></td>
+                                            <td th:text="${item.regularPrice}"></td>
+                                            <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
+                                            <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
+                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${item.id}" action="/add_item"><i class="material-icons">add</i></button>
                                             </td>
                                         </form>
                                 </li>
