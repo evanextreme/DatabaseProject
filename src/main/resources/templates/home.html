@@ -70,7 +70,7 @@
                                 <td th:text="${item.regularPrice}"></td>
                                 <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
                                 <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
-                                <td><button class="btn waves-effect waves-light red" onclick="addItem(${item.id})"><i class="material-icons">add</i></button>
+                                <td><button class="btn waves-effect waves-light red" th:onclick="'addItem(${item.id});'"><i class="material-icons">add</i></button>
                                 </td>
                                 </form>
                             </tr>
