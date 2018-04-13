@@ -44,7 +44,7 @@
             <i class="large material-icons">shopping_cart</i>
           </a>
         <ul>
-            <li><a class="btn-floating red tooltipped" data-position="left" data-tooltip="Return cart" href="#return"><i class="material-icons">remove_shopping_cart</i></a></li>
+            <li><a class="btn-floating red tooltipped" data-position="left" data-tooltip="Return cart" onclick="getReturn()"><i class="material-icons">remove_shopping_cart</i></a></li>
             <li><a class="btn-floating green tooltipped" data-position="left" data-tooltip="Checkout cart" onclick="getTotal()"><i class="material-icons">add_shopping_cart</i></a></li>
         </ul>
     </div>
@@ -65,14 +65,14 @@
                         <tbody>
                             <tr th:each="item : ${items}">
 
-                                        <td th:text="${item.id}"></td>
-                                        <td th:text="${item.name}"></td>
-                                        <td th:text="${item.regularPrice}"></td>
-                                        <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
-                                        <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
-                                        <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${item.id}" action="/add_item"><i class="material-icons">add</i></button>
-                                        </td>
-                                    </form>
+                                <td th:text="${item.id}"></td>
+                                <td th:text="${item.name}"></td>
+                                <td th:text="${item.regularPrice}"></td>
+                                <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
+                                <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
+                                <td><button class="btn waves-effect waves-light red" onclick="addItem(${item.id})"><i class="material-icons">add</i></button>
+                                </td>
+                                </form>
                             </tr>
                         </tbody>
                     </table>
@@ -162,13 +162,15 @@
         <h1>CHECKOUT</h1>
         <div class="row">
             <div class="col s9">
-                <div class="input-field col s6">
-                    <input name="add_item_field" type="text" class="validate"></input>
-                </div>
-                <div class="col s3">
-                    <button class="btn waves-effect waves-light" id="memes" name="add_item_button">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input name="add_item_field" type="text" class="validate"></input>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn waves-effect waves-light" id="memes" name="add_item_button">
                         <i class="material-icons">add</i>
                     </button>
+                    </div>
                 </div>
                 <form id="cart">
                     <ul class="list-group">
@@ -214,22 +216,7 @@
         $(document).ready(function() {
             $("button[name='add_item_button']").click(function() {
                 let itemId = $("input[name='add_item_field']").val();
-                let name = $('#table tr:eq(' + itemId +') td:eq(1)').text();
-                let price = $('#table tr:eq(' + itemId+') td:eq(2)').text();
-                $('#checkout-body').append(
-                    `
-                    <tr id="item` + maxCart + `">
-                        <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
-                    `" type="text" class="validate"></td>
-                        <td><input value="1" placeholder="Qty" id="qty` + maxCart +
-                    `" type="text" class="validate"></td>
-                        <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
-                    `" type="text" class="validate"></td>
-                        <td><a class="btn-floating grey waves-red" onclick="removeItem(`+ maxCart +`)"><i class="material-icons">delete_forever</i></a></td>
-                    </tr>
-                    `
-                );
-                maxCart = maxCart + 1;
+                addItem(itemId);
             });
             $('.fixed-action-btn').floatingActionButton();
             $('.tooltipped').tooltip();
@@ -238,6 +225,25 @@
 
         function removeItem(cartId){
             $('#item' + cartId).remove();
+        }
+
+        function addItem(itemId){
+            let name = $('#table tr:eq(' + itemId +') td:eq(1)').text();
+            let price = $('#table tr:eq(' + itemId +') td:eq(2)').text();
+            $('#checkout-body').append(
+                `
+                <tr id="item` + maxCart + `">
+                    <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
+                `" type="text" class="validate"></td>
+                    <td><input value="1" placeholder="Qty" id="qty` + maxCart +
+                `" type="text" class="validate"></td>
+                    <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
+                `" type="text" class="validate"></td>
+                    <td><a class="btn-floating grey waves-red" onclick="removeItem(`+ maxCart +`)"><i class="material-icons">delete_forever</i></a></td>
+                </tr>
+                `
+            );
+            maxCart = maxCart + 1;
         }
 
         function getTotal() {
@@ -260,6 +266,10 @@
             $("#total-text").text("$" + total);
 
             $('#total').modal('open');
+        }
+
+        function getReturn(){
+            $('#return').modal('open');
         }
 
         function setDiscount(aDiscount) {
