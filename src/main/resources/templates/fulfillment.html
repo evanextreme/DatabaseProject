@@ -40,38 +40,51 @@
 </head>
 
 <body>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red pulse" onclick="getNewOrder()">
+            <i class="large material-icons">shopping_cart</i>
+        </a>
+    </div>
 
     <div class="container">
         <h1>Order Fulfillment</h1>
-        <div class="row">
-            <form class="col s12">
+        <div id="new-order" class="modal">
+            <div class="modal-content">
                 <div class="row">
-                    <div class="input-field col s12">
-                        <input placeholder="Shipment ID" id="shipment" type="text" class="validate">
-                    </div>
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Shipment ID" id="shipment" type="text" class="validate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Received Date" id="received" type="text" class="datepicker">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Quantity" id="quantity" type="text" class="validate">
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input placeholder="Received Date" id="received" type="text" class="datepicker">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input placeholder="Quantity" id="quantity" type="text" class="validate">
-                    </div>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
                 <button class="btn waves-effect waves-light red" type="submit" name="action">Submit
                    <i class="material-icons right">send</i>
                  </button>
-            </form>
+            </div>
 
         </div>
-        </form>
+
     </div>
 
 </body>
@@ -80,6 +93,9 @@
         $(document).ready(function() {
             $('.datepicker').datepicker();
         });
+        function getNewOrder(){
+            $('#new-order').modal('open');
+        }
     </script>
 
 </footer>
