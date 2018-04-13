@@ -37,53 +37,73 @@
             </ul>
         </div>
     </nav>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red pulse" onclick="getNewOrder()">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 </head>
 
 <body>
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red pulse" onclick="getNewOrder()">
-            <i class="large material-icons">shopping_cart</i>
-        </a>
-    </div>
+
 
     <div class="container">
         <h1>Order Fulfillment</h1>
         <div id="new-order" class="modal">
-            <div class="modal-content">
-                <div class="row">
-                    <form class="col s12">
+            <form>
+                <div class="modal-content">
+                    <div class="row">
                         <div class="row">
-                            <div class="input-field col s12">
+                            <div class="input-field col s6">
                                 <input placeholder="Shipment ID" id="shipment" type="text" class="validate">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input placeholder="Received Date" id="received" type="text" class="datepicker">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
+                            <div class="input-field col s6">
                                 <input placeholder="Quantity" id="quantity" type="text" class="validate">
                             </div>
                         </div>
-
-                    </form>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="Received Date" id="received" type="text" class="datepicker">
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
-                <button class="btn waves-effect waves-light red" type="submit" name="action">Submit
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
+                    <button class="btn waves-effect waves-light red" type="submit" action="/new_shipment">Submit
                    <i class="material-icons right">send</i>
                  </button>
-            </div>
-
+                </div>
+            </form>
         </div>
+
+        <ul class="list-group" id="catalogue-table">
+
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Sent Date</th>
+                        <th>Received Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.sent_date}"></td>
+                        <td th:text="${order.received_date}"></td>
+                        <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
+                        <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
+                        </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </ul>
 
     </div>
 
@@ -93,7 +113,8 @@
         $(document).ready(function() {
             $('.datepicker').datepicker();
         });
-        function getNewOrder(){
+
+        function getNewOrder() {
             $('#new-order').modal('open');
         }
     </script>
