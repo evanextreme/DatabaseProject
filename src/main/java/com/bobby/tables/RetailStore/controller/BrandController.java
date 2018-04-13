@@ -1,6 +1,5 @@
 package com.bobby.tables.RetailStore.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bobby.tables.RetailStore.models.Brand;
-import com.bobby.tables.RetailStore.models.Product;
 import com.bobby.tables.RetailStore.repository.BrandDAO;
 import com.bobby.tables.RetailStore.repository.ProductDAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class BrandController {
@@ -38,14 +37,9 @@ public class BrandController {
 	//
 	
 	@RequestMapping("/")
-    public String home(Model model) {
-//		List<Product> myList = ProductDAO.getAllProducts();
-//		for (Product product : myList) {
-//			System.out.println("Product: " + product);
-//		}
-		
+    public String home(Model model) throws JsonProcessingException {
 		model.addAttribute("items", ProductDAO.getAllProducts());
-		model.addAttribute("cart", ProductDAO.getAllProducts());
+		model.addAttribute("cart", BrandDAO.getAllBrands());
         return "home";
     }
 	
