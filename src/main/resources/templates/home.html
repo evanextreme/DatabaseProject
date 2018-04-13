@@ -38,7 +38,7 @@
 </head>
 
 <body>
-
+    <div th:with="products=${items}">
     <div class="container">
         <div id="catalogue" class="modal">
             <div class="modal-content">
@@ -52,26 +52,19 @@
                                 <th>Price</th>
                             </tr>
                         </thead>
-                        <tr th:each="item : ${items}">
-                            <li class="list-group-item">
-                                <tbody>
-                                    <tr>
+                        <tbody>
+                            <tr th:each="item : ${products}">
+                                <li class="list-group-item">
                                         <form>
-                                            <div th:if="${item != null}">
-                                               <td th:text="${item.id}"></td>
-                                            </div>
-                                            <div th:unless="${item == null}">
-                                            </div>
-                                            <!-- <td th:text="#item.getParameter('id')"></td> -->
-                                            <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td>
-                                            <td th:input value="${item.price}" id="items_price" type="text" class="validate"></td>
-                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${items.id}" action="/add_item"><i class="material-icons">add</i></button>
+                                            <td th:text="${item.id}"></td>
+                                            <td th:input value="${myItem.name}" id="items_name" type="text" class="validate"></td>
+                                            <td th:input value="${myItem.regularPrice}" id="items_price" type="text" class="validate"></td>
+                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${myItem.id}" action="/add_item"><i class="material-icons">add</i></button>
                                             </td>
                                         </form>
-                                    </tr>
-                                </tbody>
-                            </li>
-                        </tr>
+                                </li>
+                            </tr>
+                        </tbody>
                     </table>
                 </ul>
             </div>
@@ -151,21 +144,16 @@
                                 </tr>
                             </thead>
                             <div id="checkout-list">
+                                <tbody>
                                 <tr th:each="myCart : ${cart}">
                                     <li class="list-group-item">
-
-                                        <tbody>
-                                            <tr>
-                                                <div th:if="${myCart != null}">
-                                                    <td th:text="${myCart.id}"></td>
-                                                    <td th:text="${myCart.name}"></td>
-                                                    <td th:text="${myCart.designer}"></td>
-                                                </div>
-                                                <div th:unless="${myCart == null}">
-                                                </div>
-                                                <td><a class="btn-floating grey waves-red"><i class="material-icons">delete_forever</i></a></td>
-                                            </tr>
-                                        </tbody>
+                                        <td th:text="${myCart.id}"></td>
+                                        <td th:text="${myCart.name}"></td>
+                                        <td th:text="${myCart.designer}"></td>
+                                        <td><a class="btn-floating grey waves-red"><i class="material-icons">delete_forever</i></a></td>
+                                    </li>
+                                </tr>
+                                </tbody>
                             </div>
                         </table>
                         </li>
