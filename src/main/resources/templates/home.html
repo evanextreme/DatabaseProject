@@ -52,9 +52,9 @@
     <div class="container" id="main">
         <div id="catalogue" class="modal">
             <div class="modal-content">
-                <ul class="list-group">
+                <ul class="list-group" id="catalogue-table">
 
-                    <table>
+                    <table id="table">
                         <thead>
                             <tr>
                                 <th>Number</th>
@@ -64,8 +64,7 @@
                         </thead>
                         <tbody>
                             <tr th:each="item : ${items}">
-                                <li class="list-group-item">
-                                    <form>
+
                                         <td th:text="${item.id}"></td>
                                         <td th:text="${item.name}"></td>
                                         <td th:text="${item.regularPrice}"></td>
@@ -74,7 +73,6 @@
                                         <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${item.id}" action="/add_item"><i class="material-icons">add</i></button>
                                         </td>
                                     </form>
-                                </li>
                             </tr>
                         </tbody>
                     </table>
@@ -215,15 +213,17 @@
         const stateTax = .08;
         $(document).ready(function() {
             $("button[name='add_item_button']").click(function() {
-                itemId = $("input[name='add_item_field']").val();
+                let itemId = $("input[name='add_item_field']").val();
+                let name = $('#table tr:eq(' + itemId +') td:eq(1)').text();
+                let price = $('#table tr:eq(' + itemId+') td:eq(2)').text();
                 $('#checkout-body').append(
                     `
                     <tr id="item` + maxCart + `">
-                        <td><input placeholder="Name" id="name` + maxCart +
+                        <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
                     `" type="text" class="validate"></td>
-                        <td><input placeholder="Qty" id="qty` + maxCart +
+                        <td><input value="1" placeholder="Qty" id="qty` + maxCart +
                     `" type="text" class="validate"></td>
-                        <td><input placeholder="Price" id="price` + maxCart +
+                        <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
                     `" type="text" class="validate"></td>
                         <td><a class="btn-floating grey waves-red" onclick="removeItem(`+ maxCart +`)"><i class="material-icons">delete_forever</i></a></td>
                     </tr>
