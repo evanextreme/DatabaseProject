@@ -38,7 +38,6 @@
 </head>
 
 <body>
-    <div th:with="products=${items}">
     <div class="container">
         <div id="catalogue" class="modal">
             <div class="modal-content">
@@ -53,7 +52,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="item : ${products}">
+                            <tr th:each="item : ${items}">
                                 <li class="list-group-item">
                                         <form>
                                             <td th:text="${item.id}"></td>
