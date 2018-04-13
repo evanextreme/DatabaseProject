@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonView;
  * Model class for Product table
  */
 public class Product {
+	
+	public interface PublicView {}
 
     /** Default constructor */
     public Product() {}
@@ -43,9 +45,9 @@ public class Product {
 
     // Private fields
 
-    public int id;
+    private int id;
 
-    public String name;
+    private String name;
 
     private double regularPrice;
 
@@ -67,101 +69,101 @@ public class Product {
     private Brand brand;
 
     // Getter and setters for private fields
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public int getId() {
         return id;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setId(int id) {
         this.id = id;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public String getName() {
         return name;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public double getRegularPrice() {
         return regularPrice;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setRegularPrice(double regularPrice) {
         this.regularPrice = regularPrice;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public int getQuantityInStore() {
         return quantityInStore;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setQuantityInStore(int quantityInStore) {
         this.quantityInStore = quantityInStore;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public String getDepartment() {
         return department;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setDepartment(String department) {
         this.department = department;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public String getSize() {
         return size;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setSize(String size) {
         this.size = size;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public double getSalePrice() {
         return salePrice;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public Vendor getVendor() {
         return vendor;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public Store getStore() {
         return store;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setStore(Store store) {
         this.store = store;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public Brand getBrand() {
         return brand;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public ProductType getProductType() {
         return productType;
     }
-    @JsonView(Product.class)
+    @JsonView(PublicView.class)
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
