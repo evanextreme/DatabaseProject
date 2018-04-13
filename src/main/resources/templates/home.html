@@ -31,15 +31,25 @@
             <a href="#" class="brand-logo center">POS</a>
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="home.html">Checkout</a></li>
-                <li><a href="return.html">Return</a></li>
+                <li><a href="order.html">Order</a></li>
+                <li><a href="stats.html">Stats</a></li>
             </ul>
         </div>
     </nav>
 </head>
 
 <body>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red pulse">
+            <i class="large material-icons">shopping_cart</i>
+          </a>
+        <ul>
+            <li><a class="btn-floating red tooltipped" data-position="left" data-tooltip="Return cart" href="#return"><i class="material-icons">remove_shopping_cart</i></a></li>
+            <li><a class="btn-floating green tooltipped" data-position="left" data-tooltip="Checkout cart" onclick="getTotal()"><i class="material-icons">add_shopping_cart</i></a></li>
+        </ul>
+    </div>
 
-    <div class="container">
+    <div class="container" id="main">
         <div id="catalogue" class="modal">
             <div class="modal-content">
                 <ul class="list-group">
@@ -52,20 +62,15 @@
                                 <th>Price</th>
                             </tr>
                         </thead>
-                        <tr th:each="item : ${items}">
+                        <tr th:each="items : ${items}">
                             <li class="list-group-item">
                                 <tbody>
                                     <tr>
                                         <form>
-                                            <div th:if="${item != null}">
-                                               <td th:text="${item.id}"></td>
-                                            </div>
-                                            <div th:unless="${item == null}">
-                                            </div>
-                                            <!-- <td th:text="#item.getParameter('id')"></td> -->
-                                            <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td>
-                                            <td th:input value="${item.price}" id="items_price" type="text" class="validate"></td>
-                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${items.id}" action="/add_item"><i class="material-icons">add</i></button>
+                                            <td th:text="${items.id}"></td>
+                                            <td th:input value="${items.name}" id="items_name" type="text" class="validate"></td>
+                                            <td th:input value="${items.price}" id="items_price" type="text" class="validate"></td>
+                                            <td><button class="btn waves-effect waves-light red" type="submit" name="submit" value="${items.id}"><i class="material-icons">add</i></button>
                                             </td>
                                         </form>
                                     </tr>
@@ -87,16 +92,17 @@
                 <div class="container">
                     <h4>Discounts</h4>
                     <div class="row">
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="10" action="/add_discount"><i class="material-icons left">attach_money</i>Senior Discount 10%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="15" action="/add_discount"><i class="material-icons left">attach_money</i>Employee Discount 15%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="20" action="/add_discount"><i class="material-icons left">attach_money</i>Teacher Discount 20%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="25" action="/add_discount"><i class="material-icons left">attach_money</i>Military Discount 25%</button></div><br><br>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="30" action="/add_discount"><i class="material-icons left">attach_money</i>30%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="35" action="/add_discount"><i class="material-icons left">attach_money</i>35%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="40" action="/add_discount"><i class="material-icons left">attach_money</i>40%</button></div><br>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="45" action="/add_discount"><i class="material-icons left">attach_money</i>45%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="50" action="/add_discount"><i class="material-icons left">attach_money</i>50%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="55" action="/add_discount"><i class="material-icons left">attach_money</i>55%</button></div>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="10" onclick="setDiscount(10)"><i class="material-icons left">attach_money</i>Senior Discount 10%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="15" onclick="setDiscount(15)"><i class="material-icons left">attach_money</i>Employee Discount 15%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="20" onclick="setDiscount(20)"><i class="material-icons left">attach_money</i>Teacher Discount 20%</button></div><br>
+                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="25" onclick="setDiscount(25)"><i class="material-icons left">attach_money</i>Military Discount 25%</button></div><br><br>
+
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="30" onclick="setDiscount(30)"><i class="material-icons left">attach_money</i>30%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="35" onclick="setDiscount(35)"><i class="material-icons left">attach_money</i>35%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="40" onclick="setDiscount(40)"><i class="material-icons left">attach_money</i>40%</button></div><br>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="45" onclick="setDiscount(45)"><i class="material-icons left">attach_money</i>45%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="50" onclick="setDiscount(50)"><i class="material-icons left">attach_money</i>50%</button></div>
+                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="55" onclick="setDiscount(55)"><i class="material-icons left">attach_money</i>55%</button></div>
                     </div>
                 </div>
             </div>
@@ -105,29 +111,55 @@
             </div>
         </div>
         <div id="total" class="modal">
-            <div class="modal-content">
-                <div class="container">
-                    <h4>Total</h4>
+                <div class="modal-content">
+                    <div class="container">
+                        <h4>Total</h4>
                         <div class="row">
-                            <div class="col s3">Total:</div>
-                            <div class="col s3">$1.00</div>
+                            <div class="col s3">Subtotal:</div>
+                            <div class="col s3" id="subtotal-text">$1.00</div>
                         </div>
                         <div class="row">
                             <div class="col s3">Tax:</div>
-                            <div class="col s3">$1.00</div>
+                            <div class="col s3" id="tax-text">$1.00</div>
                         </div>
                         <div class="row">
-                            <div class="col s3">Subtotal:</div>
-                            <div class="col s3">$1.00</div>
+                            <div class="col s3">Total:</div>
+                            <div class="col s3" id="total-text">$1.00</div>
                         </div>
+                        <div class="input-field col s12">
+                            <select>
+                            <option value="credit" selected>Credit</option>
+                            <option value="cash">Cash</option>
+                          </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
-                <button href="#!" class="waves-effect waves-red btn red" action="/checkout">Checkout</button>
-            </div>
-
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
+                    <a class="waves-effect waves-red btn red" onclick="checkoutCart()">Checkout</a>
+                </div>
         </div>
+
+        <div id="return" class="modal">
+            <form action="#">
+                <div class="modal-content">
+                    <div class="container">
+                        <h4>Return these items?</h4>
+                        <div class="input-field col s12">
+                            <select>
+                            <option value="credit" selected>Credit</option>
+                            <option value="cash">Cash</option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
+                    <a class="waves-effect waves-red btn red" onclick="returnCart()">Return</a>
+                </div>
+            </form>
+        </div>
+
 
         <h1>CHECKOUT</h1>
         <div class="row">
@@ -140,7 +172,7 @@
                         <i class="material-icons">add</i>
                     </button>
                 </div>
-                <form id="checkout">
+                <form id="cart">
                     <ul class="list-group">
                         <table>
                             <thead>
@@ -151,35 +183,26 @@
                                 </tr>
                             </thead>
                             <div id="checkout-list">
-                                <tr th:each="myCart : ${cart}">
-                                    <li class="list-group-item">
-
-                                        <tbody>
-                                            <tr>
-                                                <div th:if="${myCart != null}">
-                                                    <td th:text="${myCart.id}"></td>
-                                                    <td th:text="${myCart.name}"></td>
-                                                    <td th:text="${myCart.designer}"></td>
-                                                </div>
-                                                <div th:unless="${myCart == null}">
-                                                </div>
-                                                <td><a class="btn-floating grey waves-red"><i class="material-icons">delete_forever</i></a></td>
-                                            </tr>
-                                        </tbody>
+                                <tr>
+                                    <tbody id="checkout-body">
+                                        <!-- Where the meme magic comes to life -->
+                                    </tbody>
+                                </tr>
                             </div>
                         </table>
-                        </li>
-                        </tr>
 
                     </ul>
 
                 </form>
-                <button class="btn-large waves-effect waves-light red modal-trigger" href="#total"><i class="material-icons left">attach_money</i>Checkout</button>
-
             </div>
-            <div class="col s3">
-                <a class="waves-effect waves-light btn modal-trigger" href="#catalogue">Catalogue</a>
-                <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a>
+            <div class="row">
+                <div class="col s3">
+                    <a class="waves-effect waves-light btn modal-trigger" href="#catalogue">Catalogue</a>
+                    <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a>
+                </div>
+                <div class="col s3">
+                    <h6 id="discount-text">No discounts.<h6>
+                </div>
             </div>
         </div>
     </div>
@@ -187,17 +210,74 @@
 </body>
 <footer>
     <script type="text/javascript">
+        var maxCart = 0;
+        var discount = 0;
+        const stateTax = .08;
         $(document).ready(function() {
             $("button[name='add_item_button']").click(function() {
-                alert($("input[name='add_item_field']").val());
-                var newItem = `
-            <text="beep"/>
-
-            `
-                $("checkout-list").append(newItem); // Append new elements
+                itemId = $("input[name='add_item_field']").val();
+                $('#checkout-body').append(
+                    `
+                    <tr id="item` + maxCart + `">
+                        <td><input placeholder="Name" id="name` + maxCart +
+                    `" type="text" class="validate"></td>
+                        <td><input placeholder="Qty" id="qty` + maxCart +
+                    `" type="text" class="validate"></td>
+                        <td><input placeholder="Price" id="price` + maxCart +
+                    `" type="text" class="validate"></td>
+                        <td><a class="btn-floating grey waves-red" onclick="removeItem(`+ maxCart +`)"><i class="material-icons">delete_forever</i></a></td>
+                    </tr>
+                    `
+                );
+                maxCart = maxCart + 1;
             });
+            $('.fixed-action-btn').floatingActionButton();
+            $('.tooltipped').tooltip();
 
         });
+
+        function removeItem(cartId){
+            $('#item' + cartId).remove();
+        }
+
+        function getTotal() {
+            var subtotal = 0;
+            for (i = 0; i < maxCart; i++) {
+                if ($('#name' + i).length) {
+                    let qty = document.getElementById("qty" + i).value;
+                    let price = document.getElementById("price" + i).value;
+                    let current = qty * (price - (price * discount));
+                    subtotal = subtotal + current;
+                }
+            }
+            var tax = subtotal * stateTax;
+            var total = subtotal + tax;
+            total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
+            tax = parseFloat(Math.round(tax * 100) / 100).toFixed(2);
+            subtotal = parseFloat(Math.round(subtotal * 100) / 100).toFixed(2);
+            $("#subtotal-text").text("$" + subtotal);
+            $("#tax-text").text("$" + tax);
+            $("#total-text").text("$" + total);
+
+            $('#total').modal('open');
+        }
+
+        function setDiscount(aDiscount) {
+            discount = aDiscount * .01;
+            $("#discount-text").text(aDiscount + "% discount applied!");
+        }
+
+        function checkoutCart(){
+            $('#cart').attr('target','')
+            $('#cart').attr('action', (window.location.hostname + '/checkout'))
+            $('#cart').submit()
+        }
+
+        function returnCart(){
+            $('#cart').attr('target','')
+            $('#cart').attr('action', (window.location.hostname + '/return'))
+            $('#cart').submit()
+        }
     </script>
 
 </footer>
