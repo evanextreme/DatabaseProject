@@ -26,6 +26,9 @@ public class TransactionDAO {
                 }
                 t.setStore(StoreDAO.getStoreById(rs.getInt(5)));
                 t.setTotal(rs.getDouble(6));
+                if (rs.getInt(7) != 0) {
+                    t.setOriginalTransaction(TransactionDAO.getTransactionById(rs.getInt(7)));
+                }
                 trans.add(t);
             }
         } catch (SQLException ex) {
@@ -42,8 +45,14 @@ public class TransactionDAO {
         Transaction transaction = new Transaction();
         try{
             Statement statement = connection.getConnection().createStatement();
-            ResultSet list = statement.executeQuery(getTransaction);
-            transaction = fromResultSet(list).get(0);
+            ResultSet resultSet = statement.executeQuery(getTransaction);
+            List<Transaction> transactions = fromResultSet(resultSet);
+
+            if (transactions.isEmpty()) {
+                return null;
+            }
+
+            transaction = transactions.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,16 +80,30 @@ public class TransactionDAO {
      * Adds a transaction to the database
      */
     public static void addTransaction(Transaction trans){
-        String add;
-        if (trans.getDiscount() == null) {
-            add = "INSERT INTO transaction (customer_id, store_id, date, total) VALUES (" +
-                    trans.getCustomer().getId() + ", " + trans.getStore().getId() + ", '" +
-                    trans.getDate() + "', "  + trans.getTotal() + ");";
-        } else {
-            add = "INSERT INTO transaction (customer_id, store_id, discount_id, date, total) VALUES ('" +
-                    trans.getCustomer().getId() + "', '" + trans.getStore().getId() + "', '" + trans.getDiscount().getId() + "', '" +
-                    trans.getDate() + "', '" + trans.getTotal() + "');";
+        String add = "INSERT INTO transaction (customer_id, store_id, date, total";
+
+        if (trans.getDiscount() != null) {
+            add += ", discount";
         }
+
+        if (trans.getOriginalTransaction() != null) {
+            add += ", original_transaction_id";
+        }
+
+        add += ") VALUES (" +
+                trans.getCustomer().getId() + ", " + trans.getStore().getId() + ", '" +
+                trans.getDate() + "', "  + trans.getTotal();
+
+        if (trans.getDiscount() != null) {
+            add += ", " + trans.getDiscount().getId();
+        }
+
+        if (trans.getOriginalTransaction() != null) {
+            add += ", " + trans.getOriginalTransaction().getId();
+        }
+
+        add += ");";
+
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(add);
@@ -93,23 +116,22 @@ public class TransactionDAO {
      * Updates the transaction db record with the same transaction id
      */
     public static void updateTransaction(Transaction transaction) {
-        String update;
+        String update = "UPDATE transaction SET " +
+                "customer_id = " + transaction.getCustomer().getId() + ", " +
+                "store_id = " + transaction.getStore().getId() + ", ";
+
         if (transaction.getDiscount() != null) {
-            update = "UPDATE transaction SET " +
-                    "customer_id = " + transaction.getCustomer().getId() + ", " +
-                    "store_id = " + transaction.getStore().getId() + ", " +
-                    "discount_id = " + transaction.getDiscount().getId() + ", " +
-                    "date = '" + transaction.getDate() + "', " +
-                    "total = " + transaction.getTotal() +
-                    " WHERE id = " + transaction.getId() + ";";
-        } else {
-            update = "UPDATE transaction SET " +
-                    "customer_id = " + transaction.getCustomer().getId() + ", " +
-                    "store_id = " + transaction.getStore().getId() + ", " +
-                    "date = '" + transaction.getDate() + "', " +
-                    "total = " + transaction.getTotal() +
-                    " WHERE id = " + transaction.getId() + ";";
+            update += "discount_id = " + transaction.getDiscount().getId() + ", ";
         }
+
+        if (transaction.getOriginalTransaction() != null) {
+            update += "original_transaction_id = " + transaction.getOriginalTransaction().getId() + ", ";
+        }
+
+        update += "date = '" + transaction.getDate() + "', " +
+                "total = " + transaction.getTotal() +
+                " original_transaction_id = " + transaction.getOriginalTransaction().getId() +
+                " WHERE id = " + transaction.getId() + ";";
 
         try{
             Statement state = connection.getConnection().createStatement();
