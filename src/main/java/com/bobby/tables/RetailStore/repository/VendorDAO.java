@@ -23,6 +23,20 @@ public class VendorDAO {
 
     private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
+    public static List<Vendor> fromResultSet(ResultSet resultSet) {
+        List<Vendor> vendors = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                vendors.add(new Vendor(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vendors;
+    }
+
     /**
      * Get Vendor with specified Id
      */
@@ -33,7 +47,7 @@ public class VendorDAO {
         try {
             Statement statement = connection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(getStatement);
-            vendor = Vendor.fromResultSet(resultSet).get(0);
+            vendor = fromResultSet(resultSet).get(0);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -51,7 +65,7 @@ public class VendorDAO {
         try {
             Statement statement = connection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(getStatement);
-            vendors = Vendor.fromResultSet(resultSet);
+            vendors = fromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }

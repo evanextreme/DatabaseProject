@@ -1,11 +1,64 @@
 package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
+import org.thymeleaf.util.DateUtils;
 
 /**
  * Model for the Transaction table
  */
 public class Transaction {
+
+	/** Default public constructor */
+	public Transaction() {}
+
+	/** Alternate constructor with fields */
+	public Transaction(int id, Customer customer, Store store, Discount discount, DateTime date, double total) {
+		this.id = id;
+		this.customer = customer;
+		this.store = store;
+		this.discount = discount;
+		this.date = date;
+		this.total = total;
+	}
+
+	/** Alternate constructor with fields */
+	public Transaction(Customer customer, Store store, Discount discount, DateTime date, double total) {
+		this.customer = customer;
+		this.store = store;
+		this.discount = discount;
+		this.date = date;
+		this.total = total;
+	}
+
+	/** Alternate constructor with fields */
+	public Transaction(int id, Customer customer, Store store, DateTime date, double total) {
+		this.id = id;
+		this.customer = customer;
+		this.store = store;
+		this.date = date;
+		this.total = total;
+	}
+
+	/** Alternate constructor with fields */
+	public Transaction(Customer customer, Store store, DateTime date, double total) {
+		this.customer = customer;
+		this.store = store;
+		this.date = date;
+		this.total = total;
+	}
+
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Transaction #" + id);
+		System.out.println(">\tCustomer: " + customer.getId());
+		System.out.println(">\tStore: " + store.getId());
+		System.out.println(">\tDate: " + date.toString());
+		System.out.println(">\tTotal: $" + total);
+	}
 	
 	// Private fields
 
@@ -18,10 +71,6 @@ public class Transaction {
 	private Discount discount;
 
 	private DateTime date;
-
-	private int quantityOfItem;
-
-	private Product product;
 
 	private double total;
 	
@@ -65,28 +114,12 @@ public class Transaction {
 		this.date = date;
 	}
 
-	public int getQuantityOfItem() {
-		return quantityOfItem;
-	}
-
-	public void setQuantityOfItem(int quantityOfItem) {
-		this.quantityOfItem = quantityOfItem;
-	}
-
 	public double getTotal() {
 		return total;
 	}
 
 	public void setTotal(double total) {
 		this.total = total;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
 	}
 
 }

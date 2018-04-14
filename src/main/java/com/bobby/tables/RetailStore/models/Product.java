@@ -43,6 +43,38 @@ public class Product {
         this.productType = productType;
     }
 
+    /**
+     * Prints out all info for debugging application
+     * Assumes debugging record from database (so all required fields
+     * like id are present)
+     */
+    public void debug() {
+        System.out.println("Product #" + id);
+        System.out.println(">\tName: " + name);
+        System.out.println(">\tSize: " + size);
+        System.out.println(">\tRegular Price: $" + regularPrice);
+        if (regularPrice != salePrice) {
+            System.out.println(">\tSale Price: $" + salePrice);
+        }
+        System.out.println(">\tDepartment: " + department);
+        System.out.println(">\tStore: " + store.getId());
+        System.out.println(">\tVendor: " + vendor.getName());
+        System.out.println(">\tBrand: " + brand.getId());
+        System.out.println(">\tQuantity in Store: " + quantityInStore);
+    }
+
+    /**
+     * Gets the sale price if product is on sale, otherwise gets the
+     * regular price of the product
+     */
+    public double getCurrentPrice() {
+        if (salePrice == 0 || salePrice == regularPrice) {
+            return regularPrice;
+        }
+
+        return salePrice;
+    }
+
     // Private fields
 
     private int id;

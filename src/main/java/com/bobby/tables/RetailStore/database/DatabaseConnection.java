@@ -58,7 +58,7 @@ public class DatabaseConnection {
     public void initializeDbAndTables() {
         String filenamePrefix = "db\\DML\\";
         String[] DMLFilenames = new String[] {"brand.sql", "discount.sql", "product_type.sql", "customer.sql", "store.sql",
-                "vendor.sql", "product.sql", "shipment.sql", "transaction.sql",};
+                "vendor.sql", "product.sql", "shipment.sql"};
         try {
             for (int index = 0; index < DMLFilenames.length; index++) {
                 String createStatement = "RUNSCRIPT FROM \'" + filenamePrefix + DMLFilenames[index] + "\'";

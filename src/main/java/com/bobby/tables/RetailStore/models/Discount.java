@@ -35,6 +35,16 @@ public class Discount {
 		return price * (percentage * 0.01);
 	}
 
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Discount #" + id);
+		System.out.println(">\tPercent off: " + percentage + "%");
+	}
+
 	// Getter and setter methods for private fields
 
 	public int getId(){

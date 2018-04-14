@@ -1,5 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
+import org.thymeleaf.util.DateUtils;
+
 import java.sql.Date;
 
 /**
@@ -28,6 +30,24 @@ public class Customer {
 	private String creditCard;
 
 	private boolean frequentShopper;
+
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Customer #" + id);
+		if (isFrequentShopper()) {
+			System.out.println(">\tFirst Name: " + first);
+			System.out.println(">\tLast Name: " + last);
+			System.out.println(">\tEmail: " + email);
+			System.out.println(">\tAddress: " + address);
+			System.out.println(">\tGender: " + gender);
+			System.out.println(">\tDate of Birth: " + dob.toString());
+			System.out.println(">\tCredit card: " + creditCard);
+		}
+	}
 
 	// Getter and setter methods for private fields
 

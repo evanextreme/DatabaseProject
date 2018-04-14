@@ -25,9 +25,7 @@ public class TransactionDAO {
                     t.setDiscount(DiscountDAO.getDiscountById((rs.getInt(4))));
                 }
                 t.setStore(StoreDAO.getStoreById(rs.getInt(5)));
-                t.setQuantityOfItem(rs.getInt(6));
-                t.setProduct(ProductDAO.getProductById(rs.getInt(7)));
-                t.setTotal(rs.getDouble(8));
+                t.setTotal(rs.getDouble(6));
                 trans.add(t);
             }
         } catch (SQLException ex) {
@@ -75,15 +73,13 @@ public class TransactionDAO {
     public static void addTransaction(Transaction trans){
         String add;
         if (trans.getDiscount() == null) {
-            add = "INSERT INTO transaction (customer_id, store_id, date, quantity, product_id, total) VALUES (" +
+            add = "INSERT INTO transaction (customer_id, store_id, date, total) VALUES (" +
                     trans.getCustomer().getId() + ", " + trans.getStore().getId() + ", '" +
-                    trans.getDate() + "', " + trans.getQuantityOfItem() + ", " + trans.getProduct().getId() + ", " +
-                    trans.getTotal() + ");";
+                    trans.getDate() + "', "  + trans.getTotal() + ");";
         } else {
-            add = "INSERT INTO transaction (customer_id, store_id, discount_id, date, quantity, product_id, total) VALUES ('" +
+            add = "INSERT INTO transaction (customer_id, store_id, discount_id, date, total) VALUES ('" +
                     trans.getCustomer().getId() + "', '" + trans.getStore().getId() + "', '" + trans.getDiscount().getId() + "', '" +
-                    trans.getDate() + "', '" + trans.getQuantityOfItem() + "', '" + trans.getProduct().getId() + "', '" +
-                    trans.getTotal() + "');";
+                    trans.getDate() + "', '" + trans.getTotal() + "');";
         }
         try{
             Statement state = connection.getConnection().createStatement();
@@ -102,8 +98,6 @@ public class TransactionDAO {
                 "store_id = " + transaction.getStore().getId() + ", " +
                 "discount_id = " + transaction.getDiscount().getId() + ", " +
                 "date = '" + transaction.getDate() + "', " +
-                "quantity = " + transaction.getQuantityOfItem() + ", " +
-                "product_id = " + transaction.getProduct().getId() + ", " +
                 "total = " + transaction.getTotal() + ", " +
                 " WHERE id = " + transaction.getId() + ";";
         try{

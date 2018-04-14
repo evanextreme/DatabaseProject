@@ -22,6 +22,18 @@ public class Store {
 		this.address = address;
 		this.email = email;
 	}
+
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Store #" + id);
+		System.out.println(">\tEmail: " + email);
+		System.out.println(">\tAddress: " + address);
+		System.out.println(">\tPhone Number: " + phoneNumber);
+	}
 	
 	// Private fields
 
