@@ -16,7 +16,7 @@ import com.bobby.tables.RetailStore.repository.ProductDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
-public class BrandController {
+public class CheckoutController {
 	
 	//
 	// API Mapping
@@ -36,7 +36,7 @@ public class BrandController {
 	// URL Mapping
 	//
 	
-	@RequestMapping("/")
+	@RequestMapping(value = {"/", "/home"})
     public String home(Model model) throws JsonProcessingException {
 		model.addAttribute("items", ProductDAO.getAllProducts());
 		model.addAttribute("cart", BrandDAO.getAllBrands());
