@@ -136,13 +136,17 @@ public class ShipmentProductDAO {
     public static boolean isShipmentAlreadyCreated(Product product) {
         String isCreated = "SELECT * FROM shipment, shipment_product " +
                             "WHERE shipment.id = shipment_product.shipment_id " +
-                            "and store = " + product.getStore().getId() +
+                            "and store_id = " + product.getStore().getId() +
                             " and product_id = " + product.getId() +
-                            " and vendor_id = " + product.getVendor() + ";";
+                            " and vendor_id = " + product.getVendor().getId() + ";";
         try{
             Statement statement = connection.getConnection().createStatement();
             ResultSet list = statement.executeQuery(isCreated);
-            return !fromResultSet(list).isEmpty();
+            int numberRows = 0;
+            while (list.next()) {
+                numberRows++;
+            }
+            return numberRows != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
