@@ -2,9 +2,7 @@ package com.bobby.tables.RetailStore.repository;
 
 import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
-import com.bobby.tables.RetailStore.models.Shipment;
-import com.bobby.tables.RetailStore.models.Store;
-import com.bobby.tables.RetailStore.models.Transaction;
+import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
 
 import java.sql.ResultSet;
@@ -17,9 +15,8 @@ public class FancyDAO {
 
     private static DatabaseConnection connection = RetailStoreApplication.getConnection();
 
-    //top transactions per store
-    //maybe take an int so it doesn't have to be top 20, can be top 5 or whatever
-    public static List<Transaction> getTop20Trans(){
+    //top x amount of transactions per store
+    public static List<Transaction> getTopTrans(int x){
         String s = "SELECT sum(quantity), product_id, store_id" +
                 "FROM transaction, product" +
                 "WHERE transaction.product_id = product.id" +
@@ -27,33 +24,22 @@ public class FancyDAO {
         List<Transaction> trans = new ArrayList<>();
         try{
             Statement statement = connection.getConnection().createStatement();
-            ResultSet rs = statement.executeQuery(s);
-            //trans = TransactionList(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return trans; //empty
-    }
-
-    //need TransactionProduct to implement this
-    /*public static List<Transaction> TransactionList(ResultSet rs){
-        List<Transaction> trans = new ArrayList<>();
-        try{
+            ResultSet rs = statement.executeQuery(s); //result set = table of store, product, and quantity
             int i = 0;
-            while(i < 20){
+            while(i < x){
                 rs.next();
-                Transaction t = new Transaction();
-                Store s = StoreDAO.getStoreById(rs.getInt(1));
-                rs.getInt(2);
-                rs.getInt(3);
-                i++;
+                Product p = ProductDAO.getProductById(rs.getInt(2));
+                List<TransactionProduct> tp = TransactionProductDAO.getTransactionProductsByProduct(p.getId());
+                for(int j = 0; j < tp.size() && i < x; j++){
+                    trans.add(tp.get(j).getTransaction());
+                    i++;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return t;
-    }*/
-
+        return trans;
+    }
 
     //list of stores in descending order of sales
     public static List<Store> getSalesPerStore(){
@@ -97,30 +83,28 @@ public class FancyDAO {
         try{
             Statement statement = connection.getConnection().createStatement();
             ResultSet rs = statement.executeQuery(s);
-            //what do i do with the result set?
+            //TODO: parse the result set, i'm confused about what's in the result set
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return x;
     }
 
-    //also need TransactionProduct to do this
+    //TODO: ???
     //TransactionProduct = (trans_id, prod_id, quantity)
     //top 3 items purchased with an item
-
-    /*public static void topPurchases(TransactionProduct tp){
-        String q1 = "SELECT tp.quantity FROM transactionProduct as S, transactionProduct as T, " +
-                "WHERE S.transaction_id = T.transaction_id AND T.transaction_id = tp.transaction_id;";
-        String q2 = "SELECT * FROM transactionProduct WHERE quantity = " + q1 + ";";
+    public static void top3Purchases(TransactionProduct tp){
+        String q1 = "SELECT transactionProduct.quantity FROM transactionProduct as S, transactionProduct as T, " +
+                "WHERE S.transaction_id = T.transaction_id AND T.transaction_id =" + tp.getTransaction().getId() + ";";
+        //String q2 = "SELECT * FROM transactionProduct WHERE quantity = " + q1 + ";";
         try{
             Statement statement = connection.getConnection().createStatement();
-            ResultSet first = statement.executeQuery(q1); //should i execute and get int before running q2?
-            ResultSet ans = statement.executeQuery(q2);
+            ResultSet rs = statement.executeQuery(q1);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return x;
 
-    }*/
+    }
 
 }
