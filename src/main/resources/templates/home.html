@@ -86,7 +86,7 @@
         </div>
 
 
-        <div id="discounts" class="modal">
+        <!-- <div id="discounts" class="modal">
             <div class="modal-content">
                 <div class="container">
                     <h4>Discounts</h4>
@@ -108,7 +108,8 @@
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
             </div>
-        </div>
+        </div> -->
+
         <div id="total" class="modal">
             <div class="modal-content">
                 <div class="container">
@@ -200,7 +201,16 @@
             <div class="row">
                 <div class="col s3">
                     <a class="waves-effect waves-light btn modal-trigger" href="#catalogue">Catalogue</a>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a>
+                    <div class="input-field col s12">
+                      <select>
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                      </select>
+                      <label>Discounts</label>
+                    </div>
+                    <!-- <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a> -->
                 </div>
                 <div class="col s3">
                     <h6 id="discount-text">No discounts.<h6>
@@ -222,6 +232,7 @@
             });
             $('.fixed-action-btn').floatingActionButton();
             $('.tooltipped').tooltip();
+            $('select').formSelect();
 
         });
 
