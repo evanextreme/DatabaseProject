@@ -1,9 +1,13 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Model for the ShipmentProductDAO table
  */
 public class ShipmentProduct {
+
+    public interface PublicView {}
 
     /** Default constructor */
     public ShipmentProduct() {}
@@ -36,27 +40,29 @@ public class ShipmentProduct {
     private int quantity;
 
     // Getters and setters for private fields
-
+    @JsonView(PublicView.class)
     public Shipment getShipment() {
         return shipment;
     }
-
+    @JsonView(PublicView.class)
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
     }
 
+    @JsonView(PublicView.class)
     public Product getProduct() {
         return product;
     }
-
+    @JsonView(PublicView.class)
     public void setProduct(Product product) {
         this.product = product;
     }
 
+    @JsonView(PublicView.class)
     public int getQuantity() {
         return quantity;
     }
-
+    @JsonView(PublicView.class)
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

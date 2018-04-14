@@ -1,5 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.List;
  * Model for the Vendor table
  */
 public class Vendor {
+
+	public interface PublicView {}
 
 	/** Default constructor */
 	public Vendor() {}
@@ -46,27 +50,29 @@ public class Vendor {
 	private String email;
 
 	// Getters and setters for private fields
-
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(PublicView.class)
 	public String getName(){
 		return name;
 	}
-
+	@JsonView(PublicView.class)
 	public void setName(String name){
 		this.name = name;
 	}
 
+	@JsonView(PublicView.class)
 	public String getEmail() {
 		return email;
 	}
-
+	@JsonView(PublicView.class)
 	public void setEmail(String email) {
 		this.email = email;
 	}

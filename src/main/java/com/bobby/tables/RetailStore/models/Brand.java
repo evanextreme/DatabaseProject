@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 public class Brand {
 
+	public interface PublicView {}
+
 	/** Default constructor */
 	public Brand() {}
 
@@ -34,29 +36,29 @@ public class Brand {
 	private String designer;
 	
 	// Getters and setters for private fields
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public String getName(){
 		return name;
 	}
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public void setName(String name){
 		this.name = name;
 	}
 
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public String getDesigner(){
 		return designer;
 	}
-	@JsonView(Brand.class)
+	@JsonView(PublicView.class)
 	public void setDesigner(String designer){
 		this.designer = designer;
 	}

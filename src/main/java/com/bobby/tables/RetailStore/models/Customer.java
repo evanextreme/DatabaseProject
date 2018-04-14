@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.thymeleaf.util.DateUtils;
 
 import java.sql.Date;
@@ -8,6 +9,8 @@ import java.sql.Date;
  * 	Model for the Customer table
  */
 public class Customer {
+
+	public interface PublicView {}
 
 	// Private fields
 
@@ -58,82 +61,92 @@ public class Customer {
 		return string;
 	}
 
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(PublicView.class)
 	public String getFirstName(){
 		return getStringOrNullString(first);
 	}
-
+	@JsonView(PublicView.class)
 	public void setFirstName(String first){
 		this.first = first;
 	}
 
+	@JsonView(PublicView.class)
 	public String getLastName(){
 		return getStringOrNullString(last);
 	}
-
+	@JsonView(PublicView.class)
 	public void setLastName(String last){
 		this.last = last;
 	}
 
+	@JsonView(PublicView.class)
 	public String getEmail(){
 		return getStringOrNullString(email);
 	}
-
+	@JsonView(PublicView.class)
 	public void setEmail(String email){
 		this.email = email;
 	}
 
+	@JsonView(PublicView.class)
 	public String getPhoneNumber(){
 		return getStringOrNullString(phoneNumber);
 	}
-
+	@JsonView(PublicView.class)
 	public void setPhoneNumber(String phoneNumber){
 		this.phoneNumber = phoneNumber;
 	}
 
+	@JsonView(PublicView.class)
 	public String getAddress(){
 		return getStringOrNullString(address);
 	}
-
+	@JsonView(PublicView.class)
 	public void setAddress(String address){
 		this.address = address;
 	}
 
+	@JsonView(PublicView.class)
 	public String getGender(){
 		return getStringOrNullString(gender);
 	}
-
+	@JsonView(PublicView.class)
 	public void setGender(String gender){
 		this.gender = gender;
 	}
 
+	@JsonView(PublicView.class)
 	public Date getDOB(){
 		return dob;
 	}
-
+	@JsonView(PublicView.class)
 	public void setDOB(Date dob){
 		this.dob = dob;
 	}
 
+	@JsonView(PublicView.class)
 	public String getCreditCard(){
 		return getStringOrNullString(creditCard);
 	}
-
+	@JsonView(PublicView.class)
 	public void setCreditCard(String creditCard){
 		this.creditCard = creditCard;
 	}
 
+	@JsonView(PublicView.class)
 	public boolean isFrequentShopper(){
 		return frequentShopper;
 	}
-
+	@JsonView(PublicView.class)
 	public void setFrequentShopper(boolean frequentShopper){
 		this.frequentShopper = frequentShopper;
 	}

@@ -1,5 +1,6 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.joda.time.DateTime;
 import org.thymeleaf.util.DateUtils;
 
@@ -7,6 +8,8 @@ import org.thymeleaf.util.DateUtils;
  * Model class for Shipment table
  */
 public class Shipment {
+
+    public interface PublicView {}
 
     /** Default constructor */
     public Shipment() {}
@@ -75,43 +78,47 @@ public class Shipment {
     private Vendor vendor;
 
     // Getter and setters for private fields
-
+    @JsonView(PublicView.class)
     public int getId() {
         return id;
     }
-
+    @JsonView(PublicView.class)
     public void setId(int id) {
         this.id = id;
     }
 
+    @JsonView(PublicView.class)
     public DateTime getReceivedDate() {
         return receivedDate;
     }
-
+    @JsonView(PublicView.class)
     public void setReceivedDate(DateTime receivedDate) {
         this.receivedDate = receivedDate;
     }
 
+    @JsonView(PublicView.class)
     public DateTime getPlacedDate() {
         return placedDate;
     }
-
+    @JsonView(PublicView.class)
     public void setPlacedDate(DateTime placedDate) {
         this.placedDate = placedDate;
     }
 
+    @JsonView(PublicView.class)
     public Store getStore() {
         return store;
     }
-
+    @JsonView(PublicView.class)
     public void setStore(Store store) {
         this.store = store;
     }
 
+    @JsonView(PublicView.class)
     public Vendor getVendor() {
         return vendor;
     }
-
+    @JsonView(PublicView.class)
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
