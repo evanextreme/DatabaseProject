@@ -35,6 +35,14 @@ public class TransactionProduct {
 
     private int quantity;
 
+    public void incrementQuantity(int increment) {
+        this.quantity += increment;
+    }
+
+    public void decrementQuantity(int decrement) {
+        this.quantity -= decrement;
+    }
+
     // Getters and setters for private fields
 
     public Transaction getTransaction() {

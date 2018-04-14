@@ -95,7 +95,7 @@ public class VendorDAO {
         String add = "INSERT INTO vendor (name, email) VALUES ('" + vend.getName() + "', '" + vend.getEmail() + "');";
         try{
             Statement state = connection.getConnection().createStatement();
-            state.execute(add);
+            state.executeUpdate(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }

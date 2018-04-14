@@ -139,30 +139,23 @@ public class CustomerDAO {
      * a list of transaction products
      */
     public static void purchaseItemsForCustomer(Transaction transaction, List<TransactionProduct> products) {
-        try {
 
-            // Add the overall transaction to the database
-            TransactionDAO.addTransaction(transaction);
+        // Add the overall transaction to the database
+        TransactionDAO.addTransaction(transaction);
 
-            // Get the new id for the transaction
-            transaction = getLastTransaction(TransactionDAO.getAllTransactions());
+        // Get the new id for the transaction
+        transaction = getLastTransaction(TransactionDAO.getAllTransactions());
 
-            // Iterate through all transaction products
-            for (TransactionProduct product : products) {
+        // Iterate through all transaction products
+        for (TransactionProduct transProduct : products) {
 
-                // Add the TransactionProduct to the database
-                product.setTransaction(transaction);
-                TransactionProductDAO.addTransactionProduct(product);
+            // Add the TransactionProduct to the database
+            transProduct.setTransaction(transaction);
+            TransactionProductDAO.addTransactionProduct(transProduct);
 
-                // Update the corresponding product record
-                String updateProducts = "UPDATE product SET quantity = (quantity - " + product.getQuantity() +
-                        ") WHERE store_id = " + product.getProduct().getStore().getId() +
-                        " and id = " + product.getProduct().getId() + ";";
-                Statement statement = connection.getConnection().createStatement();
-                statement.executeUpdate(updateProducts);
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+            Product product = transProduct.getProduct();
+            product.decrementQuantity(transProduct.getQuantity());
+            ProductDAO.updateProduct(product);
         }
     }
 
@@ -174,38 +167,30 @@ public class CustomerDAO {
      * Returns customer items. Expects a map of transaction_id, quantityToReturn
      * pairs
      */
-    /*public static void returnItemsFromCustomer(Transaction returnReceipt, List<TransactionProduct> returns) {
+    public static void returnItemsFromCustomer(Transaction transaction, List<TransactionProduct> returns) {
 
         double returnAmount = 0;
 
         // Foreach transaction product in the returns, return it to the database and update the product count
         for (TransactionProduct productReturn : returns) {
+            TransactionProduct dbProduct = TransactionProductDAO.getTransactionProductByIds(productReturn.getTransaction().getId(),
+                                                                                            productReturn.getProduct().getId());
+            int itemsToReturn = productReturn.getQuantity();
+            returnAmount += (productReturn.getProduct().getCurrentPrice() * itemsToReturn);
 
+            // Update the number of items still in customer's keep
+            productReturn.setQuantity(dbProduct.getQuantity() - itemsToReturn);
+            TransactionProductDAO.updateTransactionProduct(productReturn);
+
+            // Update the corresponding product record
+            Product product = productReturn.getProduct();
+            product.incrementQuantity(itemsToReturn);
+            ProductDAO.updateProduct(product);
         }
 
-
-        for (Integer key : returnReceipt.keySet()) {
-            Transaction transaction = TransactionDAO.getTransactionById(key);
-            if (transaction == null) {
-                //TODO: Handle this better?
-                return;
-            }
-
-            String updateTransaction = "UPDATE transaction SET quantity = quantity - " + returnReceipt.get(key) +
-                    " WHERE id = " + key + ";";
-
-            String updateProduct = "UPDATE product SET quantity = quantity + " + returnReceipt.get(key)
-                    + " WHERE id = " + transaction.getProduct().getId()
-                    + " and store_id = " + transaction.getStore().getId();
-
-            try {
-                Statement statement = connection.getConnection().createStatement();
-                statement.executeUpdate(updateTransaction);
-                statement.executeUpdate(updateProduct);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }*/
+        // Update the transaction total to decrease by the returned amount
+        transaction.setTotal(transaction.getTotal() - returnAmount);
+        TransactionDAO.updateTransaction(transaction);
+    }
 
 }

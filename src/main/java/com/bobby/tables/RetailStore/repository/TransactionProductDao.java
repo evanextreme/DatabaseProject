@@ -81,7 +81,7 @@ public class TransactionProductDAO {
                 ", " + transactionProduct.getQuantity() + ");";
         try {
             Statement state = connection.getConnection().createStatement();
-            state.execute(addTransProd);
+            state.executeUpdate(addTransProd);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,6 +100,18 @@ public class TransactionProductDAO {
         try {
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(updateTransProd);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTransactionProduct(TransactionProduct transactionProduct) {
+        String deleteTransProd = "DELETE FROM transaction_product " +
+                "WHERE transaction_id = " + transactionProduct.getTransaction().getId() +
+                " and product_id = " + transactionProduct.getProduct().getId() + ";";
+        try {
+            Statement state = connection.getConnection().createStatement();
+            state.executeUpdate(deleteTransProd);
         } catch (SQLException e) {
             e.printStackTrace();
         }
