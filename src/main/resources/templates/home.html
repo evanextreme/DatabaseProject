@@ -177,7 +177,7 @@
 
                     <select id="discount-field" name="discount-field">
                       <option value="" selected>No Discount</option>
-                      <td th:each="discount : ${discounts}">
+                      <td  th:each="discount : ${discounts}">
                       <option th:value="${discount.percentage}" th:text="${discount.percentage} + '% Discount'"></option>
                     </td>
                     </select>
@@ -291,15 +291,9 @@
             $("#discount-field").value(aDiscount);
         }
 
-<<<<<<< Updated upstream
         function checkoutCart() {
             $('#cart').attr('target', '')
             $('#cart').attr('action', (window.location.hostname + '/checkout'))
-=======
-        function checkoutCart(){
-            $('#cart').attr('method','post')
-            $('#cart').attr('action', 'checkout')
->>>>>>> Stashed changes
             $('#cart').submit()
         }
 
