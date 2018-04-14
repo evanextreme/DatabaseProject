@@ -31,7 +31,6 @@
             <a href="#" class="brand-logo center">POS</a>
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="home.html">Checkout</a></li>
-                <li><a href="order.html">Order</a></li>
                 <li><a href="fulfillment.html">Fulfillment</a></li>
                 <li><a href="stats.html">Stats</a></li>
             </ul>
@@ -81,23 +80,39 @@
             <table id="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Quantity</th>
                         <th>Sent Date</th>
                         <th>Received Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="order : ${orders}">
-                        <td th:text="${order.id}"></td>
-                        <td th:text="${order.quantity}"></td>
-                        <td th:text="${order.sent_date}"></td>
-                        <td th:text="${order.received_date}"></td>
-                        <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
-                        <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
-                        </td>
-                        </form>
-                    </tr>
+                    <form>
+                        <tr>
+                            <td>
+                                <div class="input-field col s2">
+                                    <input placeholder="Quantity" id="quantity" type="text" class="validate">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-field col s3">
+                                    <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-field col s3">
+                                    <input placeholder="Received Date" id="received" type="text" class="datepicker">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s3">
+                                    <button class="btn waves-effect waves-light red" type="submit" name="action">Update
+                                      <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            <td>
+                        </tr>
+                    </form>
+
                 </tbody>
             </table>
         </ul>
