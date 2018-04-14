@@ -39,6 +39,15 @@
 </head>
 
 <body>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    var jsCart = [];
+    var jsItems = [[${items}]];
+    var jsStore = [[${store}]];
+
+    /*]]>*/
+    </script>
+
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large red pulse">
             <i class="large material-icons">shopping_cart</i>
@@ -220,7 +229,6 @@
 </body>
 <footer>
     <script type="text/javascript">
-        var maxCart = 0;
         const stateTax = .08;
         $(document).ready(function() {
             $("button[name='add_item_button']").click(function() {
@@ -238,36 +246,38 @@
         }
 
         function addItem(itemId) {
-            let name = $('#table tr:eq(' + itemId + ') td:eq(1)').text();
-            let price = $('#table tr:eq(' + itemId + ') td:eq(2)').text();
             $('#checkout-body').append(
                 `
-                <tr id="item` + maxCart + ` name="item` + maxCart + `">
-                    <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
-                `"  name="name` + maxCart + `" type="text" class="validate"></td>
-                    <td><input value="1" placeholder="Qty" id="qty` + maxCart +
-                `" name="qty` + maxCart + `" type="text" class="validate"></td>
-                    <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
-                `" name="price` + maxCart + `" type="text" class="validate"></td>
-                    <td><a class="btn-floating grey waves-red" onclick="removeItem(` + maxCart +
+                <tr id="` + jsCart.length + `">
+                    <td><input value="` + jsItems[itemId].name + `" placeholder="Name" type="text" class="validate"></td>
+                    <td><input value="1" placeholder="Qty" type="text" class="validate"></td>
+                    <td><input value="` + jsItems[itemId].regularPrice + `" placeholder="Price" type="text" class="validate"></td>
+                    <td><a class="btn-floating grey waves-red" onclick="removeItem(` + jsCart.length +
                 `)"><i class="material-icons">delete_forever</i></a></td>
                 </tr>
+                <input type="hidden" name="country" value="Norway">
                 `
             );
-            maxCart = maxCart + 1;
+
+            var myTransaction = new Object();
+            myTransaction.quantityOfItem = 1;
+            myTransaction.productID = parseInt(itemId);
+            myTransaction.total = jsItems[itemId].regularPrice;
+            myTransaction.store = jsStore;
+
+            jsCart.push(myTransaction);
         }
 
         function getTotal() {
             var subtotal = 0;
             var discount = $('select[name=discount-field]').val() * .01;
+            console.log("discount: " + discount);
 
-            for (i = 0; i < maxCart; i++) {
-                if ($('#name' + i).length) {
-                    let qty = document.getElementById("qty" + i).value;
-                    let price = document.getElementById("price" + i).value;
-                    let current = qty * (price - (price * discount));
-                    subtotal = subtotal + current;
-                }
+            for(var i=0; i<jsCart.length; i++) {
+                let qty = jsCart[i].qty;
+                let price = jsCart[i].regularPrice;
+                let current = qty * (price - (price * discount));
+                subtotal = subtotal + current;
             }
             var tax = subtotal * stateTax;
             var total = subtotal + tax;
@@ -292,15 +302,33 @@
         }
 
         function checkoutCart(){
-            $('#cart').attr('method','post')
-            $('#cart').attr('action', 'checkout')
-            $('#cart').submit()
+            $.ajax({
+                type:  'POST',
+                data:  JSON.stringify(jsCart),
+                dataType: "text",
+                contentType: "application/json; charset=utf-8",
+                url: "checkout",
+                success:  function (data) {
+                    location.reload();
+                }, error: function(data){
+                    console.log("ERROR: ", data);
+                }
+            });
         }
 
         function returnCart() {
-            $('#cart').attr('target', '')
-            $('#cart').attr('action', (window.location.hostname + '/return'))
-            $('#cart').submit()
+            $.ajax({
+                type:  'POST',
+                data:  JSON.stringify(jsCart),
+                dataType: "text",
+                contentType: "application/json; charset=utf-8",
+                url: "return",
+                success:  function (data) {
+                    location.reload();
+                }, error: function(data){
+                    console.log("ERROR: ", data);
+                }
+            });
         }
     </script>
 
