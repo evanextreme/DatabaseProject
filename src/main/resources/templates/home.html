@@ -291,9 +291,9 @@
             $("#discount-field").value(aDiscount);
         }
 
-        function checkoutCart() {
-            $('#cart').attr('target', '')
-            $('#cart').attr('action', (window.location.hostname + '/checkout'))
+        function checkoutCart(){
+            $('#cart').attr('method','post')
+            $('#cart').attr('action', 'checkout')
             $('#cart').submit()
         }
 
