@@ -90,17 +90,17 @@
                         <tr th:each="shipment : ${shipments}">
                             <td>
                                 <div class="input-field col s2">
-                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${shipment.id}"></td>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Placed Date" id="Placed" value="${shipment.placed_date}" type="text" class="datepicker">
+                                    <input placeholder="Placed Date" id="Placed" th:value="${shipment.placed}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Received Date" id="received" value="${shipment.received_date}" type="text" class="datepicker">
+                                    <input placeholder="Received Date" id="received" th:value="${shipment.received}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
