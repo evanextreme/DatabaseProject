@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <title>Brands</title>
+    <meta charset="utf-8">
+    <!--   <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+    <script>
+        // Or with jQuery
+
+        $(document).ready(function() {
+            $('.modal').modal();
+        });
+    </script>
+
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">POS</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="home.html">Checkout</a></li>
+                <li><a href="order.html">Order</a></li>
+                <li><a href="fulfillment.html">Fulfillment</a></li>
+                <li><a href="stats.html">Stats</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red pulse" onclick="getNewOrder()">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h1>Order Fulfillment</h1>
+        <div id="new-order" class="modal">
+            <form>
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Shipment ID" id="shipment" type="text" class="validate">
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="Quantity" id="quantity" type="text" class="validate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="Received Date" id="received" type="text" class="datepicker">
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
+                    <button class="btn waves-effect waves-light red" type="submit" action="/new_shipment">Submit
+                   <i class="material-icons right">send</i>
+                 </button>
+                </div>
+            </form>
+        </div>
+
+        <ul class="list-group" id="catalogue-table">
+
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Sent Date</th>
+                        <th>Received Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.sent_date}"></td>
+                        <td th:text="${order.received_date}"></td>
+                        <!-- <td th:input value="${item.name}" id="items_name" type="text" class="validate"></td> -->
+                        <!-- <td th:input value="${item.regularPrice}" id="items_price" type="text" class="validate"></td> -->
+                        </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </ul>
+
+    </div>
+
+</body>
+<footer>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.datepicker').datepicker();
+        });
+
+        function getNewOrder() {
+            $('#new-order').modal('open');
+        }
+    </script>
+
+</footer>
+
+</html>
