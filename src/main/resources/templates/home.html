@@ -177,7 +177,7 @@
 
                     <select id="discount-field" name="discount-field">
                       <option value="" selected>No Discount</option>
-                      <td  th:each="discount : ${discounts}">
+                      <td th:each="discount : ${discounts}">
                       <option th:value="${discount.percentage}" th:text="${discount.percentage} + '% Discount'"></option>
                     </td>
                     </select>

@@ -80,27 +80,27 @@
             <table id="table">
                 <thead>
                     <tr>
-                        <th>Quantity</th>
+                        <th>ID</th>
                         <th>Sent Date</th>
                         <th>Received Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <form>
-                        <tr>
+                        <tr th:each="shipment : ${shipments}">
                             <td>
                                 <div class="input-field col s2">
-                                    <input placeholder="Quantity" id="quantity" type="text" class="validate">
+                                    <td th:text="${item.id}"></td>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Sent Date" id="sent" type="text" class="datepicker">
+                                    <input placeholder="Placed Date" id="Placed" value="${shipment.placed_date}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Received Date" id="received" type="text" class="datepicker">
+                                    <input placeholder="Received Date" id="received" value="${shipment.received_date}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
