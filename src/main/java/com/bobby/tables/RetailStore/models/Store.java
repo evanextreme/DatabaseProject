@@ -9,7 +9,7 @@ public class Store {
 	public Store() {}
 
 	/** Alternate constructor with fields */
-	public Store(int id, String phoneNumber, String address, String email) {
+	public Store(int id, String address, String phoneNumber, String email) {
 		this.id = id;
 		this.phoneNumber = phoneNumber;
 		this.address = address;
