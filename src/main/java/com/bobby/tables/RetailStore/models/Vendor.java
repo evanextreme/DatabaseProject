@@ -1,5 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.List;
  * Model for the Vendor table
  */
 public class Vendor {
+
+	public interface PublicView {}
 
 	/** Default constructor */
 	public Vendor() {}
@@ -26,20 +30,17 @@ public class Vendor {
 		this.email = email;
 	}
 
-	public static List<Vendor> fromResultSet(ResultSet resultSet) {
-		List<Vendor> vendors = new ArrayList<>();
-		try {
-			while (resultSet.next()) {
-				vendors.add(new Vendor(resultSet.getInt(1),
-						resultSet.getString(2),
-						resultSet.getString(3)));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return vendors;
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Vendor #" + id);
+		System.out.println(">\tName: " + name);
+		System.out.println(">\tEmail: " + email);
 	}
-	
+
 	// Private fields
 
 	private int id;
@@ -49,27 +50,29 @@ public class Vendor {
 	private String email;
 
 	// Getters and setters for private fields
-
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(PublicView.class)
 	public String getName(){
 		return name;
 	}
-
+	@JsonView(PublicView.class)
 	public void setName(String name){
 		this.name = name;
 	}
 
+	@JsonView(PublicView.class)
 	public String getEmail() {
 		return email;
 	}
-
+	@JsonView(PublicView.class)
 	public void setEmail(String email) {
 		this.email = email;
 	}

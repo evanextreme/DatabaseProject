@@ -82,7 +82,7 @@ public class BrandDAO {
         String add = "INSERT INTO brand (name, designer) VALUES ('" + bran.getName() + "', '" + bran.getDesigner() + "');";
         try{
             Statement state = connection.getConnection().createStatement();
-            state.execute(add);
+            state.executeUpdate(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }
