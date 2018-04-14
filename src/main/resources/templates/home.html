@@ -242,7 +242,7 @@
             let price = $('#table tr:eq(' + itemId + ') td:eq(2)').text();
             $('#checkout-body').append(
                 `
-                <tr id="item` + maxCart + ` name="item` + maxCart + `">
+                <tr id="item` + maxCart + `" name="item` + maxCart + `">
                     <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
                 `"  name="name` + maxCart + `" type="text" class="validate"></td>
                     <td><input value="1" placeholder="Qty" id="qty` + maxCart +
@@ -283,12 +283,6 @@
 
         function getReturn() {
             $('#return').modal('open');
-        }
-
-        function setDiscount(aDiscount) {
-            discount = aDiscount * .01;
-            $("#discount-text").text(aDiscount + "% discount applied!");
-            $("#discount-field").value(aDiscount);
         }
 
         function checkoutCart(){
