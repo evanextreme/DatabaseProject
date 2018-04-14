@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bobby.tables.RetailStore.models.Brand;
 import com.bobby.tables.RetailStore.repository.BrandDAO;
 import com.bobby.tables.RetailStore.repository.ProductDAO;
+import com.bobby.tables.RetailStore.repository.ShipmentDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
@@ -28,6 +29,7 @@ public class ShipmentController {
 	
 	@RequestMapping("/fulfillment")
     public String fulfillmentPage(Model model){
+		model.addAttribute("orders", ShipmentDAO.getAllShipments());
         return "fulfillment";
     }
 }
