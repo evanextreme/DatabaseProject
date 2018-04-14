@@ -1,9 +1,13 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Model for the Discount Table
  */
 public class Discount {
+
+	public interface PublicView {}
 
 	/**
 	 * Default public constructor
@@ -47,18 +51,20 @@ public class Discount {
 
 	// Getter and setter methods for private fields
 
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(PublicView.class)
 	public int getPercentage(){
 		return percentage;
 	}
-
+	@JsonView(PublicView.class)
 	public void setPercentage(int name){
 		this.percentage = name;
 	}

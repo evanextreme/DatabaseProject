@@ -1,9 +1,13 @@
 package com.bobby.tables.RetailStore.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Model for the store table
  */
 public class Store {
+
+	public interface PublicView {}
 
 	/** Default constructor */
 	public Store() {}
@@ -46,35 +50,38 @@ public class Store {
 	private String email;
 	
 	// Getter and setter methods for private fields
-
+	@JsonView(PublicView.class)
 	public int getId(){
 		return id;
 	}
-
+	@JsonView(PublicView.class)
 	public void setId(int id){
 		this.id = id;
 	}
 
+	@JsonView(PublicView.class)
 	public String getPhoneNumber(){
 		return phoneNumber;
 	}
-
+	@JsonView(PublicView.class)
 	public void setPhoneNumber(String phoneNumber){
 		this.phoneNumber = phoneNumber;
 	}
 
+	@JsonView(PublicView.class)
 	public String getAddress(){
 		return address;
 	}
-
+	@JsonView(PublicView.class)
 	public void setAddress(String address){
 		this.address = address;
 	}
 
+	@JsonView(PublicView.class)
 	public String getEmail() {
 		return email;
 	}
-
+	@JsonView(PublicView.class)
 	public void setEmail(String email) {
 		this.email = email;
 	}
