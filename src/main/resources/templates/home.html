@@ -86,7 +86,7 @@
         </div>
 
 
-        <div id="discounts" class="modal">
+        <!-- <div id="discounts" class="modal">
             <div class="modal-content">
                 <div class="container">
                     <h4>Discounts</h4>
@@ -108,7 +108,8 @@
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
             </div>
-        </div>
+        </div> -->
+
         <div id="total" class="modal">
             <div class="modal-content">
                 <div class="container">
@@ -174,7 +175,22 @@
                     </div>
                 </div>
                 <form id="cart">
-                    <input id="discount-field" name="discountField" type="hidden" value="0">
+
+                    <select id="discount-field" name="discount-field">
+                      <option value="" disabled selected>No Discount</option>
+                      <option value="10">Senior Discount 10%</option>
+                      <option value="15">Employee Discount 15%</option>
+                      <option value="20">Teacher Discount 20%</option>
+                      <option value="25">Military Discount 25%</option>
+                      <option value="30">30%</option>
+                      <option value="35">35%</option>
+                      <option value="40">40%</option>
+                      <option value="45">45%</option>
+                      <option value="50">50%</option>
+                      <option value="55">55%</option>
+                    </select>
+                    <label>Discounts</label>
+
                     <ul class="list-group">
                         <table>
                             <thead>
@@ -200,10 +216,10 @@
             <div class="row">
                 <div class="col s3">
                     <a class="waves-effect waves-light btn modal-trigger" href="#catalogue">Catalogue</a>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a>
-                </div>
-                <div class="col s3">
-                    <h6 id="discount-text">No discounts.<h6>
+                    <div class="input-field col s12">
+
+                    </div>
+                    <!-- <a class="waves-effect waves-light btn modal-trigger" href="#discounts">Discounts</a> -->
                 </div>
             </div>
         </div>
@@ -213,7 +229,6 @@
 <footer>
     <script type="text/javascript">
         var maxCart = 0;
-        var discount = 0;
         const stateTax = .08;
         $(document).ready(function() {
             $("button[name='add_item_button']").click(function() {
@@ -222,6 +237,7 @@
             });
             $('.fixed-action-btn').floatingActionButton();
             $('.tooltipped').tooltip();
+            $('select').formSelect();
 
         });
 
@@ -250,6 +266,8 @@
 
         function getTotal() {
             var subtotal = 0;
+            var discount = $('select[name=discount-field]').val() * .01;
+
             for (i = 0; i < maxCart; i++) {
                 if ($('#name' + i).length) {
                     let qty = document.getElementById("qty" + i).value;
