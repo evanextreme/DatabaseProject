@@ -89,6 +89,10 @@ public class RetailStoreApplication {
 		ProductDAO.getProductById(1).debug();
 		ProductDAO.getProductById(5).debug();
 
+		List<Shipment> shipments = ShipmentDAO.getAllShipments();
+		Shipment shipment = shipments.get(shipments.size() - 1);
+		shipment.debug();
+
 		System.out.println("\n\nRETURNING AN ITEM\n\n");;
 
 		transactions = CustomerDAO.viewCustomerTransactions(customer);

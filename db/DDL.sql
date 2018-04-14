@@ -168,3 +168,9 @@ CREATE TABLE `transaction_product` (
 
 CREATE INDEX `fk_transaction_product-product_idx` ON `transaction_product`(`product_id` ASC);
 CREATE INDEX `fk_transaction_product-transaction_idx` ON `transaction_product`(`transaction_id` ASC);
+
+CREATE TRIGGER createShipmentTrigger
+AFTER UPDATE
+ON product
+FOR EACH ROW
+CALL "com.bobby.tables.RetailStore.database.AutomaticShipmentTrigger"
