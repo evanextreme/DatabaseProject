@@ -2,11 +2,7 @@ package com.bobby.tables.RetailStore.repository;
 
 import com.bobby.tables.RetailStore.RetailStoreApplication;
 import com.bobby.tables.RetailStore.database.DatabaseConnection;
-import com.bobby.tables.RetailStore.models.Product;
-import com.bobby.tables.RetailStore.models.Shipment;
-import com.bobby.tables.RetailStore.models.Store;
-import com.bobby.tables.RetailStore.models.ProductType;
-import com.bobby.tables.RetailStore.models.Vendor;
+import com.bobby.tables.RetailStore.models.*;
 import org.joda.time.DateTime;
 
 import java.sql.ResultSet;
@@ -132,5 +128,22 @@ public class VendorDAO {
             e.printStackTrace();
         }
         return shipments;
+    }
+
+    /**
+     * Fills a shipment request for a vendor. Sets the shipment
+     * as "received" by the store and increments the quantity of the
+     * product in that store
+     */
+    public static void fillVendorShipment(Shipment shipment) {
+        shipment.setReceivedDate(DateTime.now());
+        ShipmentDAO.updateShipment(shipment);
+
+        List<ShipmentProduct> products = ShipmentProductDAO.getShipmentProductsByShipment(shipment.getId());
+        for (ShipmentProduct shipmentProduct : products) {
+            Product product = ProductDAO.getProductById(shipmentProduct.getProduct().getId());
+            product.incrementQuantity(shipmentProduct.getQuantity());
+            ProductDAO.updateProduct(product);
+        }
     }
 }

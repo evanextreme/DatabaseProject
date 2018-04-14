@@ -56,6 +56,7 @@ public class RetailStoreApplication {
 		Store store = StoreDAO.getStoreById(1);
 		Product product1 = ProductDAO.getProductById(1);
 		Product product2 = ProductDAO.getProductById(5);
+		Vendor vendor = product2.getVendor();
 		double total = product1.getCurrentPrice() + product2.getCurrentPrice() + product2.getCurrentPrice();
 
 		Transaction transaction = new Transaction();
@@ -132,6 +133,25 @@ public class RetailStoreApplication {
 				product = ProductDAO.getProductById(product.getId());
 				product.debug();
 			}
+		}
+
+		shipments = ShipmentDAO.getAllShipments();
+		for (Shipment ship : shipments) {
+			ship.debug();
+			List<ShipmentProduct> products = ShipmentProductDAO.getShipmentProductsByShipment(ship.getId());
+			products.forEach(ShipmentProduct::debug);
+		}
+
+		shipments = VendorDAO.viewPendingVendorShipments(vendor);
+		VendorDAO.fillVendorShipment(shipments.get(0));
+		shipment = ShipmentDAO.getShipmentById(shipments.get(0).getId());
+		shipment.debug();
+		List<ShipmentProduct> products = ShipmentProductDAO.getShipmentProductsByShipment(shipment.getId());
+		for (ShipmentProduct sp : products) {
+			sp.debug();
+			System.out.println("Associated Products:");
+			Product product = ProductDAO.getProductById(sp.getProduct().getId());
+			product.debug();
 		}
 
 	}

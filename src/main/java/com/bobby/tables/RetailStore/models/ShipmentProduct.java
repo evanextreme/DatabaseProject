@@ -1,16 +1,16 @@
 package com.bobby.tables.RetailStore.models;
 
 /**
- * Model for the TransactionProduct table
+ * Model for the ShipmentProductDAO table
  */
-public class TransactionProduct {
+public class ShipmentProduct {
 
     /** Default constructor */
-    public TransactionProduct() {}
+    public ShipmentProduct() {}
 
     /** Alternate constructor with fields */
-    public TransactionProduct(Transaction transaction, Product product, int quantity) {
-        this.transaction = transaction;
+    public ShipmentProduct(Shipment transaction, Product product, int quantity) {
+        this.shipment = transaction;
         this.product = product;
         this.quantity = quantity;
     }
@@ -21,15 +21,15 @@ public class TransactionProduct {
      * like id are present)
      */
     public void debug() {
-        System.out.println("Transaction Product:");
-        System.out.println(">\tTransaction #: " + transaction.getId());
+        System.out.println("Shipment Product:");
+        System.out.println(">\tShipment #: " + shipment.getId());
         System.out.println(">\tProduct #: " + product.getId());
         System.out.println(">\tQuantity: " + quantity);
     }
 
     // Private Fields
 
-    private Transaction transaction;
+    private Shipment shipment;
 
     private Product product;
 
@@ -37,12 +37,12 @@ public class TransactionProduct {
 
     // Getters and setters for private fields
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Shipment getShipment() {
+        return shipment;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setShipment(Shipment shipment) {
+        this.shipment = shipment;
     }
 
     public Product getProduct() {

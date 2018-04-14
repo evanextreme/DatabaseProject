@@ -12,43 +12,33 @@ public class Shipment {
     public Shipment() {}
 
     /** Alternate constructor with fields */
-    public Shipment(DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(DateTime placedDate, Store store, Vendor vendor) {
         this.placedDate = placedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(int id, DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(int id, DateTime placedDate, Store store, Vendor vendor) {
         this.id = id;
         this.placedDate = placedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor,
-                        Product product, int quantityOfItem) {
+    public Shipment(DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor) {
         this.placedDate = placedDate;
         this.receivedDate = receivedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(int id, DateTime placedDate, DateTime receivedDate,
-                    Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(int id, DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor) {
         this.id = id;
         this.placedDate = placedDate;
         this.receivedDate = receivedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
@@ -66,10 +56,8 @@ public class Shipment {
         } else {
             System.out.println(">\tUNFILLED");
         }
-        System.out.println(">\tProduct: " + product.getId());
         System.out.println(">\tStore: " + store.getId());
         System.out.println(">\tVendor: " + vendor.getId());
-        System.out.println(">\tQuantity: " + quantityOfItem);
     }
 
     // Private fields
@@ -81,10 +69,6 @@ public class Shipment {
 
     // Timestamp for when the vendor filled the shipment request
     private DateTime receivedDate;
-
-    private int quantityOfItem;
-
-    private Product product;
 
     private Store store;
 
@@ -114,22 +98,6 @@ public class Shipment {
 
     public void setPlacedDate(DateTime placedDate) {
         this.placedDate = placedDate;
-    }
-
-    public int getQuantityOfItem() {
-        return quantityOfItem;
-    }
-
-    public void setQuantityOfItem(int quantityOfItem) {
-        this.quantityOfItem = quantityOfItem;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Store getStore() {
