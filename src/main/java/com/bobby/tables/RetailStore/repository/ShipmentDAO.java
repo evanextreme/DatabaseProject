@@ -80,6 +80,18 @@ public class ShipmentDAO {
     }
 
     /**
+     * Gets the shipment most recently inserted into the table
+     */
+    public static Shipment getNewestShipment() {
+        List<Shipment> shipments = getAllShipments();
+        if (shipments.isEmpty()) {
+            return null;
+        }
+
+        return getShipmentById(shipments.size());
+    }
+
+    /**
      * Updates the corresponding shipment record in the db
      */
     public static void updateShipment(Shipment ship){

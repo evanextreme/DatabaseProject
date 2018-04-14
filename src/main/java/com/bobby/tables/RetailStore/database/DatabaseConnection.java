@@ -73,6 +73,17 @@ public class DatabaseConnection {
         }
     }
 
+    public void createDbTriggers() {
+        String shipmentTrigger = "CREATE TRIGGER createShipmentTrigger AFTER UPDATE ON product FOR EACH ROW " +
+                "CALL \"com.bobby.tables.RetailStore.database.AutomaticShipmentTrigger\";";
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(shipmentTrigger);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      *  Getter for connection
      */

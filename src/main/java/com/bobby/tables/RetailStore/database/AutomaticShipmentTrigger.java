@@ -44,15 +44,26 @@ public class AutomaticShipmentTrigger implements Trigger {
         if ((int) newRow[9] < 5 && !ShipmentProductDAO.isShipmentAlreadyCreated(product)) {
             try (PreparedStatement stmt = conn.prepareStatement(
                     "INSERT INTO shipment (store_id, vendor_id, placed_date) " +
-                            "VALUES (?, ?, ?);" +
-                    "INSERT INTO shipment_product (shipment_")
+                            "VALUES (?, ?, ?);")
             ) {
-                stmt.setInt(1, (int) newRow[5]);
-                stmt.setInt(2, (int) newRow[3]);
-                stmt.setInt(3, (int) newRow[0]);
-                stmt.setTimestamp(4, new Timestamp(DateTime.now().getMillis()));
-                stmt.setInt(5, 20);
+                stmt.setInt(1, store.getId());
+                stmt.setInt(2, vendor.getId());
+                stmt.setTimestamp(3, new Timestamp(DateTime.now().getMillis()));
+                stmt.executeUpdate();
+            }
 
+            Shipment shipment = ShipmentDAO.getNewestShipment();
+            if (shipment == null) {
+                return;
+            }
+
+            try (PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO shipment_product (shipment_id, product_id, quantity) " +
+                            "VALUES (?, ?, ?);"
+            )) {
+                stmt.setInt(1, shipment.getId());
+                stmt.setInt(2, product.getId());
+                stmt.setInt(3, 20);
                 stmt.executeUpdate();
             }
         }
