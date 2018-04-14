@@ -105,18 +105,6 @@ public class TransactionProductDAO {
         }
     }
 
-    public static void deleteTransactionProduct(TransactionProduct transactionProduct) {
-        String deleteTransProd = "DELETE FROM transaction_product " +
-                "WHERE transaction_id = " + transactionProduct.getTransaction().getId() +
-                " and product_id = " + transactionProduct.getProduct().getId() + ";";
-        try {
-            Statement state = connection.getConnection().createStatement();
-            state.executeUpdate(deleteTransProd);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Gets all transaction products associated with the given transaction
      */
