@@ -176,17 +176,10 @@
                 <form id="cart">
 
                     <select id="discount-field" name="discount-field">
-                      <option value="" disabled selected>No Discount</option>
-                      <option value="10">Senior Discount 10%</option>
-                      <option value="15">Employee Discount 15%</option>
-                      <option value="20">Teacher Discount 20%</option>
-                      <option value="25">Military Discount 25%</option>
-                      <option value="30">30%</option>
-                      <option value="35">35%</option>
-                      <option value="40">40%</option>
-                      <option value="45">45%</option>
-                      <option value="50">50%</option>
-                      <option value="55">55%</option>
+                      <option value="" selected>No Discount</option>
+                      <td  th:each="discount : ${discounts}">
+                      <option th:value="${discount.percentage}" th:text="${discount.percentage} + '% Discount'"></option>
+                    </td>
                     </select>
                     <label>Discounts</label>
 
@@ -240,13 +233,13 @@
 
         });
 
-        function removeItem(cartId){
+        function removeItem(cartId) {
             $('#item' + cartId).remove();
         }
 
-        function addItem(itemId){
-            let name = $('#table tr:eq(' + itemId +') td:eq(1)').text();
-            let price = $('#table tr:eq(' + itemId +') td:eq(2)').text();
+        function addItem(itemId) {
+            let name = $('#table tr:eq(' + itemId + ') td:eq(1)').text();
+            let price = $('#table tr:eq(' + itemId + ') td:eq(2)').text();
             $('#checkout-body').append(
                 `
                 <tr id="item` + maxCart + `">
@@ -256,7 +249,8 @@
                 `" type="text" class="validate"></td>
                     <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
                 `" type="text" class="validate"></td>
-                    <td><a class="btn-floating grey waves-red" onclick="removeItem(`+ maxCart +`)"><i class="material-icons">delete_forever</i></a></td>
+                    <td><a class="btn-floating grey waves-red" onclick="removeItem(` + maxCart +
+                `)"><i class="material-icons">delete_forever</i></a></td>
                 </tr>
                 `
             );
@@ -287,7 +281,7 @@
             $('#total').modal('open');
         }
 
-        function getReturn(){
+        function getReturn() {
             $('#return').modal('open');
         }
 
@@ -297,14 +291,14 @@
             $("#discount-field").value(aDiscount);
         }
 
-        function checkoutCart(){
-            $('#cart').attr('target','')
+        function checkoutCart() {
+            $('#cart').attr('target', '')
             $('#cart').attr('action', (window.location.hostname + '/checkout'))
             $('#cart').submit()
         }
 
-        function returnCart(){
-            $('#cart').attr('target','')
+        function returnCart() {
+            $('#cart').attr('target', '')
             $('#cart').attr('action', (window.location.hostname + '/return'))
             $('#cart').submit()
         }
