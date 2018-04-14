@@ -33,11 +33,11 @@ public class ProductDAO {
                         VendorDAO.getVendorById(resultSet.getInt(4)),
                         ProductTypeDAO.getProductTypeById(resultSet.getInt(5)),
                         StoreDAO.getStoreById(resultSet.getInt(6)),
-                        resultSet.getDouble(3),
-                        resultSet.getDouble(4),
-                        resultSet.getString(5),
-                        resultSet.getInt(6),
-                        resultSet.getString(7)));
+                        resultSet.getDouble(7),
+                        resultSet.getDouble(8),
+                        resultSet.getString(9),
+                        resultSet.getInt(10),
+                        resultSet.getString(11)));
             }
         } catch (SQLException e) {
             e.printStackTrace();

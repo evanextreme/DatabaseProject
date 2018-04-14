@@ -1,6 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
+import org.thymeleaf.util.DateUtils;
 
 /**
  * Model class for Shipment table
@@ -50,6 +51,25 @@ public class Shipment {
         this.product = product;
         this.store = store;
         this.vendor = vendor;
+    }
+
+    /**
+     * Prints out all info for debugging application
+     * Assumes debugging record from database (so all required fields
+     * like id are present)
+     */
+    public void debug() {
+        System.out.println("Shipment #" + id);
+        System.out.println(">\tPlaced Date: " + placedDate.toString());
+        if (receivedDate != null) {
+            System.out.println(">\tReceived Date: " + receivedDate.toString());
+        } else {
+            System.out.println(">\tUNFILLED");
+        }
+        System.out.println(">\tProduct: " + product.getId());
+        System.out.println(">\tStore: " + store.getId());
+        System.out.println(">\tVendor: " + vendor.getId());
+        System.out.println(">\tQuantity: " + quantityOfItem);
     }
 
     // Private fields

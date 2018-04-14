@@ -121,8 +121,6 @@ CREATE TABLE `transaction` (
   `date` TIMESTAMP NOT NULL,
   `discount_id` INT NULL,
   `store_id` INT NULL,
-  `quantity` INT NOT NULL,
-  `product_id` INT NOT NULL,
   `total` DECIMAL NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_transaction-customer`
@@ -140,7 +138,26 @@ CREATE TABLE `transaction` (
     REFERENCES `store` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
 CREATE INDEX `fk_transaction-customer_idx` ON `transaction`(`customer_id` ASC);
 CREATE INDEX `fk_transaction-discount_idx` ON `transaction`(`discount_id` ASC);
 CREATE INDEX `fk_transaction-store_idx` ON `transaction`(`store_id` ASC);
-CREATE INDEX `fk_transaction-product_idx` ON `transaction`(`product_id` ASC);
+
+CREATE TABLE `transaction_product` (
+  `transaction_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`transaction_id`, `product_id`),
+  CONSTRAINT `fk_transaction_product-transaction`
+    FOREIGN KEY (`transaction_id`)
+    REFERENCES `transaction` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transaction_product-product`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE INDEX `fk_transaction_product-product_idx` ON `transaction_product`(`product_id` ASC);
+CREATE INDEX `fk_transaction_product-transaction_idx` ON `transaction_product`(`transaction_id` ASC);
