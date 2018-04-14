@@ -17,7 +17,7 @@ public class Store {
 	}
 
 	/** Alternate constructor with fields */
-	public Store(String phoneNumber, String address, String email) {
+	public Store(String address, String phoneNumber, String email) {
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 		this.email = email;
