@@ -138,7 +138,8 @@ public class ShipmentProductDAO {
                             "WHERE shipment.id = shipment_product.shipment_id " +
                             "and store_id = " + product.getStore().getId() +
                             " and product_id = " + product.getId() +
-                            " and vendor_id = " + product.getVendor().getId() + ";";
+                            " and vendor_id = " + product.getVendor().getId() +
+                            " and received_date is null;";
         try{
             Statement statement = connection.getConnection().createStatement();
             ResultSet list = statement.executeQuery(isCreated);

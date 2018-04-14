@@ -162,5 +162,9 @@ public class RetailStoreApplication {
 			product.debug();
 		}
 
+		shipments = VendorDAO.viewPendingVendorShipments(vendor);
+		if (shipments.isEmpty()) {
+			System.out.println("YAY IT WORKS");
+		}
 	}
 }
