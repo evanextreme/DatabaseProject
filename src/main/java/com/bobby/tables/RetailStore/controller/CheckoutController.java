@@ -45,13 +45,13 @@ public class CheckoutController {
         return "home";
     }
 	
-	@RequestMapping("/test")
-	public ModelAndView test(ModelAndView model) {
-		return new ModelAndView("test");
-	}
-	
-	@RequestMapping("/testing")
-	public String testing(Model model) {
-		return "testing";
+	//checkout?discountField=0
+	@RequestMapping(value="/checkout", method = RequestMethod.POST, params={"discountField"})
+	public String test(Model model, @RequestParam(value = "discountField") int discountID) {
+		//discountID is 0 if no discount is applied
+		model.addAttribute("items", ProductDAO.getAllProducts());
+		model.addAttribute("cart", BrandDAO.getAllBrands());
+		model.addAttribute("discounts", DiscountDAO.getAllDiscounts());
+		return "home";
 	}
 }
