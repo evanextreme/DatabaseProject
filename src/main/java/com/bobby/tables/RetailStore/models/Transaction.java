@@ -8,45 +8,6 @@ import org.thymeleaf.util.DateUtils;
  */
 public class Transaction {
 
-	/** Default public constructor */
-	public Transaction() {}
-
-	/** Alternate constructor with fields */
-	public Transaction(int id, Customer customer, Store store, Discount discount, DateTime date, double total) {
-		this.id = id;
-		this.customer = customer;
-		this.store = store;
-		this.discount = discount;
-		this.date = date;
-		this.total = total;
-	}
-
-	/** Alternate constructor with fields */
-	public Transaction(Customer customer, Store store, Discount discount, DateTime date, double total) {
-		this.customer = customer;
-		this.store = store;
-		this.discount = discount;
-		this.date = date;
-		this.total = total;
-	}
-
-	/** Alternate constructor with fields */
-	public Transaction(int id, Customer customer, Store store, DateTime date, double total) {
-		this.id = id;
-		this.customer = customer;
-		this.store = store;
-		this.date = date;
-		this.total = total;
-	}
-
-	/** Alternate constructor with fields */
-	public Transaction(Customer customer, Store store, DateTime date, double total) {
-		this.customer = customer;
-		this.store = store;
-		this.date = date;
-		this.total = total;
-	}
-
 	/**
 	 * Prints out all info for debugging application
 	 * Assumes debugging record from database (so all required fields
@@ -58,6 +19,7 @@ public class Transaction {
 		System.out.println(">\tStore: " + store.getId());
 		System.out.println(">\tDate: " + date.toString());
 		System.out.println(">\tTotal: $" + total);
+		System.out.println(">\tReturned? " + isReturned());
 	}
 	
 	// Private fields
@@ -73,6 +35,8 @@ public class Transaction {
 	private DateTime date;
 
 	private double total;
+
+	private Transaction originalTransaction;
 	
 	// Getter and setters for private fields
 
@@ -122,4 +86,15 @@ public class Transaction {
 		this.total = total;
 	}
 
+	public boolean isReturned() {
+		return this.originalTransaction != null;
+	}
+
+	public Transaction getOriginalTransaction() {
+		return originalTransaction;
+	}
+
+	public void setOriginalTransaction(Transaction originalTransaction) {
+		this.originalTransaction = originalTransaction;
+	}
 }

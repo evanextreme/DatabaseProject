@@ -121,7 +121,7 @@ public class CustomerDAO {
      * Gets all transactions for a customer ordered by the timestamp
      */
     public static List<Transaction> viewCustomerTransactions(Customer cust){
-        String s = "SELECT * FROM transaction WHERE id = " + cust.getId() + " ORDER BY date;";
+        String s = "SELECT * FROM transaction WHERE customer_id = " + cust.getId() + " and original_transaction_id is null ORDER BY date;";
         List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
@@ -131,6 +131,55 @@ public class CustomerDAO {
             e.printStackTrace();
         }
         return transactions;
+    }
+
+    public static List<Transaction> viewCustomerReturns(Customer customer) {
+        String s = "(SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " ORDER BY date) " +
+                "except (SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and original_transaction_id " +
+                "is null ORDER BY date);";
+        List<Transaction> transactions = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet list = state.executeQuery(s);
+            transactions = TransactionDAO.fromResultSet(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    public static List<Transaction> getCustomerReturnsForTransaction(Customer customer, Transaction transaction) {
+        String getTransactions = "SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and " +
+                "original_transaction_id = " + transaction.getId() + " ORDER BY date;";
+
+        List<Transaction> returns = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet list = state.executeQuery(getTransactions);
+            returns = TransactionDAO.fromResultSet(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return returns;
+    }
+
+    /**
+     * Checks to see if a customer has already returned all of the transaction products for this
+     * transaction product
+     */
+    public static boolean customerCanReturn(Transaction transaction, TransactionProduct transactionProduct) {
+        List<Transaction> returns = getCustomerReturnsForTransaction(transaction.getCustomer(), transaction);
+        int totalForProduct = 0;
+        for (Transaction returned : returns) {
+            TransactionProduct returnedProduct = TransactionProductDAO.getTransactionProductByIds(returned.getId(),
+                                                transactionProduct.getProduct().getId());
+            if (returnedProduct != null) {
+                totalForProduct += returnedProduct.getQuantity();
+            }
+        }
+
+        return totalForProduct != transactionProduct.getQuantity();
     }
 
     /**
@@ -164,33 +213,44 @@ public class CustomerDAO {
     }
 
     /**
-     * Returns customer items. Expects a map of transaction_id, quantityToReturn
-     * pairs
+     * Returns customer items. Expects a transaction reference to create the return, as well as a list
+     * of transaction products to return.
+     *
+     * Assumes another part of the application already ensured that the customer is allowed to return
+     * the items in the list
      */
     public static void returnItemsFromCustomer(Transaction transaction, List<TransactionProduct> returns) {
 
         double returnAmount = 0;
+        for (TransactionProduct productReturn : returns) {
+            returnAmount += (productReturn.getProduct().getCurrentPrice() * productReturn.getQuantity());
+        }
+
+        Transaction newTransaction = new Transaction();
+        newTransaction.setCustomer(transaction.getCustomer());
+        newTransaction.setStore(transaction.getStore());
+        newTransaction.setTotal(returnAmount);
+        newTransaction.setDate(DateTime.now());
+        newTransaction.setOriginalTransaction(transaction);
+        TransactionDAO.addTransaction(newTransaction);
+
+        newTransaction = getLastTransaction(TransactionDAO.getAllTransactions());
 
         // Foreach transaction product in the returns, return it to the database and update the product count
         for (TransactionProduct productReturn : returns) {
-            TransactionProduct dbProduct = TransactionProductDAO.getTransactionProductByIds(productReturn.getTransaction().getId(),
-                                                                                            productReturn.getProduct().getId());
-            int itemsToReturn = productReturn.getQuantity();
-            returnAmount += (productReturn.getProduct().getCurrentPrice() * itemsToReturn);
 
-            // Update the number of items still in customer's keep
-            productReturn.setQuantity(dbProduct.getQuantity() - itemsToReturn);
-            TransactionProductDAO.updateTransactionProduct(productReturn);
+            TransactionProductDAO.addTransactionProduct(new TransactionProduct(
+                    newTransaction,
+                    productReturn.getProduct(),
+                    productReturn.getQuantity()
+            ));
 
             // Update the corresponding product record
             Product product = productReturn.getProduct();
-            product.incrementQuantity(itemsToReturn);
+            product.incrementQuantity(productReturn.getQuantity());
             ProductDAO.updateProduct(product);
         }
 
-        // Update the transaction total to decrease by the returned amount
-        transaction.setTotal(transaction.getTotal() - returnAmount);
-        TransactionDAO.updateTransaction(transaction);
     }
 
 }
