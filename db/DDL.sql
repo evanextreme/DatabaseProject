@@ -93,8 +93,6 @@ CREATE TABLE `shipment` (
   `received_date` TIMESTAMP NULL,
   `store_id` INT NOT NULL,
   `vendor_id` INT NOT NULL,
-  `product_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_shipment-vendor`
     FOREIGN KEY (`vendor_id`)
@@ -105,15 +103,29 @@ CREATE TABLE `shipment` (
     FOREIGN KEY (`store_id`)
     REFERENCES `store` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_shipment-product`
-      FOREIGN KEY (`product_id`)
-      REFERENCES `product` (`id`)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION);
+
 CREATE INDEX `fk_shipment-vendor_idx` ON `shipment`(`vendor_id` ASC);
 CREATE INDEX `fk_shipment-store_idx` ON `shipment`(`store_id` ASC);
-CREATE INDEX `fk_shipment-product_idx` ON `shipment`(`product_id` ASC);
+
+CREATE TABLE `shipment_product` (
+  `shipment_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`shipment_id`, `product_id`),
+  CONSTRAINT `fk_shipment_product-shipment`
+    FOREIGN KEY (`shipment_id`)
+    REFERENCES `shipment` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_shipment_product-product`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE INDEX `fk_shipment_product-product_idx` ON `shipment_product`(`product_id` ASC);
+CREATE INDEX `fk_shipment_product-shipment_idx` ON `shipment_product`(`shipment_id` ASC);
 
 CREATE TABLE `transaction` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -121,9 +133,8 @@ CREATE TABLE `transaction` (
   `date` TIMESTAMP NOT NULL,
   `discount_id` INT NULL,
   `store_id` INT NULL,
-  `quantity` INT NOT NULL,
-  `product_id` INT NOT NULL,
   `total` DECIMAL NOT NULL,
+  `original_transaction_id` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_transaction-customer`
     FOREIGN KEY (`customer_id`)
@@ -139,8 +150,33 @@ CREATE TABLE `transaction` (
     FOREIGN KEY (`store_id`)
     REFERENCES `store` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transaction-original`
+      FOREIGN KEY (`original_transaction_id`)
+      REFERENCES `transaction` (`id`)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION);
+
 CREATE INDEX `fk_transaction-customer_idx` ON `transaction`(`customer_id` ASC);
 CREATE INDEX `fk_transaction-discount_idx` ON `transaction`(`discount_id` ASC);
 CREATE INDEX `fk_transaction-store_idx` ON `transaction`(`store_id` ASC);
-CREATE INDEX `fk_transaction-product_idx` ON `transaction`(`product_id` ASC);
+CREATE INDEX `fk_transaction-original_idx` ON `transaction`(`original_transaction_id` ASC);
+
+CREATE TABLE `transaction_product` (
+  `transaction_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`transaction_id`, `product_id`),
+  CONSTRAINT `fk_transaction_product-transaction`
+    FOREIGN KEY (`transaction_id`)
+    REFERENCES `transaction` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transaction_product-product`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE INDEX `fk_transaction_product-product_idx` ON `transaction_product`(`product_id` ASC);
+CREATE INDEX `fk_transaction_product-transaction_idx` ON `transaction_product`(`transaction_id` ASC);

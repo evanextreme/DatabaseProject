@@ -10,6 +10,10 @@ import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
+/**
+ * Class containing all necessary functions for interacting with
+ * the Customer table
+ */
 public class CustomerDAO {
 
     private static DatabaseConnection connection = RetailStoreApplication.getConnection();
@@ -117,7 +121,7 @@ public class CustomerDAO {
      * Gets all transactions for a customer ordered by the timestamp
      */
     public static List<Transaction> viewCustomerTransactions(Customer cust){
-        String s = "SELECT * FROM transaction WHERE id = " + cust.getId() + " ORDER BY date;";
+        String s = "SELECT * FROM transaction WHERE customer_id = " + cust.getId() + " and original_transaction_id is null ORDER BY date;";
         List<Transaction> transactions = new ArrayList<>();
         try{
             Statement state = connection.getConnection().createStatement();
@@ -129,54 +133,124 @@ public class CustomerDAO {
         return transactions;
     }
 
-    /**
-     * Iterates through the customer's transactions and
-     * commits the changes to the data base. Expects a list of
-     * Transaction items with all fields already initialized
-     */
-    public static void purchaseItemsForCustomer(List<Transaction> cart) {
-        for (Transaction item : cart) {
-            TransactionDAO.addTransaction(item);
-            String updateProducts = "UPDATE product SET quantity = quantity - " + item.getQuantityOfItem() +
-                   " WHERE store_id = " + item.getStore().getId() + " and id = " + item.getProduct().getId()
-                    + ";";
-            try {
-                Statement statement = connection.getConnection().createStatement();
-                statement.executeUpdate(updateProducts);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
+    public static List<Transaction> viewCustomerReturns(Customer customer) {
+        String s = "(SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " ORDER BY date) " +
+                "except (SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and original_transaction_id " +
+                "is null ORDER BY date);";
+        List<Transaction> transactions = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet list = state.executeQuery(s);
+            transactions = TransactionDAO.fromResultSet(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return transactions;
+    }
+
+    public static List<Transaction> getCustomerReturnsForTransaction(Customer customer, Transaction transaction) {
+        String getTransactions = "SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and " +
+                "original_transaction_id = " + transaction.getId() + " ORDER BY date;";
+
+        List<Transaction> returns = new ArrayList<>();
+        try{
+            Statement state = connection.getConnection().createStatement();
+            ResultSet list = state.executeQuery(getTransactions);
+            returns = TransactionDAO.fromResultSet(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return returns;
     }
 
     /**
-     * Returns customer items. Expects a map of transaction_id, quantityToReturn
-     * pairs
+     * Checks to see if a customer has already returned all of the transaction products for this
+     * transaction product
      */
-    public static void returnItemsFromCustomer(Map<Integer, Integer> returnReceipt) {
-        for (Integer key : returnReceipt.keySet()) {
-            Transaction transaction = TransactionDAO.getTransactionById(key);
-            if (transaction == null) {
-                //TODO: Handle this better?
-                return;
-            }
-
-            String updateTransaction = "UPDATE transaction SET quantity = quantity - " + returnReceipt.get(key) +
-                    " WHERE id = " + key + ";";
-
-            String updateProduct = "UPDATE product SET quantity = quantity + " + returnReceipt.get(key)
-                    + " WHERE id = " + transaction.getProduct().getId()
-                    + " and store_id = " + transaction.getStore().getId();
-
-            try {
-                Statement statement = connection.getConnection().createStatement();
-                statement.executeUpdate(updateTransaction);
-                statement.executeUpdate(updateProduct);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+    public static boolean customerCanReturn(Transaction transaction, TransactionProduct transactionProduct) {
+        List<Transaction> returns = getCustomerReturnsForTransaction(transaction.getCustomer(), transaction);
+        int totalForProduct = 0;
+        for (Transaction returned : returns) {
+            TransactionProduct returnedProduct = TransactionProductDAO.getTransactionProductByIds(returned.getId(),
+                                                transactionProduct.getProduct().getId());
+            if (returnedProduct != null) {
+                totalForProduct += returnedProduct.getQuantity();
             }
         }
+
+        return totalForProduct != transactionProduct.getQuantity();
+    }
+
+    /**
+     * Iterates through the customer's transactions and
+     * commits the changes to the data base. Expects a transaction and
+     * a list of transaction products
+     */
+    public static void purchaseItemsForCustomer(Transaction transaction, List<TransactionProduct> products) {
+
+        // Add the overall transaction to the database
+        TransactionDAO.addTransaction(transaction);
+
+        // Get the new id for the transaction
+        transaction = getLastTransaction(TransactionDAO.getAllTransactions());
+
+        // Iterate through all transaction products
+        for (TransactionProduct transProduct : products) {
+
+            // Add the TransactionProduct to the database
+            transProduct.setTransaction(transaction);
+            TransactionProductDAO.addTransactionProduct(transProduct);
+
+            Product product = transProduct.getProduct();
+            product.decrementQuantity(transProduct.getQuantity());
+            ProductDAO.updateProduct(product);
+        }
+    }
+
+    private static Transaction getLastTransaction(List<Transaction> transactions) {
+        return transactions.get(transactions.size() - 1);
+    }
+
+    /**
+     * Returns customer items. Expects a transaction reference to create the return, as well as a list
+     * of transaction products to return.
+     *
+     * Assumes another part of the application already ensured that the customer is allowed to return
+     * the items in the list
+     */
+    public static void returnItemsFromCustomer(Transaction transaction, List<TransactionProduct> returns) {
+
+        double returnAmount = 0;
+        for (TransactionProduct productReturn : returns) {
+            returnAmount += (productReturn.getProduct().getCurrentPrice() * productReturn.getQuantity());
+        }
+
+        Transaction newTransaction = new Transaction();
+        newTransaction.setCustomer(transaction.getCustomer());
+        newTransaction.setStore(transaction.getStore());
+        newTransaction.setTotal(returnAmount);
+        newTransaction.setDate(DateTime.now());
+        newTransaction.setOriginalTransaction(transaction);
+        TransactionDAO.addTransaction(newTransaction);
+
+        newTransaction = getLastTransaction(TransactionDAO.getAllTransactions());
+
+        // Foreach transaction product in the returns, return it to the database and update the product count
+        for (TransactionProduct productReturn : returns) {
+
+            TransactionProductDAO.addTransactionProduct(new TransactionProduct(
+                    newTransaction,
+                    productReturn.getProduct(),
+                    productReturn.getQuantity()
+            ));
+
+            // Update the corresponding product record
+            Product product = productReturn.getProduct();
+            product.incrementQuantity(productReturn.getQuantity());
+            ProductDAO.updateProduct(product);
+        }
+
     }
 
 }

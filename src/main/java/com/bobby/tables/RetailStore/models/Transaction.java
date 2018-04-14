@@ -1,11 +1,26 @@
 package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
+import org.thymeleaf.util.DateUtils;
 
 /**
  * Model for the Transaction table
  */
 public class Transaction {
+
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Transaction #" + id);
+		System.out.println(">\tCustomer: " + customer.getId());
+		System.out.println(">\tStore: " + store.getId());
+		System.out.println(">\tDate: " + date.toString());
+		System.out.println(">\tTotal: $" + total);
+		System.out.println(">\tReturned? " + isReturned());
+	}
 	
 	// Private fields
 
@@ -19,11 +34,9 @@ public class Transaction {
 
 	private DateTime date;
 
-	private int quantityOfItem;
-
-	private Product product;
-
 	private double total;
+
+	private Transaction originalTransaction;
 	
 	// Getter and setters for private fields
 
@@ -65,14 +78,6 @@ public class Transaction {
 		this.date = date;
 	}
 
-	public int getQuantityOfItem() {
-		return quantityOfItem;
-	}
-
-	public void setQuantityOfItem(int quantityOfItem) {
-		this.quantityOfItem = quantityOfItem;
-	}
-
 	public double getTotal() {
 		return total;
 	}
@@ -81,12 +86,15 @@ public class Transaction {
 		this.total = total;
 	}
 
-	public Product getProduct() {
-		return product;
+	public boolean isReturned() {
+		return this.originalTransaction != null;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public Transaction getOriginalTransaction() {
+		return originalTransaction;
 	}
 
+	public void setOriginalTransaction(Transaction originalTransaction) {
+		this.originalTransaction = originalTransaction;
+	}
 }
