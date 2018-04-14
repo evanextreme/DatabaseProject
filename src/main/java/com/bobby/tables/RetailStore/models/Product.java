@@ -75,6 +75,14 @@ public class Product {
         return salePrice;
     }
 
+    public void incrementQuantity(int increment) {
+        this.quantityInStore += increment;
+    }
+
+    public void decrementQuantity(int decrement) {
+        this.quantityInStore -= decrement;
+    }
+
     // Private fields
 
     private int id;
@@ -85,7 +93,6 @@ public class Product {
 
     private double salePrice;
 
-    //TODO: Enum?
     private String size;
 
     private int quantityInStore;

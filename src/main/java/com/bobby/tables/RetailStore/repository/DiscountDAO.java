@@ -63,13 +63,12 @@ public class DiscountDAO {
 
     /**
      * Inserts a discount into the discount table
-     * @param disc
      */
     public static void addDiscount(Discount disc){
         String add = "INSERT INTO discount (percentage) VALUES (" + disc.getPercentage() + ");";
         try{
             Statement state = connection.getConnection().createStatement();
-            state.execute(add);
+            state.executeUpdate(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }

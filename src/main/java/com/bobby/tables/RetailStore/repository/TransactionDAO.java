@@ -83,7 +83,7 @@ public class TransactionDAO {
         }
         try{
             Statement state = connection.getConnection().createStatement();
-            state.execute(add);
+            state.executeUpdate(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,13 +93,24 @@ public class TransactionDAO {
      * Updates the transaction db record with the same transaction id
      */
     public static void updateTransaction(Transaction transaction) {
-        String update = "UPDATE transaction SET " +
-                "customer_id = " + transaction.getCustomer().getId() + ", " +
-                "store_id = " + transaction.getStore().getId() + ", " +
-                "discount_id = " + transaction.getDiscount().getId() + ", " +
-                "date = '" + transaction.getDate() + "', " +
-                "total = " + transaction.getTotal() + ", " +
-                " WHERE id = " + transaction.getId() + ";";
+        String update;
+        if (transaction.getDiscount() != null) {
+            update = "UPDATE transaction SET " +
+                    "customer_id = " + transaction.getCustomer().getId() + ", " +
+                    "store_id = " + transaction.getStore().getId() + ", " +
+                    "discount_id = " + transaction.getDiscount().getId() + ", " +
+                    "date = '" + transaction.getDate() + "', " +
+                    "total = " + transaction.getTotal() +
+                    " WHERE id = " + transaction.getId() + ";";
+        } else {
+            update = "UPDATE transaction SET " +
+                    "customer_id = " + transaction.getCustomer().getId() + ", " +
+                    "store_id = " + transaction.getStore().getId() + ", " +
+                    "date = '" + transaction.getDate() + "', " +
+                    "total = " + transaction.getTotal() +
+                    " WHERE id = " + transaction.getId() + ";";
+        }
+
         try{
             Statement state = connection.getConnection().createStatement();
             state.executeUpdate(update);
@@ -107,8 +118,4 @@ public class TransactionDAO {
             e.printStackTrace();
         }
     }
-
-    //TODO: applyDiscount method
-    //not sure if discount should be applied to each transaction
-    //but i'm not sure how to apply it to the total
 }
