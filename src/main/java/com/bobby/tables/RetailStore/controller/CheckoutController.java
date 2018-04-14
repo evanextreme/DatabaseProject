@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bobby.tables.RetailStore.models.Brand;
 import com.bobby.tables.RetailStore.repository.BrandDAO;
+import com.bobby.tables.RetailStore.repository.DiscountDAO;
 import com.bobby.tables.RetailStore.repository.ProductDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -37,9 +38,10 @@ public class CheckoutController {
 	//
 	
 	@RequestMapping(value = {"/", "/home"})
-    public String home(Model model) throws JsonProcessingException {
+    public String home(Model model){
 		model.addAttribute("items", ProductDAO.getAllProducts());
 		model.addAttribute("cart", BrandDAO.getAllBrands());
+		model.addAttribute("discounts", DiscountDAO.getAllDiscounts());
         return "home";
     }
 	

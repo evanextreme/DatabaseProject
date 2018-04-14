@@ -27,7 +27,7 @@ public class StatsController {
 	//
 	
 	@RequestMapping("/stats")
-    public String statsPage(Model model) throws JsonProcessingException {
+    public String statsPage(Model model){
         return "stats";
     }
 }

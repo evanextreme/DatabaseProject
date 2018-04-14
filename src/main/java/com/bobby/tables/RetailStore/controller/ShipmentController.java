@@ -16,7 +16,7 @@ import com.bobby.tables.RetailStore.repository.ProductDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
-public class OrderController {
+public class ShipmentController {
 	
 	//
 	// API Mapping
@@ -26,8 +26,8 @@ public class OrderController {
 	// URL Mapping
 	//
 	
-	@RequestMapping("/order")
-    public String orderPage(Model model){
-        return "order";
+	@RequestMapping("/fulfillment")
+    public String fulfillmentPage(Model model){
+        return "fulfillment";
     }
 }
