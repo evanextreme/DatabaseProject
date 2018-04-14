@@ -26,20 +26,17 @@ public class Vendor {
 		this.email = email;
 	}
 
-	public static List<Vendor> fromResultSet(ResultSet resultSet) {
-		List<Vendor> vendors = new ArrayList<>();
-		try {
-			while (resultSet.next()) {
-				vendors.add(new Vendor(resultSet.getInt(1),
-						resultSet.getString(2),
-						resultSet.getString(3)));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return vendors;
+	/**
+	 * Prints out all info for debugging application
+	 * Assumes debugging record from database (so all required fields
+	 * like id are present)
+	 */
+	public void debug() {
+		System.out.println("Vendor #" + id);
+		System.out.println(">\tName: " + name);
+		System.out.println(">\tEmail: " + email);
 	}
-	
+
 	// Private fields
 
 	private int id;

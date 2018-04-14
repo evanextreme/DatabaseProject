@@ -91,7 +91,7 @@ public class ProductTypeDAO {
                                             "'," + prodType.getParentTypeId() + ");";
         try{
             Statement state = connection.getConnection().createStatement();
-            state.execute(add);
+            state.executeUpdate(add);
         } catch (SQLException e) {
             e.printStackTrace();
         }

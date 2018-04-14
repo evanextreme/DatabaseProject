@@ -1,6 +1,7 @@
 package com.bobby.tables.RetailStore.models;
 
 import org.joda.time.DateTime;
+import org.thymeleaf.util.DateUtils;
 
 /**
  * Model class for Shipment table
@@ -11,45 +12,52 @@ public class Shipment {
     public Shipment() {}
 
     /** Alternate constructor with fields */
-    public Shipment(DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(DateTime placedDate, Store store, Vendor vendor) {
         this.placedDate = placedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(int id, DateTime placedDate, Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(int id, DateTime placedDate, Store store, Vendor vendor) {
         this.id = id;
         this.placedDate = placedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor,
-                        Product product, int quantityOfItem) {
+    public Shipment(DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor) {
         this.placedDate = placedDate;
         this.receivedDate = receivedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
     }
 
     /** Alternate constructor with fields */
-    public Shipment(int id, DateTime placedDate, DateTime receivedDate,
-                    Store store, Vendor vendor, Product product, int quantityOfItem) {
+    public Shipment(int id, DateTime placedDate, DateTime receivedDate, Store store, Vendor vendor) {
         this.id = id;
         this.placedDate = placedDate;
         this.receivedDate = receivedDate;
-        this.quantityOfItem = quantityOfItem;
-        this.product = product;
         this.store = store;
         this.vendor = vendor;
+    }
+
+    /**
+     * Prints out all info for debugging application
+     * Assumes debugging record from database (so all required fields
+     * like id are present)
+     */
+    public void debug() {
+        System.out.println("Shipment #" + id);
+        System.out.println(">\tPlaced Date: " + placedDate.toString());
+        if (receivedDate != null) {
+            System.out.println(">\tReceived Date: " + receivedDate.toString());
+        } else {
+            System.out.println(">\tUNFILLED");
+        }
+        System.out.println(">\tStore: " + store.getId());
+        System.out.println(">\tVendor: " + vendor.getId());
     }
 
     // Private fields
@@ -61,10 +69,6 @@ public class Shipment {
 
     // Timestamp for when the vendor filled the shipment request
     private DateTime receivedDate;
-
-    private int quantityOfItem;
-
-    private Product product;
 
     private Store store;
 
@@ -94,22 +98,6 @@ public class Shipment {
 
     public void setPlacedDate(DateTime placedDate) {
         this.placedDate = placedDate;
-    }
-
-    public int getQuantityOfItem() {
-        return quantityOfItem;
-    }
-
-    public void setQuantityOfItem(int quantityOfItem) {
-        this.quantityOfItem = quantityOfItem;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Store getStore() {

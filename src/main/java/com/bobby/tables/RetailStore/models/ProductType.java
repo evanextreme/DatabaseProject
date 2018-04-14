@@ -32,6 +32,17 @@ public class ProductType {
         this.type = type;
     }
 
+    /**
+     * Prints out all info for debugging application
+     * Assumes debugging record from database (so all required fields
+     * like id are present)
+     */
+    public void debug() {
+        System.out.println("ProductType #" + id);
+        System.out.println(">\tType: " + type);
+        System.out.println(">\tParent Type: " + parentTypeId);
+    }
+
     // Private fields
 
     private int id;

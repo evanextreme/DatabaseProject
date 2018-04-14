@@ -58,7 +58,7 @@ public class DatabaseConnection {
     public void initializeDbAndTables() {
         String filenamePrefix = "db\\DML\\";
         String[] DMLFilenames = new String[] {"brand.sql", "discount.sql", "product_type.sql", "customer.sql", "store.sql",
-                "vendor.sql", "product.sql", "shipment.sql", "transaction.sql",};
+                "vendor.sql", "product.sql"};
         try {
             for (int index = 0; index < DMLFilenames.length; index++) {
                 String createStatement = "RUNSCRIPT FROM \'" + filenamePrefix + DMLFilenames[index] + "\'";
@@ -70,6 +70,17 @@ public class DatabaseConnection {
             ex.printStackTrace();
             closeConnection();
             System.exit(0);
+        }
+    }
+
+    public void createDbTriggers() {
+        String shipmentTrigger = "CREATE TRIGGER createShipmentTrigger AFTER UPDATE ON product FOR EACH ROW " +
+                "CALL \"com.bobby.tables.RetailStore.database.AutomaticShipmentTrigger\";";
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(shipmentTrigger);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
