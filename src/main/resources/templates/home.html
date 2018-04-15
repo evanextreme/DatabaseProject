@@ -175,7 +175,7 @@
             <div class="col s9">
                 <div class="row">
                     <div class="input-field col s6">
-                        <input name="add_item_field" type="text" class="validate"></input>
+                        <input placeholder="Item Number" name="add_item_field" type="text" class="validate"></input>
                     </div>
                     <div class="col s3">
                         <button class="btn waves-effect waves-light" id="memes" name="add_item_button">
@@ -184,7 +184,14 @@
                     </div>
                 </div>
                 <form id="cart">
-
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="Store Number" id="store-number" name="store" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <input placeholder="Customer Number" id="cust-number" name="customer" type="text" class="validate">
+                        </div>
+                    </div>
                     <select id="discount-field" name="discount-field">
                       <option value="0" selected>No Discount</option>
                       <td  th:each="discount : ${discounts}">
@@ -192,6 +199,8 @@
                     </td>
                     </select>
                     <label>Discounts</label>
+
+
 
                     <ul class="list-group">
                         <table>
@@ -205,7 +214,7 @@
                             <div id="checkout-list">
                                 <tr>
                                     <tbody id="checkout-body">
-                                            <!-- Where the meme magic comes to life -->
+                                        <!-- Where the meme magic comes to life -->
                                     </tbody>
                                 </tr>
                             </div>
