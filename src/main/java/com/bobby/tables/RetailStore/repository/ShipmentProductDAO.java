@@ -97,7 +97,7 @@ public class ShipmentProductDAO {
     /**
      * Updates a ShipmentProduct in the db
      */
-    public static void updateTransactionProduct(ShipmentProduct shipmentProduct) {
+    public static void updateShipmentProduct(ShipmentProduct shipmentProduct) {
         String updateTransProd = "UPDATE shipment_product SET " +
                 "shipment_id = " + shipmentProduct.getShipment().getId() +
                 ", product_id = " + shipmentProduct.getProduct().getId() +
