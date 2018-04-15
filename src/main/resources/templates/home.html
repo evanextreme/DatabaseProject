@@ -50,7 +50,7 @@
     </script>
 
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red pulse">
+        <a class="btn-floating btn-large green pulse">
             <i class="large material-icons">shopping_cart</i>
           </a>
         <ul>
@@ -94,6 +94,7 @@
 
         </div>
 
+    <form id="cart">
         <div id="total" class="modal">
             <div class="modal-content">
                 <div class="container">
@@ -114,7 +115,7 @@
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
-                <a class="waves-effect waves-red btn red" onclick="checkoutCart()">Checkout</a>
+                <a class="waves-effect waves-red btn green" onclick="checkoutCart()">Checkout</a>
             </div>
         </div>
 
@@ -123,6 +124,9 @@
                 <div class="modal-content">
                     <div class="container">
                         <h4>Return these items?</h4>
+                        <div class="input-field col s6">
+                            <input placeholder="Transaction ID" id="transaction-id" name="transactionId" type="text" class="validate">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -146,7 +150,6 @@
                     </button>
                     </div>
                 </div>
-                <form id="cart">
                     <div class="row">
                         <div class="input-field col s6">
                             <input placeholder="Store Number" id="store-number" name="store" type="text" class="validate">
@@ -185,7 +188,6 @@
 
                     </ul>
 
-                </form>
             </div>
             <div class="row">
                 <div class="col s3">
@@ -197,7 +199,10 @@
                 </div>
             </div>
         </div>
+    </form>
+
     </div>
+
 
 </body>
 <footer>
