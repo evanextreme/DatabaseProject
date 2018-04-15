@@ -42,8 +42,6 @@ public class RetailStoreApplication {
 		// Create the triggers for the db
 		connection.createDbTriggers();
 
-
-
 		SpringApplication.run(RetailStoreApplication.class, args);
 	}
 
