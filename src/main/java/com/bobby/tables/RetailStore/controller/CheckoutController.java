@@ -66,24 +66,21 @@ public class CheckoutController {
 		System.out.println("json: " + json);
 		JSONArray objArr = new JSONArray(json);
 
-		JSONObject storeObj = objArr.getJSONObject(0);
-		double total = objArr.getDouble(1);
+		int storeNum = objArr.getInt(0);
+		int custNum = objArr.getInt(1);
+		double total = objArr.getDouble(2);
 		
-		Store store = new Store();
-		store.setId(storeObj.getInt("id"));
-		store.setPhoneNumber(storeObj.getString("phoneNumber"));
-		store.setAddress(storeObj.getString("address"));
-		store.setEmail(storeObj.getString("email"));
+		Store store = StoreDAO.getStoreById(storeNum);
 		
 		Transaction myTrans = new Transaction();
 		myTrans.setTotal(total);
 		myTrans.setDate(new DateTime());
-		myTrans.setCustomer(CustomerDAO.getCustomerById(1));
+		myTrans.setCustomer(CustomerDAO.getCustomerById(custNum));
 		myTrans.setStore(store);
 		TransactionDAO.addTransaction(myTrans);
 		myTrans = TransactionDAO.getNewestTransaction();
 		
-		JSONArray transactionArr = objArr.getJSONArray(2);
+		JSONArray transactionArr = objArr.getJSONArray(3);
 		for(int i=0; i<transactionArr.length(); i++){
 			JSONObject obj = transactionArr.getJSONObject(i);
 			
