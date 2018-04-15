@@ -1,0 +1,27 @@
+# LittleBobbyTables
+
+
+#Basic operation of the application
+
+1. Open `localhost:5000'
+2. Click the 'catalogue' button
+3. A popup appears, scroll through and add items to your cart with the '+' button
+4. By clicking outside of the popup, it disappears
+5. Delete an item with the trash can icon
+6. Change the quantity of an item
+7. Press the drop down where 'No Discount' is displayed and click on a discount to add it
+8. On the line under checkout, type a number from the catalogue, then the '+' button to add it to your cart
+9. Click the cart button on the bottom right
+10. Click 'checkout cart' and a popup appears with your total
+11. Click 'checkout' and the item(s) are purchased!
+
+1. Open `localhost:5000'
+2. Click the 'fulfillment' button on the top left
+3. Click 'received date' for any of the orders and a popup calender appears
+4. Click on the date you want and press 'ok'
+5. Then click on 'update' and that shipment will be updated
+6. Press the '+' button in the bottom right corner
+7. Input the quantity and sent date of the shipment request
+
+1. Open `localhost:5000'
+2. Click on stats to view statistics about the database
