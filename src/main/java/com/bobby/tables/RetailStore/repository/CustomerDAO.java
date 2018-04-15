@@ -77,6 +77,24 @@ public class CustomerDAO {
     }
 
     /**
+     * Gets the latest customer inserted
+     */
+    public static Customer getNewestCustomer() {
+        List<Customer> customers = CustomerDAO.getAllCustomers();
+        Customer latest = null;
+        for (Customer customer : customers) {
+            if (latest == null) {
+                latest = customer;
+            }
+
+            if (latest != null && customer.getId() > latest.getId()) {
+                latest = customer;
+            }
+        }
+        return latest;
+    }
+
+    /**
      * Adds the customer to the db
      */
     public static String addCustomer(Customer cust){
