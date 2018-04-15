@@ -51,18 +51,14 @@ public class CheckoutController {
 	@RequestMapping(value = {"/", "/home"})
     public String home(Model model){
 		model.addAttribute("items", ProductDAO.getAllProducts());
-		model.addAttribute("cart", BrandDAO.getAllBrands());
 		model.addAttribute("discounts", DiscountDAO.getAllDiscounts());
-		model.addAttribute("store", StoreDAO.getStoreById(1));
         return "home";
     }
 	
 	//checkout?discountField=0
 	@RequestMapping(value="/checkout", method = RequestMethod.POST)
-	public void test(Model model, @RequestBody String json, HttpServletRequest request, HttpServletResponse response) throws JSONException {
+	public void checkoutCart(Model model, @RequestBody String json, HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		//discountID is 0 if no discount is applied
-//		json = json.replace("[", "");
-//		json = json.replace("]", "");
 		System.out.println("json: " + json);
 		JSONArray objArr = new JSONArray(json);
 
@@ -107,9 +103,45 @@ public class CheckoutController {
 //		
 //		System.out.println("Product- name: " + myProd.getName() + " qty: " + myProd.getQuantityInStore() + " vendor: " + myProd.getVendor().getName());
 //		ProductDAO.addProduct(myProd);
+	}
+	
+	@RequestMapping(value="/return", method = RequestMethod.POST)
+	public void returnCart(Model model, @RequestBody String json, HttpServletRequest request, HttpServletResponse response) throws JSONException {
+		//discountID is 0 if no discount is applied
+		System.out.println("json: " + json);
+		JSONArray objArr = new JSONArray(json);
+
+		int storeNum = objArr.getInt(0);
+		int custNum = objArr.getInt(1);
+		double total = objArr.getDouble(2);
+		int discountNum = objArr.getInt(3);
+		int transactionNum = objArr.getInt(4);
 		
-		model.addAttribute("items", ProductDAO.getAllProducts());
-		model.addAttribute("cart", BrandDAO.getAllBrands());
-		model.addAttribute("discounts", DiscountDAO.getAllDiscounts());
+		Store store = StoreDAO.getStoreById(storeNum);
+		
+		Transaction myTrans = new Transaction();
+		myTrans.setTotal(total);
+		myTrans.setDate(new DateTime());
+		myTrans.setCustomer(CustomerDAO.getCustomerById(custNum));
+		myTrans.setStore(store);
+		myTrans.setOriginalTransaction(TransactionDAO.getTransactionById(transactionNum));
+		
+		if(discountNum != 0){
+			myTrans.setDiscount(DiscountDAO.getDiscountById(discountNum));
+		}
+		
+		TransactionDAO.addTransaction(myTrans);
+		myTrans = TransactionDAO.getNewestTransaction();
+		
+		JSONArray transactionArr = objArr.getJSONArray(5);
+		for(int i=0; i<transactionArr.length(); i++){
+			JSONObject obj = transactionArr.getJSONObject(i);
+			
+			int productID = obj.getInt("productID");
+			int quantityOfItem = obj.getInt("quantityOfItem");
+			
+			TransactionProduct myTranProd = new TransactionProduct(TransactionDAO.getTransactionById(myTrans.getId()), ProductDAO.getProductById(productID), quantityOfItem);
+			TransactionProductDAO.addTransactionProduct(myTranProd);
+		}
 	}
 }
