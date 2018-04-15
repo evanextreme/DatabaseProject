@@ -217,7 +217,7 @@ public class CustomerDAO {
         TransactionDAO.addTransaction(transaction);
 
         // Get the new id for the transaction
-        transaction = getLastTransaction(TransactionDAO.getAllTransactions());
+        transaction = TransactionDAO.getNewestTransaction();
 
         // Iterate through all transaction products
         for (TransactionProduct transProduct : products) {
@@ -230,10 +230,6 @@ public class CustomerDAO {
             product.decrementQuantity(transProduct.getQuantity());
             ProductDAO.updateProduct(product);
         }
-    }
-
-    private static Transaction getLastTransaction(List<Transaction> transactions) {
-        return transactions.get(transactions.size() - 1);
     }
 
     /**
@@ -258,7 +254,7 @@ public class CustomerDAO {
         newTransaction.setOriginalTransaction(transaction);
         TransactionDAO.addTransaction(newTransaction);
 
-        newTransaction = getLastTransaction(TransactionDAO.getAllTransactions());
+        newTransaction = TransactionDAO.getNewestTransaction();
 
         // Foreach transaction product in the returns, return it to the database and update the product count
         for (TransactionProduct productReturn : returns) {
