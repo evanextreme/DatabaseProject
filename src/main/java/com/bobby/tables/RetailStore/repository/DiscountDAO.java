@@ -88,5 +88,15 @@ public class DiscountDAO {
         }
     }
 
+    public static void deleteDiscount(Discount discount) {
+        String delete = "DELETE FROM discount WHERE id = " + discount.getId() + ";";
+        try{
+            Statement state = connection.getConnection().createStatement();
+            state.execute(delete);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
