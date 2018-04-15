@@ -69,14 +69,14 @@
                         <input hidden placeholder="Vendor ID" id="vendor" name="placed" th:value="${shipment.vendor.id}" type="text">
                     </div>
                     <div class="input-field col s2">
-                        <input disabled th:id="'shipment' + ${object.id}" name="id" th:value="${shipment.id}"></td>
+                        <input disabled th:id="'shipment' + ${shipment.id}" name="id" th:value="${shipment.id}"></td>
                     </div>
                     <div class="input-field col s3">
-                        <input placeholder="Placed Date" th:id="'placed' + ${object.id}" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
+                        <input placeholder="Placed Date" th:id="'placed' + ${shipment.id}" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
                     </div>
 
                     <div class="input-field col s3">
-                        <input placeholder="Received Date" th:id="'received' + ${object.id}" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
+                        <input placeholder="Received Date" th:id="'received' + ${shipment.id}" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
                     </div>
                     <div class="col s3">
                         <button class="btn waves-effect waves-light red" th:onclick="'updateShipment(' + ${shipment.id} + ');'">Update
