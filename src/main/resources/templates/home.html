@@ -94,31 +94,6 @@
 
         </div>
 
-
-        <!-- <div id="discounts" class="modal">
-            <div class="modal-content">
-                <div class="container">
-                    <h4>Discounts</h4>
-                    <div class="row">
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="10" onclick="setDiscount(10)"><i class="material-icons left">attach_money</i>Senior Discount 10%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="15" onclick="setDiscount(15)"><i class="material-icons left">attach_money</i>Employee Discount 15%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="20" onclick="setDiscount(20)"><i class="material-icons left">attach_money</i>Teacher Discount 20%</button></div><br>
-                        <div class="col s12"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="25" onclick="setDiscount(25)"><i class="material-icons left">attach_money</i>Military Discount 25%</button></div><br><br>
-
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="30" onclick="setDiscount(30)"><i class="material-icons left">attach_money</i>30%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="35" onclick="setDiscount(35)"><i class="material-icons left">attach_money</i>35%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="40" onclick="setDiscount(40)"><i class="material-icons left">attach_money</i>40%</button></div><br>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="45" onclick="setDiscount(45)"><i class="material-icons left">attach_money</i>45%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="50" onclick="setDiscount(50)"><i class="material-icons left">attach_money</i>50%</button></div>
-                        <div class="col s4"><button class="btn waves-effect waves-light green modal-close" type="submit" name="submit" value="55" onclick="setDiscount(55)"><i class="material-icons left">attach_money</i>55%</button></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Back</a>
-            </div>
-        </div> -->
-
         <div id="total" class="modal">
             <div class="modal-content">
                 <div class="container">
@@ -309,11 +284,13 @@
             getTotal();
 
             var storeNum = document.getElementById('store-number').value;
-            var custNum = document.getElementById('cust-number').value
+            var custNum = document.getElementById('cust-number').value;
+            var discountNum = document.getElementById('discount-field').selectedIndex;
             var myArr = [];
             myArr.push(storeNum);
             myArr.push(custNum);
             myArr.push(jsTotal);
+            myArr.push(discountNum);
             myArr.push(jsCart);
 
             console.log("myArr: " + myArr);
