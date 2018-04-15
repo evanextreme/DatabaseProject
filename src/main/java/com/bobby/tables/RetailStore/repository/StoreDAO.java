@@ -130,6 +130,20 @@ public class StoreDAO {
     }
 
     /**
+     * Creates a shipment request from the given store to the given vendor with the
+     * list of products
+     */
+    public static void createShipmentRequest(Store store, Vendor vendor, List<ShipmentProduct> products) {
+        ShipmentDAO.addShipment(new Shipment(DateTime.now(), store, vendor));
+        Shipment newShipment = ShipmentDAO.getNewestShipment();
+
+        for (ShipmentProduct product : products) {
+            product.setShipment(newShipment);
+            ShipmentProductDAO.addShipmentProduct(product);
+        }
+    }
+
+    /**
      * View all other stores and their information
      */
     public static List<Store> getOtherStores(Store store){

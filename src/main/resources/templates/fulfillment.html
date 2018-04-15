@@ -87,7 +87,7 @@
                 </thead>
                 <tbody>
                     <form>
-                        <tr th:each="shipment : ${shipments}">
+                        <tr th:each="shipment : ${orders}">
                             <td>
                                 <div class="input-field col s2">
                                     <input disabled id="id" name="id" th:value="${shipment.id}"></td>
@@ -95,12 +95,12 @@
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Placed Date" id="placed" name="placed" th:value="${shipment.placed}" type="text" class="datepicker">
+                                    <input placeholder="Placed Date" id="placed" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field col s3">
-                                    <input placeholder="Received Date" id="received" name="received" th:value="${shipment.received}" type="text" class="datepicker">
+                                    <input placeholder="Received Date" id="received" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
                                 </div>
                             </td>
                             <td>
