@@ -151,6 +151,9 @@ public class CustomerDAO {
         return transactions;
     }
 
+    /**
+     * Displays all returns for a customer ordered by the timestamp
+     */
     public static List<Transaction> viewCustomerReturns(Customer customer) {
         String s = "(SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " ORDER BY date) " +
                 "except (SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and original_transaction_id " +
@@ -166,6 +169,9 @@ public class CustomerDAO {
         return transactions;
     }
 
+    /**
+     * Gets all returns for a customer's transaction ordered by the timestamp
+     */
     public static List<Transaction> getCustomerReturnsForTransaction(Customer customer, Transaction transaction) {
         String getTransactions = "SELECT * FROM transaction WHERE customer_id = " + customer.getId() + " and " +
                 "original_transaction_id = " + transaction.getId() + " ORDER BY date;";
