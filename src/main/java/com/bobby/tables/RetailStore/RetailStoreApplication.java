@@ -42,10 +42,7 @@ public class RetailStoreApplication {
 		// Create the triggers for the db
 		connection.createDbTriggers();
 
-		Shipment shipment = ShipmentDAO.getNewestShipment();
-		if (shipment != null) {
-			shipment.debug();
-		}
+
 
 		SpringApplication.run(RetailStoreApplication.class, args);
 	}
