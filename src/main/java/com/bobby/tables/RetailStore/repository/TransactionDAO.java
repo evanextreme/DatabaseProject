@@ -77,6 +77,24 @@ public class TransactionDAO {
     }
 
     /**
+     * Gets the latest transaction inserted
+     */
+    public static Transaction getNewestTransaction() {
+        List<Transaction> transactions = TransactionDAO.getAllTransactions();
+        Transaction latest = null;
+        for (Transaction transaction : transactions) {
+            if (latest == null) {
+                latest = transaction;
+            }
+
+            if (latest != null && transaction.getId() > latest.getId()) {
+                latest = transaction;
+            }
+        }
+        return latest;
+    }
+
+    /**
      * Adds a transaction to the database
      */
     public static void addTransaction(Transaction trans){
