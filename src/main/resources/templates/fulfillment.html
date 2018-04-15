@@ -62,12 +62,19 @@
             </table>
             <form th:each="shipment : ${orders}">
                 <div class="row">
+                    <div class="input-field">
+                        <input hidden placeholder="Store ID" id="store" name="placed" th:value="${shipment.store.id}" type="text">
+                    </div>
+                    <div class="input-field">
+                        <input hidden placeholder="Vendor ID" id="vendor" name="placed" th:value="${shipment.vendor.id}" type="text">
+                    </div>
                     <div class="input-field col s2">
                         <input disabled th:id="'shipment' + ${object.id}" name="id" th:value="${shipment.id}"></td>
                     </div>
                     <div class="input-field col s3">
                         <input placeholder="Placed Date" th:id="'placed' + ${object.id}" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
                     </div>
+
                     <div class="input-field col s3">
                         <input placeholder="Received Date" th:id="'received' + ${object.id}" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
                     </div>
