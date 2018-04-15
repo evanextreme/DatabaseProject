@@ -158,4 +158,134 @@ public class StoreDAO {
         }
         return stores;
     }
+
+    /**
+     * The following are more complex queries that stores are able to run to look at some
+     * data about their operation
+     */
+
+    /**
+     * Returns the top x number of transactions ordered by store
+     */
+    public static List<Transaction> getTopTransactions(int number){
+        List<Store> stores = StoreDAO.getAllStores();
+        List<Transaction> transactions = new ArrayList<>();
+        for (Store store : stores) {
+            String query = "SELECT TOP " + number + " id, store_id, total " +
+                    "FROM transaction " +
+                    "WHERE store_id = " + store.getId() +
+                    "ORDER BY total DESC";
+            try {
+                Statement statement = connection.getConnection().createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+
+                while (resultSet.next()) {
+                    transactions.add(TransactionDAO.getTransactionById(resultSet.getInt(1)));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return transactions;
+    }
+
+    /**
+     * Returns the list of stores ordered by their sales
+     */
+    public static List<Store> getStoresBySales() {
+        String query = "SELECT sum(total), store_id FROM transaction GROUP BY store_id ORDER BY sum(total) DESC";
+        List<Store> stores = new ArrayList<>();
+        try {
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                stores.add(StoreDAO.getStoreById(resultSet.getInt(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stores;
+    }
+
+    /**
+     * Returns the top x number of best selling items
+     * across all stores
+     */
+    public static List<Product> getTopBestSellingItems(int number) {
+        String query = "SELECT product_id, SUM(transaction_product.quantity) " +
+                "FROM transaction_product JOIN product on transaction_product.product_id = product.id " +
+                "GROUP BY product_id " +
+                "ORDER BY SUM(transaction_product.quantity) DESC LIMIT " + number + ";";
+        List<Product> products = new ArrayList<>();
+        try {
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                products.add(ProductDAO.getProductById(resultSet.getInt(1)));
+                System.out.printf("Product #: %d, # bought = %d\n", resultSet.getInt(1), resultSet.getInt(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    /**
+     * Returns the top x number of best selling items for a single store
+     */
+    public static List<Product> getTopBestSellingItemsForStore(int number, Store store) {
+        String query = "SELECT product_id, SUM(transaction_product.quantity) " +
+                "FROM transaction_product JOIN product on transaction_product.product_id = product.id " +
+                "WHERE product.store_id = " + store.getId() + " " +
+                "GROUP BY product_id " +
+                "ORDER BY SUM(transaction_product.quantity) DESC LIMIT " + number + ";";
+        List<Product> products = new ArrayList<>();
+        try {
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                products.add(ProductDAO.getProductById(resultSet.getInt(1)));
+                System.out.printf("Product #: %d, # bought = %d\n", resultSet.getInt(1), resultSet.getInt(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    /**
+     * Returns the top x number of best selling items
+     * across all stores between the given dates
+     */
+    public static List<Product> getTopBestSellingItems(int number, DateTime after, DateTime before) {
+        String query = "SELECT product_id, SUM(transaction_product.quantity) " +
+                "FROM (transaction_product JOIN product on transaction_product.product_id = product.id) " +
+                        " JOIN transaction ON transaction.id = transaction_product.transaction_id " +
+                "WHERE transaction.date > '" + after + "' and transaction.date < '" + before + "' " +
+                "GROUP BY product_id " +
+                "ORDER BY SUM(transaction_product.quantity) DESC LIMIT " + number + ";";
+        List<Product> products = new ArrayList<>();
+        try {
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                products.add(ProductDAO.getProductById(resultSet.getInt(1)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    /**
+     * Returns the number of stores that department 1 outsells department 2
+     */
+    public static int storesDeptOutsells(String dept1, String dept2) {
+        String query = "SELECT count(store_id) " +
+                        "FROM (SELECT * FROM " +
+                                "(transaction join transaction_product on transaction.id = transaction_product.transaction_id)" +
+                                "join product on product.id = product_id)" +
+                        "";
+        return 0;
+    }
 }
