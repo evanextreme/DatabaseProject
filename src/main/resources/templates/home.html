@@ -42,6 +42,7 @@
     <script th:inline="javascript">
     /*<![CDATA[*/
     var jsCart = [];
+    var jsTotal = 0;
     var jsItems = [[${items}]];
     var jsStore = [[${store}]];
 
@@ -241,8 +242,19 @@
 
         });
 
+        function resetCart(){
+            document.getElementById('checkout-body').innerHTML = "";
+            var newCart = jsCart;
+            jsCart = [];
+            for(i=0; i<newCart.length;i++){
+                addItem(newCart[i].productID);
+            }
+        }
+
         function removeItem(cartId) {
-            $('#item' + cartId).remove();
+            jsCart.splice(cartId, 1);
+            jsTotal = 0;
+            resetCart();
         }
 
         function addItem(itemId) {
@@ -274,8 +286,8 @@
             console.log("discount: " + discount);
 
             for(var i=0; i<jsCart.length; i++) {
-                let qty = jsCart[i].qty;
-                let price = jsCart[i].regularPrice;
+                let qty = jsCart[i].quantityOfItem;
+                let price = jsCart[i].total;
                 let current = qty * (price - (price * discount));
                 subtotal = subtotal + current;
             }
@@ -284,6 +296,7 @@
             total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
             tax = parseFloat(Math.round(tax * 100) / 100).toFixed(2);
             subtotal = parseFloat(Math.round(subtotal * 100) / 100).toFixed(2);
+            jsTotal = total;
             $("#subtotal-text").text("$" + subtotal);
             $("#tax-text").text("$" + tax);
             $("#total-text").text("$" + total);
@@ -296,9 +309,17 @@
         }
 
         function checkoutCart(){
+            getTotal();
+            var myArr = [];
+            myArr.push(jsStore);
+            myArr.push(jsTotal);
+            myArr.push(jsCart);
+
+            console.log("myArr: " + myArr);
+
             $.ajax({
                 type:  'POST',
-                data:  JSON.stringify(jsCart),
+                data:  JSON.stringify(myArr),
                 dataType: "text",
                 contentType: "application/json; charset=utf-8",
                 url: "checkout",

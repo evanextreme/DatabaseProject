@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -60,18 +61,15 @@ public class CheckoutController {
 	@RequestMapping(value="/checkout", method = RequestMethod.POST)
 	public void test(Model model, @RequestBody String json, HttpServletRequest request, HttpServletResponse response) throws JSONException {
 		//discountID is 0 if no discount is applied
-		json = json.replace("[", "");
-		json = json.replace("]", "");
+//		json = json.replace("[", "");
+//		json = json.replace("]", "");
 		System.out.println("json: " + json);
+		JSONArray objArr = new JSONArray(json);
 
-		JSONObject obj = new JSONObject(json);
-		
-		int productID = obj.getInt("productID");
-		int quantityOfItem = obj.getInt("quantityOfItem");
-		double total = obj.getDouble("total");
+		JSONObject storeObj = objArr.getJSONObject(0);
+		double total = objArr.getDouble(1);
 		
 		Store store = new Store();
-		JSONObject storeObj = obj.getJSONObject("store");
 		store.setId(storeObj.getInt("id"));
 		store.setPhoneNumber(storeObj.getString("phoneNumber"));
 		store.setAddress(storeObj.getString("address"));
@@ -82,12 +80,19 @@ public class CheckoutController {
 		myTrans.setDate(new DateTime());
 		myTrans.setCustomer(CustomerDAO.getCustomerById(1));
 		myTrans.setStore(store);
-		
 		TransactionDAO.addTransaction(myTrans);
-		System.out.println("transactionID: " + myTrans.getId());
-		TransactionProduct myTranProd = new TransactionProduct(myTrans, ProductDAO.getProductById(productID), quantityOfItem);
-		TransactionProductDAO.addTransactionProduct(myTranProd);
-		System.out.println("should be the same: " + myTranProd.getTransaction().getId());
+		myTrans = TransactionDAO.getNewestTransaction();
+		
+		JSONArray transactionArr = objArr.getJSONArray(2);
+		for(int i=0; i<transactionArr.length(); i++){
+			JSONObject obj = transactionArr.getJSONObject(i);
+			
+			int productID = obj.getInt("productID");
+			int quantityOfItem = obj.getInt("quantityOfItem");
+			
+			TransactionProduct myTranProd = new TransactionProduct(TransactionDAO.getTransactionById(myTrans.getId()), ProductDAO.getProductById(productID), quantityOfItem);
+			TransactionProductDAO.addTransactionProduct(myTranProd);
+		}
 		
 		//DO NOT DELETE: code to do a direct mapping to an object
 //		json = json.replace("[", "");
