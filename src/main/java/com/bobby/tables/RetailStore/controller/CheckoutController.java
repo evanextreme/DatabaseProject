@@ -69,6 +69,7 @@ public class CheckoutController {
 		int storeNum = objArr.getInt(0);
 		int custNum = objArr.getInt(1);
 		double total = objArr.getDouble(2);
+		int discountNum = objArr.getInt(3);
 		
 		Store store = StoreDAO.getStoreById(storeNum);
 		
@@ -77,10 +78,15 @@ public class CheckoutController {
 		myTrans.setDate(new DateTime());
 		myTrans.setCustomer(CustomerDAO.getCustomerById(custNum));
 		myTrans.setStore(store);
+		
+		if(discountNum != 0){
+			myTrans.setDiscount(DiscountDAO.getDiscountById(discountNum));
+		}
+		
 		TransactionDAO.addTransaction(myTrans);
 		myTrans = TransactionDAO.getNewestTransaction();
 		
-		JSONArray transactionArr = objArr.getJSONArray(3);
+		JSONArray transactionArr = objArr.getJSONArray(4);
 		for(int i=0; i<transactionArr.length(); i++){
 			JSONObject obj = transactionArr.getJSONObject(i);
 			
