@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bobby.tables.RetailStore.models.Brand;
 import com.bobby.tables.RetailStore.models.Store;
 import com.bobby.tables.RetailStore.models.Transaction;
+import com.bobby.tables.RetailStore.models.TransactionProduct;
 import com.bobby.tables.RetailStore.repository.BrandDAO;
+import com.bobby.tables.RetailStore.repository.CustomerDAO;
 import com.bobby.tables.RetailStore.repository.DiscountDAO;
 import com.bobby.tables.RetailStore.repository.ProductDAO;
 import com.bobby.tables.RetailStore.repository.StoreDAO;
 import com.bobby.tables.RetailStore.repository.TransactionDAO;
+import com.bobby.tables.RetailStore.repository.TransactionProductDAO;
 
 @Controller
 public class CheckoutController {
@@ -63,21 +66,28 @@ public class CheckoutController {
 
 		JSONObject obj = new JSONObject(json);
 		
-		int productID = (int)obj.get("productID");
-		int quantityOfItem = (int)obj.get("quantityOfItem");
-		int total = (int)obj.get("total");
-		Store store = (Store)obj.get("store");
+		int productID = obj.getInt("productID");
+		int quantityOfItem = obj.getInt("quantityOfItem");
+		double total = obj.getDouble("total");
+		
+		Store store = new Store();
+		JSONObject storeObj = obj.getJSONObject("store");
+		store.setId(storeObj.getInt("id"));
+		store.setPhoneNumber(storeObj.getString("phoneNumber"));
+		store.setAddress(storeObj.getString("address"));
+		store.setEmail(storeObj.getString("email"));
 		
 		Transaction myTrans = new Transaction();
-		myTrans.setProduct(ProductDAO.getProductById(productID));
-		myTrans.setQuantityOfItem(quantityOfItem);
 		myTrans.setTotal(total);
 		myTrans.setDate(new DateTime());
-		myTrans.setCustomer(null);
+		myTrans.setCustomer(CustomerDAO.getCustomerById(1));
 		myTrans.setStore(store);
 		
 		TransactionDAO.addTransaction(myTrans);
-		
+		System.out.println("transactionID: " + myTrans.getId());
+		TransactionProduct myTranProd = new TransactionProduct(myTrans, ProductDAO.getProductById(productID), quantityOfItem);
+		TransactionProductDAO.addTransactionProduct(myTranProd);
+		System.out.println("should be the same: " + myTranProd.getTransaction().getId());
 		
 		//DO NOT DELETE: code to do a direct mapping to an object
 //		json = json.replace("[", "");

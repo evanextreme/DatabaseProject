@@ -295,12 +295,6 @@
             $('#return').modal('open');
         }
 
-        function setDiscount(aDiscount) {
-            discount = aDiscount * .01;
-            $("#discount-text").text(aDiscount + "% discount applied!");
-            $("#discount-field").value(aDiscount);
-        }
-
         function checkoutCart(){
             $.ajax({
                 type:  'POST',
