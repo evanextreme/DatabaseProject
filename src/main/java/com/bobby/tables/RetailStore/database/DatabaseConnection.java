@@ -29,7 +29,6 @@ public class DatabaseConnection {
             connection = DriverManager.getConnection(url, user, password);
 
         } catch (SQLException | ClassNotFoundException e) {
-            //TODO: You should handle this better
             e.printStackTrace();
         }
     }
@@ -58,7 +57,7 @@ public class DatabaseConnection {
     public void initializeDbAndTables() {
         String filenamePrefix = "db\\DML\\";
         String[] DMLFilenames = new String[] {"brand.sql", "discount.sql", "product_type.sql", "customer.sql", "store.sql",
-                "vendor.sql", "product.sql"};
+                "vendor.sql", "product.sql", "transaction.sql", "transaction_product.sql", "shipment.sql", "shipment_product.sql"};
         try {
             for (int index = 0; index < DMLFilenames.length; index++) {
                 String createStatement = "RUNSCRIPT FROM \'" + filenamePrefix + DMLFilenames[index] + "\'";

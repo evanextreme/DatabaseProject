@@ -19,6 +19,13 @@ public class TransactionProduct {
         this.quantity = quantity;
     }
 
+    /** Alternate constructor with fields */
+    public TransactionProduct(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+
     /**
      * Prints out all info for debugging application
      * Assumes debugging record from database (so all required fields
