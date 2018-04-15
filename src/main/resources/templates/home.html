@@ -319,8 +319,12 @@
 
         function checkoutCart(){
             getTotal();
+
+            var storeNum = document.getElementById('store-number').value;
+            var custNum = document.getElementById('cust-number').value
             var myArr = [];
-            myArr.push(jsStore);
+            myArr.push(storeNum);
+            myArr.push(custNum);
             myArr.push(jsTotal);
             myArr.push(jsCart);
 
