@@ -63,13 +63,13 @@
             <form th:each="shipment : ${orders}">
                 <div class="row">
                     <div class="input-field col s2">
-                        <input disabled id="id" name="id" th:value="${shipment.id}"></td>
+                        <input disabled th:id="'shipment' + ${object.id}" name="id" th:value="${shipment.id}"></td>
                     </div>
                     <div class="input-field col s3">
-                        <input placeholder="Placed Date" id="placed" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
+                        <input placeholder="Placed Date" th:id="'placed' + ${object.id}" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
                     </div>
                     <div class="input-field col s3">
-                        <input placeholder="Received Date" id="received" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
+                        <input placeholder="Received Date" th:id="'received' + ${object.id}" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
                     </div>
                     <div class="col s3">
                         <button class="btn waves-effect waves-light red" th:onclick="'updateShipment(' + ${shipment.id} + ');'">Update
@@ -91,6 +91,28 @@
 
         function getNewOrder() {
             $('#new-order').modal('open');
+        }
+
+        function updateShipment(shipmentID){
+            var placedDate = document.getElementById('placed'+shipmentID).value;
+            var receivedDate = document.getElementById('received'+shipmentID).value;
+            var myArr = [];
+            myArr.push(shipmentID);
+            myArr.push(placedDate);
+            myArr.push(receivedDate);
+
+            $.ajax({
+                type:  'PUT',
+                data:  JSON.stringify(myArr),
+                dataType: "text",
+                contentType: "application/json; charset=utf-8",
+                url: "shipment",
+                success:  function (data) {
+                    location.reload();
+                }, error: function(data){
+                    console.log("ERROR: ", data);
+                }
+            });
         }
     </script>
 
