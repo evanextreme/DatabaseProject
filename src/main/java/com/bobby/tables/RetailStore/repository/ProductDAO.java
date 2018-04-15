@@ -78,6 +78,24 @@ public class ProductDAO {
     }
 
     /**
+     * Gets the latest product inserted
+     */
+    public static Product getNewestProduct() {
+        List<Product> products = ProductDAO.getAllProducts();
+        Product latest = null;
+        for (Product product : products) {
+            if (latest == null) {
+                latest = product;
+            }
+
+            if (latest != null && product.getId() > latest.getId()) {
+                latest = product;
+            }
+        }
+        return latest;
+    }
+
+    /**
      * Add a product to the db
      */
     public static void addProduct(Product prod){
