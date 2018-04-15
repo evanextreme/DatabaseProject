@@ -85,34 +85,28 @@
                         <th>Received Date</th>
                     </tr>
                 </thead>
-                <tbody>
-                        <tr>
-                            <form th:each="shipment : ${orders}">
-                                <div class="row">
-                                <div class="input-field col s2">
-                                    <input disabled id="id" name="id" th:value="${shipment.id}"></td>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input placeholder="Placed Date" id="placed" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
-                                </div>
-                                <div class="input-field col s3">
-                                    <input placeholder="Received Date" id="received" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
-                                </div>
-                                <div class="col s3">
-                                    <button class="btn waves-effect waves-light red" type="submit" name="action">Update
-                                      <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                                </div>
-                            </form>
-
-                        </tr>
-
-                </tbody>
             </table>
+            <form th:each="shipment : ${orders}">
+                <div class="row">
+                    <div class="input-field col s2">
+                        <input disabled id="id" name="id" th:value="${shipment.id}"></td>
+                    </div>
+                    <div class="input-field col s3">
+                        <input placeholder="Placed Date" id="placed" name="placed" th:value="${shipment.placedDate}" type="text" class="datepicker">
+                    </div>
+                    <div class="input-field col s3">
+                        <input placeholder="Received Date" id="received" name="received" th:value="${shipment.receivedDate}" type="text" class="datepicker">
+                    </div>
+                    <div class="col s3">
+                        <button class="btn waves-effect waves-light red" type="submit" name="action">Update
+                                  <i class="material-icons right">send</i>
+                                </button>
+                    </div>
+                </div>
+            </form>
         </ul>
 
-        </div>
+    </div>
 
 </body>
 <footer>

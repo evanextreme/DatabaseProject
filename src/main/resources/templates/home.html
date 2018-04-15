@@ -125,12 +125,6 @@
                         <div class="col s3">Total:</div>
                         <div class="col s3" id="total-text">$1.00</div>
                     </div>
-                    <div class="input-field col s12">
-                        <select>
-                            <option value="credit" selected>Credit</option>
-                            <option value="cash">Cash</option>
-                          </select>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -144,12 +138,6 @@
                 <div class="modal-content">
                     <div class="container">
                         <h4>Return these items?</h4>
-                        <div class="input-field col s12">
-                            <select>
-                            <option value="credit" selected>Credit</option>
-                            <option value="cash">Cash</option>
-                          </select>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -252,11 +240,11 @@
             $('#checkout-body').append(
                 `
                 <tr id="item` + maxCart + `" name="item` + maxCart + `">
-                    <td><input value="` + name + `" placeholder="Name" id="name` + maxCart +
+                    <td><input disabled value="` + name + `" placeholder="Name" id="name` + maxCart +
                 `"  name="name` + maxCart + `" type="text" class="validate"></td>
                     <td><input value="1" placeholder="Qty" id="qty` + maxCart +
                 `" name="qty` + maxCart + `" type="text" class="validate"></td>
-                    <td><input value="` + price + `" placeholder="Price" id="price` + maxCart +
+                    <td><input disabled value="` + price + `" placeholder="Price" id="price` + maxCart +
                 `" name="price` + maxCart + `" type="text" class="validate"></td>
                     <td><a class="btn-floating grey waves-red" onclick="removeItem(` + maxCart +
                 `)"><i class="material-icons">delete_forever</i></a></td>
