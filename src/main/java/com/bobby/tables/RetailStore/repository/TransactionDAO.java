@@ -100,7 +100,7 @@ public class TransactionDAO {
     public static void addTransaction(Transaction trans){
         String add = "INSERT INTO transaction (customer_id, store_id, date, total";
 
-        if (trans.getDiscount().getId() != 0) {
+        if (trans.getDiscount() != null && trans.getDiscount().getId() != 0) {
             add += ", discount_id";
         }
 
